@@ -33,12 +33,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   dbt_aestuary:
-    # Applies to all files under models/example/
-    STAGING:
-      materialized: table
-    DIMENSION:
-      materialized: table
-    SNAPSHOTS:
-      materialized: view
-    FACT:
-      materialized: table
+    aestuary_alice_ames:
+      +materialized: table
+    
