@@ -19,5 +19,6 @@ NULLIF(TRIM(pv.BARCODE),'') as PRODUCT_BARCODE,
 pv.GRAMS as PRODUCT_GRAMS,
 pv.WEIGHT as PRODUCT_WEIGHT,
 NULLIF(TRIM(pv.WEIGHT_UNIT),'') as PRODUCT_WEIGHT_UNIT
-from {{ source('ALICE_AMES_SHOPIFY', 'PRODUCT') }} p left join {{ source('ALICE_AMES_SHOPIFY', 'PRODUCT_VARIANT') }} pv on p.ID = pv.PRODUCT_ID
+from {{ ref('product_snapshot') }} p left join {{ ref('product_variant_snapshot') }} pv on p.ID = pv.PRODUCT_VARIANT_ID 
+and p.DBT_VALID_TO is NULL and pv.DBT_VALID_TO is NULL
 left join {{ source('ALICE_AMES_SHOPIFY', 'PRODUCT_TAG') }} pt on p.ID = pt.PRODUCT_ID
