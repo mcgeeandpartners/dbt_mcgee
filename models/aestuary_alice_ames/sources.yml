@@ -4,6 +4,10 @@ sources:
   - name: ALICE_AMES_SHOPIFY
     database: AESTUARY_RAW
     schema: SHOPIFY
+    quoting:
+      database: true
+      schema: true
+      identifier: true
     tables:
       - name: CUSTOMER
       - name: CUSTOMER_ADDRESS

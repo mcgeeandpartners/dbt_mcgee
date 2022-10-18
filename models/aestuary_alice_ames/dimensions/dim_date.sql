@@ -1,4 +1,4 @@
-select DATE_PKEY as DATE_KEY,
+select {{ dbt_utils.surrogate_key(['DATE_COLUMN']) }} as DATE_KEY,
 		DATE_COLUMN AS DATE,
         FULL_DATE_DESC,
 		DAY_NUM_IN_WEEK,
