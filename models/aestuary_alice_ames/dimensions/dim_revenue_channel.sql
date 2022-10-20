@@ -1,3 +1,9 @@
+{{
+    config(
+    enabled=false
+    )
+}}
+
 with revenue_channels as (
 
     select 'SHOPIFY' as CHANNEL_NAME
