@@ -38,4 +38,6 @@ models:
   dbt_aestuary:
     aestuary_alice_ames:
       +materialized: table
+      +database: 'AESTUARY_DW'
+      +schema: 'ALICE_AMES'
     

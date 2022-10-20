@@ -1,18 +1,31 @@
-select 
+-- with product_snapshot_product_id as (
+
+--     select * 
+--     from {{ ref('dim_product_variant') }} p
+--     where PRODUCT_ID is not null
+-- ),
+-- product_snapshot_sku as (
+
+--     select *
+--     from {{ ref('dim_product_variant') }} p
+--     where PRODUCT_ID is null and PRODUCT_SKU is not null
+
+-- ),
+-- product_snapshot_title as (
+
+--     select *
+--     from {{ ref('dim_product_variant') }} p
+--     where PRODUCT_ID is null and PRODUCT_SKU is null
+
+-- )
+
+select
+ol.ORDER_LINE_ITEM_KEY, 
 c.CUSTOMER_KEY,
 d.DATE_KEY,
 p.PRODUCT_KEY,
-o.CREATED_AT AS ORDER_CREATED_DATE
-from {{ source('ALICE_AMES_SHOPIFY', 'ORDER') }} o left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER_LINE') }} ol on o.ID = ol.ORDER_ID
-left join {{ ref('dim_customer') }} c on o.CUSTOMER_ID = c.CUSTOMER_ID
-left join {{ ref('dim_date') }} d on d."DATE" = DATE(o.CREATED_AT)
-left join {{ ref('dim_product_variant') }} p on ol.SKU = p.PRODUCT_SKU
-    -- case when ol.PRODUCT_ID is not null then TO_VARCHAR(ol.PRODUCT_ID)
-    -- when ol.PRODUCT_ID is null and ol.SKU is not null then ol.SKU
-    -- else lower(ol.name)
-    -- end
-    -- =
-    -- case when ol.PRODUCT_ID is not null then TO_VARCHAR(p.PRODUCT_ID)
-    -- when ol.PRODUCT_ID is null and ol.SKU is not null then p.PRODUCT_SKU
-    -- else lower(p.PRODUCT_TITLE)
-    -- end
+DATE(ol.ORDER_CREATED_TS) AS ORDER_CREATED_DATE
+from {{  ref('dim_order_line_item') }} ol
+left join {{ ref('dim_customer') }} c on ol.CUSTOMER_ID = c.CUSTOMER_ID
+left join {{ ref('dim_date') }} d on d."DATE" = DATE(ol.ORDER_CREATED_TS)
+left join {{ ref('dim_product_variant') }} p on ol.PRODUCT_SKU = p.PRODUCT_SKU
