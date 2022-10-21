@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: ALICE_AMES_SHOPIFY
+    database: AESTUARY_RAW
+    schema: SHOPIFY
+    tables:
+      - name: CUSTOMER
+      - name: CUSTOMER_ADDRESS
+      - name: PRODUCT
+      - name: PRODUCT_VARIANT
+      - name: PRODUCT_TAG
+      - name: PRICE_RULE
+      - name: DISCOUNT_CODE
+      - name: COLLECTION
+      - name: ORDER
+      - name: ORDER_LINE
