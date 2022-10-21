@@ -19,3 +19,4 @@ sources:
       - name: COLLECTION
       - name: ORDER
       - name: ORDER_LINE
+      - name: ORDER_DISCOUNT_CODE

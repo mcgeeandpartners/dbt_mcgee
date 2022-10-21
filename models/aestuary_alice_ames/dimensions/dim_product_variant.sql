@@ -1,5 +1,5 @@
 select
-{{ dbt_utils.surrogate_key(['p.ID', 'pv.ID','pt.INDEX']) }} as PRODUCT_KEY,
+{{ dbt_utils.surrogate_key(['p.ID', 'pv.ID','pt.INDEX']) }} as PRODUCT_VARIANT_KEY,
 p.ID as PRODUCT_ID,
 NULLIF(TRIM(p.TITLE),'') as PRODUCT_TITLE,
 NULLIF(TRIM(p.HANDLE),'') as PRODUCT_HANDLE,
@@ -19,6 +19,6 @@ NULLIF(TRIM(pv.BARCODE),'') as PRODUCT_BARCODE,
 pv.GRAMS as PRODUCT_GRAMS,
 pv.WEIGHT as PRODUCT_WEIGHT,
 NULLIF(TRIM(pv.WEIGHT_UNIT),'') as PRODUCT_WEIGHT_UNIT
-from {{ ref('product_snapshot') }} p left join {{ ref('product_variant_snapshot') }} pv on p.ID = pv.ID 
+from {{ ref('product_snapshot') }} p left join {{ ref('product_variant_snapshot') }} pv on p.ID = pv.PRODUCT_ID 
 left join {{ source('ALICE_AMES_SHOPIFY', 'PRODUCT_TAG') }} pt on p.ID = pt.PRODUCT_ID
 where p.DBT_VALID_TO is NULL and pv.DBT_VALID_TO is NULL
