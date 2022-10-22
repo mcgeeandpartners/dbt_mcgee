@@ -13,7 +13,8 @@ ol.PRODUCT_EXISTS as PRODUCT_EXISTS,
 ol.GIFT_CARD as IS_GIFT_CARD_USED,
 NULLIF(TRIM(ol.SKU),'') as PRODUCT_SKU,
 ol.PRODUCT_ID as PRODUCT_ID,
+ol.VARIANT_ID as PRODUCT_VARIANT_ID,
 o.CREATED_AT as ORDER_CREATED_TS,
 odc.CODE as DISCOUNT_CODE
-from {{ source('ALICE_AMES_SHOPIFY', 'ORDER') }} o left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER_LINE') }} ol on o.ID = ol.ORDER_ID
+from {{ source('ALICE_AMES_SHOPIFY', 'ORDER_LINE') }} ol left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER') }} o  on o.ID = ol.ORDER_ID
 left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER_DISCOUNT_CODE') }} odc on o.ID = odc.ORDER_ID

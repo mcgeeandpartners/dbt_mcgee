@@ -29,5 +29,5 @@ DATE(ol.ORDER_CREATED_TS) AS ORDER_CREATED_DATE
 from {{  ref('dim_order_line_item') }} ol
 left join {{ ref('dim_customer') }} c on ol.CUSTOMER_ID = c.CUSTOMER_ID
 left join {{ ref('dim_date') }} d on d."DATE" = DATE(ol.ORDER_CREATED_TS)
-left join {{ ref('dim_product_variant') }} p on ol.PRODUCT_ID = p.PRODUCT_ID
+left join {{ ref('dim_product_variant') }} p on ol.PRODUCT_ID = p.PRODUCT_ID and ol.PRODUCT_VARIANT_ID = p.PRODUCT_VARIANT_ID
 left join {{ ref('dim_discount') }}  disc on COALESCE(ol.DISCOUNT_CODE,'NO_DISCOUNT') = disc.DISCOUNT_CODE
