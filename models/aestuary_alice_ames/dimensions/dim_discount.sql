@@ -1,8 +1,8 @@
 with no_discount_cte as (
 
     select 
-    md5(cast(coalesce(cast('NO_DISCOUNT' as TEXT), '') || '-' || coalesce(cast(-1 as TEXT), '') as TEXT)) as DISCOUNT_KEY,
-    'NO_DISCOUNT' as DISCOUNT_CODE,
+    md5(cast(coalesce(cast('DISCOUNT_CODE_NOT_FOUND' as TEXT), '') || '-' || coalesce(cast(-1 as TEXT), '') as TEXT)) as DISCOUNT_KEY,
+    'DISCOUNT_CODE_NOT_FOUND' as DISCOUNT_CODE,
     -1 as PRICE_RULE_ID,
     NULL as DISCOUNT_CREATED_DATE,
     NULL as DISCOUNT_START_DATE,

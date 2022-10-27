@@ -1,3 +1,25 @@
+with no_product_cte as (
+
+    select 
+    md5(cast(coalesce(cast('PRODUCT_VARIANT_NOT_FOUND' as TEXT), '') || '-' || coalesce(cast(-1 as TEXT), '') as TEXT)) as PRODUCT_VARIANT_KEY,
+    -1 as PRODUCT_ID,
+    -1 as PRODUCT_VARIANT_ID,
+    NULL as PRODUCT_TITLE,
+    NULL as PRODUCT_HANDLE,
+    NULL as PRODUCT_TYPE,
+    NULL as PRODUCT_STATUS,
+    NULL as PRODUCT_VARIANT_TITLE,
+    -1 as PRODUCT_PRICE,
+    NULL as PRODUCT_SKU,
+    -1 as PRODUCT_VARIANT_POSITION,
+    NULL as PRODUCT_CREATED_DATE,
+    NULL as PRODUCT_UPDATED_DATE,
+    NULL as PRODUCT_BARCODE,
+    NULL as PRODUCT_GRAMS,
+    -1 as PRODUCT_WEIGHT,
+    NULL as PRODUCT_WEIGHT_UNIT
+)
+
 select
 {{ dbt_utils.surrogate_key(['pv.ID']) }} as PRODUCT_VARIANT_KEY,
 p.ID as PRODUCT_ID,
@@ -6,10 +28,6 @@ NULLIF(TRIM(p.TITLE),'') as PRODUCT_TITLE,
 NULLIF(TRIM(p.HANDLE),'') as PRODUCT_HANDLE,
 NULLIF(TRIM(PRODUCT_TYPE),'') as PRODUCT_TYPE,
 NULLIF(TRIM(STATUS),'') as PRODUCT_STATUS,
---NULLIF(TRIM(pt.VALUE),'') as PRODUCT_STYLE,
---pt.INDEX as PRODUCT_TAG_INDEX,
---NULLIF(TRIM(pt.VALUE),'') as PRODUCT_TAG_VALUE,
---pv.ID as PRODUCT_VARIANT_ID,
 NULLIF(TRIM(pv.TITLE),'') as PRODUCT_VARIANT_TITLE,
 pv.PRICE as PRODUCT_PRICE,
 NULLIF(TRIM(pv.SKU),'') as PRODUCT_SKU,
@@ -23,3 +41,5 @@ NULLIF(TRIM(pv.WEIGHT_UNIT),'') as PRODUCT_WEIGHT_UNIT
 from {{ ref('product_variant_snapshot') }} pv left join {{ ref('product_snapshot') }} p on p.ID = pv.PRODUCT_ID 
 --left join {{ source('ALICE_AMES_SHOPIFY', 'PRODUCT_TAG') }} pt on p.ID = pt.PRODUCT_ID
 where p.DBT_VALID_TO is NULL and pv.DBT_VALID_TO is NULL
+union all
+select * from no_product_cte
