@@ -1,5 +1,5 @@
 select
-{{ dbt_utils.surrogate_key(['ol.ORDER_ID']) }} as ORDER_LINE_ITEM_KEY,
+{{ dbt_utils.surrogate_key(['ol.ORDER_LINE_ITEM_ID']) }} as ORDER_LINE_ITEM_KEY,
 ol.ORDER_ID as ORDER_ID,
 ol.ORDER_LINE_ITEM_ID as ORDER_LINE_ITEM_ID,
 ol.TOTAL_WEIGHT as TOTAL_WEIGHT,
