@@ -17,6 +17,7 @@ sources:
       - name: PRICE_RULE
       - name: DISCOUNT_CODE
       - name: COLLECTION
+      - name: COLLECTION_PRODUCT
       - name: ORDER
       - name: ORDER_LINE
       - name: ORDER_DISCOUNT_CODE

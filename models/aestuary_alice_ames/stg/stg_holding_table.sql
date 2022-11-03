@@ -19,7 +19,8 @@ ol.REQUIRES_SHIPPING as REQUIRES_SHIPPING,
 ol.PRODUCT_EXISTS as PRODUCT_EXISTS,
 ol.GIFT_CARD as IS_GIFT_CARD_USED,
 NULLIF(TRIM(ol.SKU),'') as PRODUCT_SKU,
-COALESCE(ol.PRODUCT_ID,-1) as PRODUCT_ID,
+case when cp.COLLECTION_ID not in (select ID from {{ source('ALICE_AMES_SHOPIFY','COLLECTION')}}) then -1 else COALESCE(cp.COLLECTION_ID,-1) end as COLLECTION_ID,
+case when ol.PRODUCT_ID not in (select ID FROM {{ ref('product_snapshot') }} p) then -1 else COALESCE(ol.PRODUCT_ID,-1) end as PRODUCT_ID,
 case when ol.VARIANT_ID not in (select ID FROM {{ ref('product_variant_snapshot') }} pv) then -1 else COALESCE(ol.VARIANT_ID,-1) end as PRODUCT_VARIANT_ID,
 ol.TITLE as PRODUCT_TITLE,
 o.CREATED_AT as ORDER_CREATED_TS,
@@ -27,3 +28,4 @@ odc.CODE as ORDER_DISCOUNT_CODE,
 ol.PRE_TAX_PRICE as ORDER_LINE_ITEM_PRE_TAX_PRICE
 from {{ source('ALICE_AMES_SHOPIFY', 'ORDER_LINE') }} ol left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER') }} o  on o.ID = ol.ORDER_ID
 left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER_DISCOUNT_CODE') }} odc on o.ID = odc.ORDER_ID
+left join {{ ref('stg_collection_product')}} cp on case when ol.PRODUCT_ID not in (select ID FROM {{ ref('product_snapshot') }} p) then -1 else COALESCE(ol.PRODUCT_ID,-1) end = cp.PRODUCT_ID
