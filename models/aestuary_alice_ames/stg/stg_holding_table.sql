@@ -1,10 +1,4 @@
 
-{{ config(
-    database="AESTUARY_RAW",
-    schema="SHOPIFY"
-) }}
-
-
 select
 o.ID as ORDER_ID,
 ol.ID as ORDER_LINE_ITEM_ID,

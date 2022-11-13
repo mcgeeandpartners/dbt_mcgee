@@ -1,9 +1,3 @@
-{{ config(
-    database="AESTUARY_RAW",
-    schema="SHOPIFY"
-) }}
-
-
 with no_collection_product_cte as (
 
     select -1 as COLLECTION_ID,
