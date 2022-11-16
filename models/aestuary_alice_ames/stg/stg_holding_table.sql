@@ -18,6 +18,7 @@ case when ol.VARIANT_ID not in (select ID FROM {{ ref('product_variant_snapshot'
 ol.TITLE as PRODUCT_TITLE,
 o.CREATED_AT as ORDER_CREATED_TS,
 odc.CODE as ORDER_DISCOUNT_CODE,
+ol.QUANTITY as QUANTITY,
 ol.PRE_TAX_PRICE as ORDER_LINE_ITEM_PRE_TAX_PRICE
 from {{ source('ALICE_AMES_SHOPIFY', 'ORDER_LINE') }} ol left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER') }} o  on o.ID = ol.ORDER_ID
 left join {{ source('ALICE_AMES_SHOPIFY', 'ORDER_DISCOUNT_CODE') }} odc on o.ID = odc.ORDER_ID
