@@ -21,3 +21,26 @@ sources:
       - name: ORDER
       - name: ORDER_LINE
       - name: ORDER_DISCOUNT_CODE
+
+      
+  - name: SHOPIFY_AMERICAN_DUCHESS
+    database: AESTUARY_RAW
+    schema: SHOPIFY_AMERICAN_DUCHESS
+    quoting:
+      database: true
+      schema: true
+      identifier: true
+    tables:
+      - name: CUSTOMER
+      - name: CUSTOMER_ADDRESS
+      - name: PRODUCT
+      - name: PRODUCT_VARIANT
+      - name: PRODUCT_TAG
+      - name: PRICE_RULE
+      - name: DISCOUNT_CODE
+      - name: DISCOUNT_APPLICATION
+      - name: COLLECTION
+      - name: COLLECTION_PRODUCT
+      - name: ORDER
+      - name: ORDER_LINE
+      - name: ORDER_DISCOUNT_CODE
