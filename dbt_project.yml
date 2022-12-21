@@ -26,13 +26,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 vars:
   channel_created_date: '2022-09-01'
-  klaviyo_database: AESTUARY_RAW
-  klaviyo_schema: KLAVIYO_ALICE_AMES
-  google_ads_database: AESTUARY_RAW
-  google_ads_schema: GOOGLE_ADS_ALICE_AMES 
-  shopify_union_schemas: ['SHOPIFY', 'SHOPIFY_AMERICAN_DUCHESS', 'SHOPIFY_AMERICAN_DUCHESS_EU']
-  shopify_database: AESTUARY_RAW
-
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -40,6 +33,7 @@ vars:
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
+
 models:
 
     dbt_aestuary:
