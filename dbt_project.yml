@@ -27,15 +27,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 vars:
   channel_created_date: '2022-09-01'
 
-models:
-    dbt_aestuary:
-      google_ads:
-        +schema: google_ads # leave blank for just the target_schema
-        dim:
-          +materialized: table
-        fact:
-          +materialized: table
-
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
@@ -49,6 +40,12 @@ models:
       aestuary_alice_ames:
         +materialized: table
         +schema: ALICE_AMES
+      google_ads:
+        +schema: google_ads # leave blank for just the target_schema
+        dim:
+          +materialized: table
+        fact:
+          +materialized: table
       shopify_american_duchess:
         +materialized: table
         +schema: SHOPIFY_AMERICAN_DUCHESS
