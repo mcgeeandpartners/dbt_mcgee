@@ -26,8 +26,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 vars:
   channel_created_date: '2022-09-01'
-  facebook_ads_database: AESTUARY_RAW
-  facebook_ads_schema: FACEBOOK_ADS_ALICE_AMES 
 
 models:
     dbt_aestuary:
@@ -44,6 +42,13 @@ models:
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
-# models:
 
-    
+models:
+
+    dbt_aestuary:
+      aestuary_alice_ames:
+        +materialized: table
+        +schema: ALICE_AMES
+      shopify_american_duchess:
+        +materialized: table
+        +schema: SHOPIFY_AMERICAN_DUCHESS
