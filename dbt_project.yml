@@ -29,6 +29,15 @@ vars:
   facebook_ads_database: AESTUARY_RAW
   facebook_ads_schema: FACEBOOK_ADS_ALICE_AMES 
 
+models:
+    dbt_aestuary:
+      google_ads:
+        +schema: google_ads # leave blank for just the target_schema
+        dim:
+          +materialized: table
+        fact:
+          +materialized: table
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
