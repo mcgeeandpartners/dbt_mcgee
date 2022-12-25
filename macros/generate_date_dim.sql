@@ -1,3 +1,5 @@
+{% macro generate_date_dim() -%}
+
 select {{ dbt_utils.surrogate_key(['DATE_COLUMN']) }} as DATE_KEY,
 		DATE_COLUMN AS DATE,
         FULL_DATE_DESC,
@@ -347,3 +349,5 @@ select {{ dbt_utils.surrogate_key(['DATE_COLUMN']) }} as DATE_KEY,
 			to_date('9999-12-31') as EXPIRA_DATE
 			from table(generator(rowcount => 8401)) 
 	)v
+
+{%- endmacro %}

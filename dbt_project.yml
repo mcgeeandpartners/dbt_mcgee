@@ -46,6 +46,12 @@ models:
           +materialized: table
         fact:
           +materialized: table
+      facebook_ads:
+        +schema: facebook_ads
+        dim:
+          +materialized: table
+        fact:
+          +materialized: table
       shopify_american_duchess:
         +materialized: table
         +schema: SHOPIFY_AMERICAN_DUCHESS

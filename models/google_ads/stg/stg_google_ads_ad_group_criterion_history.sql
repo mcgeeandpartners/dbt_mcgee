@@ -9,7 +9,7 @@ final as (
 
     select 
         id as criterion_id,
-        cast(ad_group_id as {{ dbt_utils.type_string() }}) as ad_group_id,
+        ad_group_id,
         updated_at::timestamp_ntz as updated_at,
         type,
         status,
