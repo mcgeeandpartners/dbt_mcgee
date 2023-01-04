@@ -54,4 +54,12 @@ models:
           +materialized: table
       shopify_american_duchess:
         +materialized: table
-        +schema: SHOPIFY_AMERICAN_DUCHESS
+        +schema: shopify_american_duchess
+      shopify_tenkara_usa:
+        +schema: shopify_tenkara_usa
+        dim:
+          +materialized: table
+        fact:
+          +materialized: table
+        stg:
+          +materialized: view
