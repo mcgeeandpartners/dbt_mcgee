@@ -40,6 +40,18 @@ models:
       aestuary_alice_ames:
         +materialized: table
         +schema: ALICE_AMES
+      google_ads:
+        +schema: google_ads # leave blank for just the target_schema
+        dim:
+          +materialized: table
+        fact:
+          +materialized: table
+      facebook_ads:
+        +schema: facebook_ads
+        dim:
+          +materialized: table
+        fact:
+          +materialized: table
       shopify_american_duchess:
         +materialized: table
         +schema: SHOPIFY_AMERICAN_DUCHESS
