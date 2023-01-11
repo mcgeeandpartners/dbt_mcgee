@@ -41,7 +41,7 @@ models:
         +materialized: table
         +schema: ALICE_AMES
       google_ads:
-        +schema: google_ads # leave blank for just the target_schema
+        +schema: google_ads
         dim:
           +materialized: table
         fact:
@@ -54,4 +54,9 @@ models:
           +materialized: table
       shopify_american_duchess:
         +materialized: table
-        +schema: SHOPIFY_AMERICAN_DUCHESS
+        +schema: shopify_american_duchess
+      shopify_tenkara_usa:
+        +materialized: table
+        +schema: shopify_tenkara_usa
+        stg:
+          +materialized: view
