@@ -60,3 +60,10 @@ models:
         +schema: shopify_tenkara_usa
         stg:
           +materialized: view
+      shopify_alice_ames:
+        +materialized: table
+        +schema: shopify_alice_ames
+        int:
+          +materialized: view
+        stg:
+          +materialized: view
