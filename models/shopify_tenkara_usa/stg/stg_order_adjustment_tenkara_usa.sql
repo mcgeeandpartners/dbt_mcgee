@@ -1,5 +1,4 @@
 select
-    {{ dbt_utils.surrogate_key(['id']) }} as order_adjustment_key,
     id as order_adjustment_id,
     order_id,
     refund_id,
