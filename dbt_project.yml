@@ -35,7 +35,6 @@ vars:
 # using the `{{ config(...) }}` macro.
 
 models:
-
     dbt_aestuary:
       aestuary_alice_ames:
         +materialized: table
@@ -67,3 +66,8 @@ models:
           +materialized: view
         stg:
           +materialized: view
+
+seeds:
+    dbt_aestuary:
+      shopify_alice_ames:
+        +schema: shopify_alice_ames
