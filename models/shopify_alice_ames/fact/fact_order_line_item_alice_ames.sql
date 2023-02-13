@@ -7,44 +7,59 @@ select
     {# discount.discount_key, #} --Will add after investigating the discount application table. Per Caroline, this can be tabled for later
     o.order_id,
     oli.order_line_item_id,
-    o.cancel_reason as order_cancel_reason,
-    o.financial_status as order_financial_status,
-    o.fulfillment_status as order_fulfillment_status,
+    o.order_cancel_reason,
+    o.order_financial_status,
+    o.order_fulfillment_status,
     o.currency as order_currency,
     o.taxes_included as order_has_tax_included,
     iff(date_trunc('day', o.order_placed_at_utc) = date_trunc('day', c.customer_created_at), 1, 0)::boolean as is_new_customer_order,
-    
-    o.total_price as order_total_price,
-    o.subtotal_price as order_subtotal_price,
-    o.total_tax as order_total_tax,
-    round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_shipping_price,
-    o.total_discounts as order_total_discount,
-    o.current_total_price as order_current_total_price,
-    o.current_subtotal_price as order_current_subtotal_price,
-    o.current_total_tax as order_current_total_tax,
-    o.current_total_discounts as order_current_total_discount,
-    o.total_line_items_price as order_total_line_items_price,
-    o.revenue_shipping as order_revenue_shipping,
-    o.refund_total as order_refund_total,
 
---
-    oli.vendor,
-    iff(is_vendor_route = false, oli.quantity, 0) as units_sold_product, --units_sold_ex_route
-    iff(is_vendor_route = true, oli.quantity, 0) as units_sold_route, --units_sold_route
-    iff(is_vendor_route = false, oli.quantity * oli.price, 0) as gross_revenue_product, --total_line_item_price_ex_route
-    iff(is_vendor_route = true, oli.quantity * oli.price, 0) as gross_revenue_route, --total_line_item_price_route
-    oli.quantity as units_sold,
-    oli.price as order_line_item_price,
-    oli.price * oli.quantity as gross_revenue_total, -- total_line_item_price
-    nvl(i.msrp, 0) as msrp_product,
-    iff(is_vendor_route = false, greatest(oli.price, msrp_product) * oli.quantity, 0) as gross_revenue_adj_product, --total_line_item_price_adj_ex_route
-    greatest(oli.price, msrp_product) * oli.quantity as gross_revenue_adj,
-    (greatest(oli.price, msrp_product) - oli.price) * oli.quantity as total_line_item_adj_implied_discount,
+--Caroline suggestions
+    iff(is_vendor_route = false, sum(order_line_item_units_product) over (partition by o.order_id), 0) as order_units_product,
+    iff(is_vendor_route = true, sum(order_line_item_units_route) over (partition by o.order_id), 0) as order_units_route,
+
+    {# MSRP_product >> Order_line_item_msrp (this looks correct for products, can you make sure it also shows the price if the Vendor = 'Route' i.e. this should never be 0) #}
+    nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
+    
+    {# ADD order_gross_revenue_product (this should be the sum of the adjusted MSRP of an order, excluding Vendor = 'Route') #}
+    order_line_item_msrp * order_units_product as order_gross_revenue_product,
+
+    {# ADD order_gross_revenue_route (sum of Route price on an order, there should only be one per order but just in case I would do sum(price when vendor = 'Route')) #}
+    order_line_item_msrp * order_units_route as order_gross_revenue_route,
+
+    o.total_tax as order_gross_revenue_tax,
+    round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_gross_revenue_shipping,
+
+    {# order_total_price >> order_gross_revenue_total (this should = the sum of the 4 lines above) #}
+    order_gross_revenue_product + order_gross_revenue_route + order_gross_revenue_tax + order_gross_revenue_shipping as order_gross_revenue_total,
+    
+    {# order_total_discount >> order_discounts (this needs to include the "total_line_item_adj_implied_discount" for all line items in the order) #}
+    o.total_discounts + iff(is_vendor_route = false, sum((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id), 0) as order_discount,
+    
+    {# order_total_price - order_current_total_price >> order_refunds (this may be labeled Order_refund_total now) #}
+    round(iff(is_vendor_route = false, order_gross_revenue_total - o.current_total_price, 0), 2) as order_refund,
+
+    --we might be missing the order shipping discount. This can be calculated. 
+
+    {# order_net_revenue_total (this = order_gross_revenue_total - order_discounts - order_refunds) #}
+    order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total,
+
+    oli.order_line_item_vendor,
+    oli.order_line_item_units,
+
+    {# max(gross_revenue_adj_product, gross_revenue_route) >> order_line_item_gross_revenue (i basically want to collapse Product and Route revenue fields into a single field at the order_line level, we only need that distinction at the order level) #}
+    greatest(order_gross_revenue_product, order_gross_revenue_route) as order_line_item_gross_revenue,
+    
+    {# total_line_item_adj_implied_discount + order_line.total_discount >> order_line_item_total_discount (**please make sure this includes not only the implied discount, but ALSO the original discount from the raw order_line table ) #}
+    ((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) + oli.total_discount as order_line_item_total_discount,
+    
+    p.product_sku as order_line_item_sku,
+    p.product_barcode as order_line_item_barcode,
+    oli.is_gift_card as order_line_item_is_gift_card,
+    oli.is_taxable as order_line_item_is_taxable
 
     {# //, sum(iff(ol.vendor <> 'Route', ol.total_discount,0)) as total_line_item_discount_ex_route
     //, sum(ol.total_discount) as total_line_item_discount #}
-
-    'alice_ames' as sub_company 
 
 from {{ref('stg_order_alice_ames')}} as o 
 left join {{ref('stg_order_line_item_alice_ames')}} as oli 
@@ -61,3 +76,10 @@ left join {{ref('dim_date_alice_ames')}} as d
 left join {{ ref('int_historic_msrp') }} as i 
     on oli.product_title = i.product_title
     and o.order_placed_at_utc::date = i.order_date
+{# where o.order_id in ( #}
+    --'4939791270087'
+    {# '4939639357639' #}
+    {# '3073783431367' #}
+    {# '3196069478599'
+    ) #}
+{# order by order_id, order_line_item_id #}

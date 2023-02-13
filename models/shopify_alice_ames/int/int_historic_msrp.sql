@@ -7,11 +7,11 @@ with cte_max_daily_price as (
     select 
           ol.product_title
         , o.order_placed_at_utc::date as order_date
-        , max(ol.price) as max_daily_price
+        , max(ol.order_line_item_price) as max_daily_price
     from {{ ref('stg_order_line_item_alice_ames') }} as ol 
     inner join {{ ref('stg_order_alice_ames') }} as o 
         on ol.order_id = o.order_id
-    where vendor != 'route' --not business revenue
+    where order_line_item_vendor != 'route' --not business revenue
     group by 1,2
 
 )

@@ -7,8 +7,16 @@ select
     lower(name) as product_variant_name,
     lower(title) as product_title,
     index as order_line_index,
-    price,
-    quantity,
+    lower(vendor) as order_line_item_vendor,
+    case 
+        when nvl(order_line_item_vendor, '') != 'route' then false
+        when nvl(order_line_item_vendor, '') = 'route' then true
+        else NULL
+    end as is_vendor_route,
+    oli.price as order_line_item_price,
+    oli.quantity as order_line_item_units,
+    iff(is_vendor_route = false, oli.quantity, 0) as order_line_item_units_product, --sum this up on order in fact table
+    iff(is_vendor_route = true, oli.quantity, 0) as order_line_item_units_route,
     price_set,
     pre_tax_price,
     pre_tax_price_set,
@@ -31,12 +39,6 @@ select
     destination_location_zip,
     properties,
     product_exists,
-    lower(vendor) as vendor,
-    case 
-        when nvl(lower(vendor), '') != 'route' then FALSE
-        when nvl(lower(vendor), '') = 'route' then TRUE
-        else NULL
-    end as is_vendor_route,
     grams,
     origin_location_name,
     taxable as is_taxable,
@@ -50,4 +52,4 @@ select
     tax_code,
     _fivetran_synced
     
-from {{ source('shopify_alice_ames', 'order_line') }}
+from {{ source('shopify_alice_ames', 'order_line') }} as oli
