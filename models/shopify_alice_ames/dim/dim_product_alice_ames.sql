@@ -10,7 +10,7 @@ select
     p.product_status,
     pv.product_variant_title,
     pv.price as product_price,
-    pv.product_variant_sku as product_sku,
+    nullif(lower(pv.product_variant_sku), '') as product_sku,
     pv.product_variant_position as product_position,
     pv.barcode as product_barcode,
     pv.grams as product_grams,

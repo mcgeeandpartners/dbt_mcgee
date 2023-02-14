@@ -34,7 +34,7 @@ select
     o.total_discounts + sum((nvl(i.msrp, oli.order_line_item_price) - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id) as order_discount,
     
     {# order_total_price - order_current_total_price >> order_refunds (this may be labeled Order_refund_total now) #}
-    round(order_gross_revenue_total - o.current_total_price, 2) as order_refund,
+    round(o.total_price - o.current_total_price, 2) as order_refund,
 
     --we might be missing the order shipping discount. This can be calculated. 
 
@@ -47,13 +47,13 @@ select
     oli.order_line_item_units,
 
     {# max(gross_revenue_adj_product, gross_revenue_route) >> order_line_item_gross_revenue (i basically want to collapse Product and Route revenue fields into a single field at the order_line level, we only need that distinction at the order level) #}
-    greatest(order_gross_revenue_product, order_gross_revenue_route) as order_line_item_gross_revenue,
+    order_line_item_msrp * oli.order_line_item_units as order_line_item_gross_revenue,
     
     {# total_line_item_adj_implied_discount + order_line.total_discount >> order_line_item_total_discount (**please make sure this includes not only the implied discount, but ALSO the original discount from the raw order_line table ) #}
     ((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) + oli.total_discount as order_line_item_total_discount,
     
-    p.product_sku as order_line_item_sku,
-    p.product_barcode as order_line_item_barcode,
+    nvl(oli.sku, p.product_sku) as order_line_item_sku,
+    p.product_barcode,
     oli.is_gift_card as order_line_item_is_gift_card,
     oli.is_taxable as order_line_item_is_taxable
 
@@ -80,5 +80,5 @@ left join {{ ref('int_historic_msrp') }} as i
     {# '4939639357639' #}
     {# '3073783431367' #}
     {# '3196069478599'
-    ) #}
-{# order by order_id, order_line_item_id #}
+    )
+order by order_id, order_line_item_id #}
