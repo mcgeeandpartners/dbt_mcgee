@@ -15,6 +15,8 @@ select
     end as is_vendor_route,
     oli.price as order_line_item_price,
     oli.quantity as order_line_item_units,
+    iff(is_vendor_route = false, oli.price, 0) as order_line_item_price_product,
+    iff(is_vendor_route = true, oli.price, 0) as order_line_item_price_route,
     iff(is_vendor_route = false, oli.quantity, 0) as order_line_item_units_product, --sum this up on order in fact table
     iff(is_vendor_route = true, oli.quantity, 0) as order_line_item_units_route,
     price_set,

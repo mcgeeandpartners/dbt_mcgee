@@ -15,17 +15,14 @@ select
     iff(date_trunc('day', o.order_placed_at_utc) = date_trunc('day', c.customer_created_at), 1, 0)::boolean as is_new_customer_order,
 
 --Caroline suggestions
-    iff(is_vendor_route = false, sum(order_line_item_units_product) over (partition by o.order_id), 0) as order_units_product,
-    iff(is_vendor_route = true, sum(order_line_item_units_route) over (partition by o.order_id), 0) as order_units_route,
-
-    {# MSRP_product >> Order_line_item_msrp (this looks correct for products, can you make sure it also shows the price if the Vendor = 'Route' i.e. this should never be 0) #}
-    nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
+    sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
+    sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
     
     {# ADD order_gross_revenue_product (this should be the sum of the adjusted MSRP of an order, excluding Vendor = 'Route') #}
-    order_line_item_msrp * order_units_product as order_gross_revenue_product,
+    max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product, --msrp is on the product level so we take the max
 
     {# ADD order_gross_revenue_route (sum of Route price on an order, there should only be one per order but just in case I would do sum(price when vendor = 'Route')) #}
-    order_line_item_msrp * order_units_route as order_gross_revenue_route,
+    sum(oli.order_line_item_price_route) over (partition by o.order_id) * order_units_route as order_gross_revenue_route,
 
     o.total_tax as order_gross_revenue_tax,
     round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_gross_revenue_shipping,
@@ -34,10 +31,10 @@ select
     order_gross_revenue_product + order_gross_revenue_route + order_gross_revenue_tax + order_gross_revenue_shipping as order_gross_revenue_total,
     
     {# order_total_discount >> order_discounts (this needs to include the "total_line_item_adj_implied_discount" for all line items in the order) #}
-    o.total_discounts + iff(is_vendor_route = false, sum((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id), 0) as order_discount,
+    o.total_discounts + sum((nvl(i.msrp, oli.order_line_item_price) - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id) as order_discount,
     
     {# order_total_price - order_current_total_price >> order_refunds (this may be labeled Order_refund_total now) #}
-    round(iff(is_vendor_route = false, order_gross_revenue_total - o.current_total_price, 0), 2) as order_refund,
+    round(order_gross_revenue_total - o.current_total_price, 2) as order_refund,
 
     --we might be missing the order shipping discount. This can be calculated. 
 
@@ -45,6 +42,8 @@ select
     order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total,
 
     oli.order_line_item_vendor,
+    {# MSRP_product >> Order_line_item_msrp (this looks correct for products, can you make sure it also shows the price if the Vendor = 'Route' i.e. this should never be 0) #}
+    nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
     oli.order_line_item_units,
 
     {# max(gross_revenue_adj_product, gross_revenue_route) >> order_line_item_gross_revenue (i basically want to collapse Product and Route revenue fields into a single field at the order_line level, we only need that distinction at the order level) #}
