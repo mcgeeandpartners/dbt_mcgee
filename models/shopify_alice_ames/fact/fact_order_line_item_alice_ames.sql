@@ -14,44 +14,24 @@ select
     o.taxes_included as order_has_tax_included,
     iff(date_trunc('day', o.order_placed_at_utc) = date_trunc('day', c.customer_created_at), 1, 0)::boolean as is_new_customer_order,
 
---Caroline suggestions
     sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
     sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
-    
-    {# ADD order_gross_revenue_product (this should be the sum of the adjusted MSRP of an order, excluding Vendor = 'Route') #}
     max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product, --msrp is on the product level so we take the max
-
-    {# ADD order_gross_revenue_route (sum of Route price on an order, there should only be one per order but just in case I would do sum(price when vendor = 'Route')) #}
     sum(oli.order_line_item_price_route) over (partition by o.order_id) * order_units_route as order_gross_revenue_route,
-
     o.total_tax as order_gross_revenue_tax,
     round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_gross_revenue_shipping,
-
-    {# order_total_price >> order_gross_revenue_total (this should = the sum of the 4 lines above) #}
     order_gross_revenue_product + order_gross_revenue_route + order_gross_revenue_tax + order_gross_revenue_shipping as order_gross_revenue_total,
-    
-    {# order_total_discount >> order_discounts (this needs to include the "total_line_item_adj_implied_discount" for all line items in the order) #}
     o.total_discounts + sum((nvl(i.msrp, oli.order_line_item_price) - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id) as order_discount,
-    
-    {# order_total_price - order_current_total_price >> order_refunds (this may be labeled Order_refund_total now) #}
     round(o.total_price - o.current_total_price, 2) as order_refund,
 
     --we might be missing the order shipping discount. This can be calculated. 
 
-    {# order_net_revenue_total (this = order_gross_revenue_total - order_discounts - order_refunds) #}
     order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total,
-
     oli.order_line_item_vendor,
-    {# MSRP_product >> Order_line_item_msrp (this looks correct for products, can you make sure it also shows the price if the Vendor = 'Route' i.e. this should never be 0) #}
     nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
-    oli.order_line_item_units,
-
-    {# max(gross_revenue_adj_product, gross_revenue_route) >> order_line_item_gross_revenue (i basically want to collapse Product and Route revenue fields into a single field at the order_line level, we only need that distinction at the order level) #}
+    oli.order_line_item_units
     order_line_item_msrp * oli.order_line_item_units as order_line_item_gross_revenue,
-    
-    {# total_line_item_adj_implied_discount + order_line.total_discount >> order_line_item_total_discount (**please make sure this includes not only the implied discount, but ALSO the original discount from the raw order_line table ) #}
-    ((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) + oli.total_discount as order_line_item_total_discount,
-    
+    ((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) + oli.total_discount as order_line_item_total_discount,    
     nvl(oli.sku, p.product_sku) as order_line_item_sku,
     p.product_barcode,
     oli.is_gift_card as order_line_item_is_gift_card,
@@ -75,10 +55,3 @@ left join {{ref('dim_date_alice_ames')}} as d
 left join {{ ref('int_historic_msrp') }} as i 
     on oli.product_title = i.product_title
     and o.order_placed_at_utc::date = i.order_date
-{# where o.order_id in ( #}
-    --'4939791270087'
-    {# '4939639357639' #}
-    {# '3073783431367' #}
-    {# '3196069478599'
-    )
-order by order_id, order_line_item_id #}
