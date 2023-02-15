@@ -13,7 +13,7 @@ select
     o.currency as order_currency,
     o.taxes_included as order_has_tax_included,
     iff(date_trunc('day', o.order_placed_at_utc) = date_trunc('day', c.customer_created_at), 1, 0)::boolean as is_new_customer_order,
-
+--Aggregations
     sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
     sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
     max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product, --msrp is on the product level so we take the max
@@ -29,7 +29,7 @@ select
     order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total,
     oli.order_line_item_vendor,
     nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
-    oli.order_line_item_units
+    oli.order_line_item_units,
     order_line_item_msrp * oli.order_line_item_units as order_line_item_gross_revenue,
     ((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) + oli.total_discount as order_line_item_total_discount,    
     nvl(oli.sku, p.product_sku) as order_line_item_sku,
