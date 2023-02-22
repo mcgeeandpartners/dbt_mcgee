@@ -441,3 +441,13 @@ sources:
             description: Record representing total duties set for the refund.
           - name: order_id
             description: Reference to the order which the refund is associated.
+
+  - name: seeds
+    schema: seeds
+    database: aestuary_raw
+    tables:
+      - name: marketing_calendar_alice_ames
+        description: "."
+      - name: master_sku_list_alice_ames
+        description: "."
+    

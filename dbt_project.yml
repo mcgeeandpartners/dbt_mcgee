@@ -37,6 +37,7 @@ vars:
 models:
     dbt_aestuary:
       aestuary_alice_ames:
+        enabled: false
         +materialized: table
         +schema: ALICE_AMES
       google_ads:
@@ -70,4 +71,5 @@ models:
 seeds:
     dbt_aestuary:
       shopify_alice_ames:
-        +schema: shopify_alice_ames
+        +database: aestuary_raw
+        +schema: seeds
