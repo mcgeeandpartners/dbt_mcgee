@@ -35,9 +35,9 @@ vars:
 # using the `{{ config(...) }}` macro.
 
 models:
-
     dbt_aestuary:
       aestuary_alice_ames:
+        enabled: false
         +materialized: table
         +schema: ALICE_AMES
       google_ads:
@@ -60,3 +60,16 @@ models:
         +schema: shopify_tenkara_usa
         stg:
           +materialized: view
+      shopify_alice_ames:
+        +materialized: table
+        +schema: shopify_alice_ames
+        int:
+          +materialized: view
+        stg:
+          +materialized: view
+
+seeds:
+    dbt_aestuary:
+      shopify_alice_ames:
+        +database: aestuary_raw
+        +schema: seeds
