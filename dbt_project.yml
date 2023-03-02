@@ -63,10 +63,16 @@ models:
       shopify_alice_ames:
         +materialized: table
         +schema: shopify_alice_ames
-        int:
-          +materialized: view
-        stg:
-          +materialized: view
+        # 1_stg:
+        #   +materialized: view
+        # 2_int:
+        #   +materialized: view
+        # 3_transform:
+        #   +materialized: view
+        # 4_dim:
+        #   +materialized: table
+        # 5_fact:
+        #   +materialized: table
 
 seeds:
     dbt_aestuary:
