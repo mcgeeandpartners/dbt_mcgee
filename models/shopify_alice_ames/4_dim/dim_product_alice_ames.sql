@@ -1,12 +1,12 @@
 {{ config(alias="dim_product") }}
 
 with variant_name_id_mapping as (
-    select m.product_variant_name, oli.product_variant_id, order_line_item_id
+    select m.product_variant_name, m.product_title, oli.product_variant_id, order_line_item_id
     from {{ ref('stg_master_sku_list_alice_ames') }} as m
     left join {{ ref('transform_order_line_item_alice_ames') }} as oli 
     	on m.product_variant_name = oli.product_variant_name
-    where m.product_variant_name = 'the ballet dress in spice - 8'
-    qualify row_number() over (partition by m.product_variant_name order by oli.order_line_item_id) = 1
+        and m.product_title = oli.product_title
+    qualify row_number() over (partition by m.product_variant_name, m.product_title order by oli.order_line_item_id) = 1
     )
 
 select
@@ -46,7 +46,9 @@ select
 from {{ ref('transform_product_alice_ames') }} as p
 left join {{ ref('transform_product_variant_alice_ames') }} as pv 
     on p.product_id = pv.product_id
+--Following is for master SKU list fields
 left join variant_name_id_mapping as v 
     on pv.product_variant_id = v.product_variant_id
+    and v.product_title = p.product_title
 left join {{ ref('stg_master_sku_list_alice_ames') }} as m 
     on v.product_variant_name = m.product_variant_name

@@ -1,19 +1,13 @@
 --This is the version of staging order line table with backfilled dummy product and variant ids. 
 
-with for_null_product_id_and_not_null_variant_id as (
-    select product_title, product_id
-    from {{ ref('base_int_null_product_variant_backfill_alice_ames') }}
-    qualify row_number() over (partition by product_title order by product_id) = 1 --for is_null_variant_id = False, this statement should matter. 
-)
-
-, final as (
+with final as (
     select
         oli.order_line_item_id,
         oli.order_id,
         coalesce(oli.product_variant_id, pvb.product_variant_id) as product_variant_id,
         oli.product_variant_title,
         oli.product_variant_name,
-        coalesce(oli.product_id, pvb.product_id, a.product_id) as product_id,
+        coalesce(oli.product_id, pvb.product_id, pvb2.product_id) as product_id,
         oli.product_title,
         oli.order_line_index,
         oli.order_line_item_vendor,
@@ -60,11 +54,16 @@ with for_null_product_id_and_not_null_variant_id as (
         oli._fivetran_synced
         
     from {{ ref('stg_order_line_item_alice_ames') }} as oli 
-    --we try to join on variant name and backfill the product and variant id
-    left join {{ ref('base_int_null_product_variant_backfill_alice_ames') }} as pvb on oli.product_variant_name = pvb.product_variant_name
-    --now we try to join on prouct title to backfill remaining product ids
-    left join for_null_product_id_and_not_null_variant_id as a on oli.product_title = a.product_title
-
+    --for null variant ids
+    left join {{ ref('base_int_null_product_variant_backfill_alice_ames') }} as pvb 
+        on oli.product_variant_name = pvb.product_variant_name
+        and oli.product_title = pvb.product_title
+        and pvb.is_null_product_variant_id = true
+    --for not null variant ids
+    left join  {{ ref('base_int_null_product_variant_backfill_alice_ames') }} as pvb2 
+        on oli.product_variant_id = pvb2.product_variant_id
+        and oli.product_title = pvb2.product_title
+        and pvb2.is_null_product_variant_id = false
 
 )
 

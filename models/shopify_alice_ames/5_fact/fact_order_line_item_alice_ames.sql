@@ -43,7 +43,6 @@ select
 from {{ref('stg_order_alice_ames')}} as o 
 left join {{ref('transform_order_line_item_alice_ames')}} as oli 
     on o.order_id = oli.order_id
---this join is for the regular not null product ids that exist in both order line item and product tables
 left join {{ref('dim_product_alice_ames')}} as p 
     on oli.product_id = p.product_id
     and oli.product_variant_id = p.product_variant_id

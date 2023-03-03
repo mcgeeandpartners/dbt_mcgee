@@ -1,16 +1,12 @@
 with missing_variant_ids_int_order_line as (
     select distinct
-        {# a.order_line_item_id,  #}
         a.product_id, 
-        {# a.product_title,  #}
         a.product_variant_id
-        {# a.product_variant_name, 
-        a.product_variant_title #}
     from {{ ref('int_order_line_item_alice_ames') }} as a 
-    left join {{ ref('int_product_variant_alice_ames') }} as b on a.product_variant_id = b.product_variant_id
-    where b.product_variant_id is null and a.product_variant_id is not null
-    --we have multiple product ids for same variant id
-    {# qualify row_number() over (partition by a.product_variant_id order by a.order_line_item_id) = 1 #}
+    left join {{ ref('int_product_variant_alice_ames') }} as b 
+        on a.product_variant_id = b.product_variant_id
+    where b.product_variant_id is null 
+        and a.product_variant_id is not null
 )
 
 , missing_variant_id_backfill as (
