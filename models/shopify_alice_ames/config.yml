@@ -641,7 +641,7 @@ models:
   - name: base_int_null_product_variant_backfill_alice_ames                   
     description: Contains product variant names with populated variant_ids generated via logic
     columns:
-      - name: product_variant_name
+      - name: product_variant_name || product_title
         tests:
           - not_null
           - unique
