@@ -598,18 +598,7 @@ models:
           - relationships:
               to: ref('stg_order_alice_ames')
               field: order_id        
-      - name: product_id
-        description: The ID of the product that the line item belongs to. Can be null if the original product associated with the order is deleted at a later date.
-        tests:
-          - relationships:
-              to: ref('stg_product_alice_ames')
-              field: product_id        
-      - name: product_variant_id
-        description: The ID of the product variant.
-        tests:
-          - relationships:
-              to: ref('stg_product_variant_alice_ames')
-              field: product_variant_id        
+      
       - name: product_variant_name
         description: The name of the product variant.
       - name: _fivetran_synced
@@ -702,7 +691,7 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('int_product_alice_ames')
+              to: ref('transform_product_alice_ames')
               field: product_id        
       - name: product_variant_id
         description: The ID of the product variant.
@@ -713,9 +702,9 @@ models:
               field: product_variant_id        
 
   - name: transform_product_variant_alice_ames
-    description: Each record represents product variant in Shopify.
+    description: Each record represents unique combindation of product id and variant in Shopify.
     columns:
-      - name: product_variant_id
+      - name: product_variant_id || product_id
         description: The ID of the product
         tests:
           - unique
@@ -725,13 +714,20 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('int_product_alice_ames')
+              to: ref('transform_product_alice_ames')
               field: product_id
               
-  - name: dim_product_alice_ames                   
-    description: Product variant level dimension
+  - name: transform_product_alice_ames                   
+    description: Product level transformed model
     columns:
-      - name: product_key
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_order_line_item_alice_ames                   
+    columns:
+      - name: order_line_item_id
         tests:
           - unique
           - not_null
