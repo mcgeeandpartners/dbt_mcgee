@@ -72,7 +72,7 @@ models:
           +materialized: table
         5_fact:
           +materialized: table
-
+          
 seeds:
     dbt_aestuary:
       shopify_alice_ames:
