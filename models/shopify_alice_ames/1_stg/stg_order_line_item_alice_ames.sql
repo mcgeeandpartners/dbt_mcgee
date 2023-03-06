@@ -8,22 +8,22 @@ with source as (
 existing_product_id_backfill as (
     select 
         a.product_title, a.product_id
-    from {{ ref('base_null_product_backfill_alice_ames') }} as a 
+    from {{ ref('base_stg_null_product_backfill_alice_ames') }} as a 
     where a.product_id is not null
 ),
 
-backfill_null_product_id as (
-    select * 
-    from {{ ref('transform_null_product_backfill_alice_ames') }}
+existing_product_variant_id_backfill as (
+    select 
+        a.product_variant_name, a.product_variant_id
+    from {{ ref('base_stg_null_product_variant_backfill_alice_ames') }} as a 
+    where a.product_variant_id is not null
 )
-
---====--
 
 select
     oli.id as order_line_item_id,
     oli.order_id,
-    oli.variant_id as product_variant_id,
-    coalesce(oli.product_id::varchar, pib.product_id, npi.product_id) as product_id,
+    coalesce(oli.variant_id::varchar, pvib.product_variant_id) as product_variant_id,
+    coalesce(oli.product_id::varchar, pib.product_id) as product_id,--, npi.product_id) as product_id,
     lower(oli.variant_title) as product_variant_title,
     lower(oli.name) as product_variant_name,
     lower(oli.title) as product_title,
@@ -77,6 +77,6 @@ select
     
 from source as oli
 --Backfilling null product ids for product titles which have product ids in other orders
-left join existing_product_id_backfill as pib on lower(oli.title) = pib.product_title
---Backfill the null product ids
-left join backfill_null_product_id as npi on lower(oli.title) = npi.product_title
+left join existing_product_id_backfill as pib on lower(trim(oli.title)) = pib.product_title
+--Backfilling null product variant ids for product variant names which have product variant ids in other orders
+left join existing_product_variant_id_backfill as pvib on lower(trim(oli.name)) = pvib.product_variant_name

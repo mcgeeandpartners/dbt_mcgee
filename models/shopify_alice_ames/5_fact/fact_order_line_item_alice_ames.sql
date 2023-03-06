@@ -3,8 +3,8 @@
 select 
     d.date_key,
     c.customer_key,
-    coalesce(p.product_key, p2.product_key) as product_key,
-    {# discount.discount_key, #} --Will add after investigating the discount application table. Per Caroline, this can be tabled for later
+    p.product_key,
+    {# discount.discount_key, --Will add after investigating the discount application table. Per Caroline, this can be tabled for later #}
     o.order_id,
     oli.order_line_item_id,
     o.order_cancel_reason,
@@ -41,16 +41,11 @@ select
     //, sum(ol.total_discount) as total_line_item_discount #}
 
 from {{ref('stg_order_alice_ames')}} as o 
-left join {{ref('stg_order_line_item_alice_ames')}} as oli 
+left join {{ref('transform_order_line_item_alice_ames')}} as oli 
     on o.order_id = oli.order_id
---this join is for the regular not null product ids that exist in both order line item and product tables
 left join {{ref('dim_product_alice_ames')}} as p 
     on oli.product_id = p.product_id
     and oli.product_variant_id = p.product_variant_id
---this join is for the null product ids which we have put the logic to backfill
-left join {{ref('dim_product_alice_ames')}} as p2 
-    on oli.product_id = p2.product_id
-    and p2.product_status = 'deleted' --only the ones from "transform_null_product_backfill_alice_ames" table
 left join {{ref('dim_customer_alice_ames')}} as c 
     on o.customer_id = c.customer_id
 left join {{ref('dim_date_alice_ames')}} as d 
