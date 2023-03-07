@@ -1,32 +1,38 @@
-select 
-    id,
-    {{ dbt_utils.surrogate_key(['id', 'product_id']) }} as product_variant_key,
-    barcode,
-    inventory_policy,
-    option_1,
-    taxable,
-    product_id,
-    created_at,
-    requires_shipping,
-    old_inventory_quantity,
-    price,
-    tax_code,
-    fulfillment_service,
-    inventory_item_id,
-    presentment_prices,
-    weight_unit,
-    inventory_quantity_adjustment,
-    sku,
-    title,
-    weight,
-    _fivetran_synced,
-    compare_at_price,
-    inventory_management,
-    inventory_quantity,
-    option_2,
-    grams,
-    image_id,
-    option_3,
-    position,
-    updated_at
-from {{ source('shopify_tenkara_usa', 'product_variant') }}
+with source as (
+    select 
+        id::varchar as product_variant_id,
+        product_id::varchar as product_id,
+        inventory_item_id,
+        price,
+        nullif(trim(lower(sku)), '') as product_variant_sku,
+        nullif(trim(lower(title)), '') as product_variant_title,
+        weight,
+        compare_at_price,
+        nullif(trim(barcode), '') as barcode,
+        inventory_policy,
+        position as product_variant_position,
+        grams,
+        lower(option_1) as option_1,
+        lower(option_2) as option_2,
+        lower(option_3) as option_3,
+        taxable as is_taxable,
+        requires_shipping as is_shipping_required,
+        old_inventory_quantity,
+        tax_code,
+        fulfillment_service,
+        presentment_prices,
+        nullif(trim(weight_unit), '') as weight_unit,
+        inventory_quantity_adjustment,
+        inventory_management,
+        inventory_quantity,
+        image_id,
+        created_at as created_at_utc,
+        updated_at as updated_at_utc,
+        _fivetran_synced
+
+    from {{ ref('snapshot_product_variant_tenkara_usa') }}
+    where 1 = 1
+        and dbt_valid_to is null
+)
+
+select * from source

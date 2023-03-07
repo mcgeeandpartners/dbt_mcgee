@@ -1,8 +1,9 @@
 select 
-    id,
+    id as discount_id,
     price_rule_id, 
-    code, 
+    lower(code) as discount_code, 
     usage_count, 
-    created_at, 
-    updated_at
+    created_at as created_at_utc, 
+    updated_at as updated_at_utc
+    
 from {{ source("shopify_tenkara_usa", "discount_code") }}
