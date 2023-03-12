@@ -51,39 +51,39 @@ models:
       - name: is_verified_email
         description: Whether the customer has verified their email address.
 
-  - name: stg_discount_alice_ames
-    description: Each record represents a discount code.
-    columns:
-      - name: discount_id
-        description: Unique key for the table
-        tests:
-          - not_null
-          - unique
-      - name: discount_code
-        tests:
-          - not_null
-      - name: price_rule_id
-        tests:
-          - not_null
+  # - name: stg_discount_alice_ames
+  #   description: Each record represents a discount code.
+  #   columns:
+  #     - name: discount_id
+  #       description: Unique key for the table
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: discount_code
+  #       tests:
+  #         - not_null
+  #     - name: price_rule_id
+        # tests:
+        #   - not_null
 
-  - name: stg_discount_application_alice_ames
-    description: Each record represents the discount being applied to an order in Shopify for a given target type.
-    columns:
-      - name: discount_code
-        tests:
-          # - not_null -- This is null which is why we are using order_discount_code table primarily
-          - relationships:
-              to: ref('stg_discount_alice_ames')
-              field: discount_code
-      - name: order_id
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_alice_ames')
-              field: order_id
-      - name: target_type
-        tests:
-          - not_null
+  # - name: stg_discount_application_alice_ames
+  #   description: Each record represents the discount being applied to an order in Shopify for a given target type.
+  #   columns:
+  #     - name: discount_code
+  #       tests:
+  #         # - not_null -- This is null which is why we are using order_discount_code table primarily
+  #         - relationships:
+  #             to: ref('stg_discount_alice_ames')
+  #             field: discount_code
+  #     - name: order_id
+  #       tests:
+  #         - not_null
+  #         - relationships:
+  #             to: ref('stg_order_alice_ames')
+  #             field: order_id
+  #     - name: target_type
+        # tests:
+        #   - not_null
 
   - name: stg_inventory_item_level_alice_ames
     columns:
@@ -256,69 +256,74 @@ models:
       - name: index
         description: The index associated with the order.
 
-  - name: stg_order_discount_code_alice_ames
-    description: Each record represents discount code associated with the order in Shopify.
-    columns:
-      - name: order_discount_code_id
-        tests:
-          - not_null
-          - unique
-      - name: order_id
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_alice_ames')
-              field: order_id
-      - name: discount_code
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_discount_alice_ames')
-              field: discount_code
+  # - name: stg_order_discount_code_alice_ames
+  #   description: Each record represents discount code associated with the order in Shopify.
+  #   columns:
+  #     - name: order_discount_code_id
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: order_id
+  #       tests:
+  #         - not_null
+  #         - relationships:
+  #             to: ref('stg_order_alice_ames')
+  #             field: order_id
+  #     - name: discount_code
+        # tests:
+        #   - not_null
+        #   - relationships:
+        #       to: ref('stg_discount_alice_ames')
+        #       field: discount_code
 
-  - name: stg_order_line_refund_alice_ames
-    description: Each record represents a line item from an order in Shopify.
-    columns:
-      - name: order_line_refund_key
-        description: Unique key for the table
-        tests:
-          - not_null
-          - unique
-      - name: _fivetran_synced
-        description: "{{ doc('_fivetran_synced') }}"
-      - name: order_line_refund_id
-        description: The unique identifier of the line item in the refund.
-        tests:
-          - not_null
-          - unique
-      - name: location_id
-        description: TThe unique identifier of the location where the items will be restockedBD
-      - name: order_line_item_id
-        description: The ID of the related line item in the order.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_line_item_alice_ames')
-              field: order_line_item_id        
-      - name: quantity
-        description: The quantity of the associated line item that was returned.
-      - name: refund_id
-        description: The ID of the related refund.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_refund_alice_ames')
-              field: refund_id        
-      - name: restock_type
-        description: How this refund line item affects inventory levels.
-      - name: subtotal
-        description: Subtotal amount of the order line refund
-      - name: total_tax
-        description: The total tax applied to the refund.
+  # - name: stg_order_line_refund_alice_ames
+  #   description: Each record represents a line item from an order in Shopify.
+  #   columns:
+  #     - name: order_line_refund_key
+  #       description: Unique key for the table
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: _fivetran_synced
+  #       description: "{{ doc('_fivetran_synced') }}"
+  #     - name: order_line_refund_id
+  #       description: The unique identifier of the line item in the refund.
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: location_id
+  #       description: TThe unique identifier of the location where the items will be restockedBD
+  #     - name: order_line_item_id
+  #       description: The ID of the related line item in the order.
+  #       tests:
+  #         - not_null
+  #         - relationships:
+  #             to: ref('stg_order_line_item_alice_ames')
+  #             field: order_line_item_id        
+  #     - name: quantity
+  #       description: The quantity of the associated line item that was returned.
+  #     - name: refund_id
+  #       description: The ID of the related refund.
+  #       tests:
+  #         - not_null
+  #         - relationships:
+  #             to: ref('stg_refund_alice_ames')
+  #             field: refund_id        
+  #     - name: restock_type
+  #       description: How this refund line item affects inventory levels.
+  #     - name: subtotal
+  #       description: Subtotal amount of the order line refund
+  #     - name: total_tax
+        # description: The total tax applied to the refund.
 
   - name: stg_product_alice_ames
     description: Each record represents a product in Shopify.
     columns:
+      - name: product_id
+        description: An unsigned 64-bit integer that's used as a unique identifier for the product. Each id is unique across the Shopify system. No two products will have the same id, even if they're from different shops.
+        tests:
+          - not_null
+          - unique
       - name: _fivetran_deleted
         description: Whether the record has been deleted in the source system.
       - name: _fivetran_synced
@@ -327,11 +332,6 @@ models:
         description: The date and time when the product was created.
       - name: product_handle
         description: A unique human-friendly string for the product. Automatically generated from the product's title.
-      - name: product_id
-        description: An unsigned 64-bit integer that's used as a unique identifier for the product. Each id is unique across the Shopify system. No two products will have the same id, even if they're from different shops.
-        tests:
-          - not_null
-          - unique
       - name: product_type
         description: A categorization for the product used for filtering and searching products.
       - name: published_at_utc
@@ -348,6 +348,26 @@ models:
   - name: stg_product_variant_alice_ames
     description: Each record represents a product variant in Shopify
     columns:
+      - name: product_variant_id
+        description: The unique numeric identifier for the product variant.
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: The unique numeric identifier for the product.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_product_alice_ames')
+              field: product_id        
+      - name: inventory_item_id
+        description: The unique identifier for the inventory item, which is used in the Inventory API to query for inventory information.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_inventory_item_level_alice_ames')
+              field: inventory_item_id        
       - name: barcode
         description: The barcode, UPC, or ISBN number for the product.
       - name: compare_at_price
@@ -358,21 +378,8 @@ models:
         description: The fulfillment service associated with the product variant.
       - name: grams
         description: The weight of the product variant in grams.
-      - name: product_variant_id
-        description: The unique numeric identifier for the product variant.
-        tests:
-          - not_null
-          - unique
       - name: image_id
         description: The unique numeric identifier for a product's image. The image must be associated to the same product as the variant.
-      - name: inventory_item_id
-        description: The unique identifier for the inventory item, which is used in the Inventory API to query for inventory information.
-        tests:
-          - not_null
-          - unique
-          - relationships:
-              to: ref('stg_inventory_item_level_alice_ames')
-              field: inventory_item_id        
       - name: inventory_management
         description: The fulfillment service that tracks the number of items in stock for the product variant.
       - name: inventory_policy
@@ -391,13 +398,6 @@ models:
         description: The order of the product variant in the list of product variants. The first position in the list is 1. The position of variants is indicated by the order in which they are listed.
       - name: price
         description: The price of the product variant.
-      - name: product_id
-        description: The unique numeric identifier for the product.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_product_alice_ames')
-              field: product_id        
       - name: is_shipping_required
         description: This property is deprecated. Use the `requires_shipping` property on the InventoryItem resource instead.
       - name: product_variant_sku
@@ -417,135 +417,135 @@ models:
       - name: _fivetran_synced
         description: "{{ doc('_fivetran_synced') }}"
 
-  - name: stg_refund_alice_ames
-    description: Each record represents a refund within Shopify.
-    columns:
-      - name: refund_key
-        description: Unique key for the table
-        tests:
-          - not_null
-          - unique
-      - name: refund_id
-        description: The unique numeric identifier for the refund.
-        tests:
-          - not_null
-          - unique
-      - name: created_at_utc
-        description: Timestamp of the date when the refund was created.
-      - name: processed_at_utc
-        description: Timestamp of the date when the refund was processed.
-      - name: note
-        description: User generated note attached to the refund.
-      - name: restock
-        description: Boolean indicating if the refund is a result of a restock.
-      - name: user_id
-        description: Reference to the user id which generated the refund.
-      - name: _fivetran_synced
-        description: "{{ doc('_fivetran_synced') }}"
-      - name: total_duties_set
-        description: Record representing total duties set for the refund.
-      - name: order_id
-        description: Reference to the order which the refund is associated.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_alice_ames')
-              field: order_id        
+  # - name: stg_refund_alice_ames
+  #   description: Each record represents a refund within Shopify.
+  #   columns:
+  #     - name: refund_key
+  #       description: Unique key for the table
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: refund_id
+  #       description: The unique numeric identifier for the refund.
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: created_at_utc
+  #       description: Timestamp of the date when the refund was created.
+  #     - name: processed_at_utc
+  #       description: Timestamp of the date when the refund was processed.
+  #     - name: note
+  #       description: User generated note attached to the refund.
+  #     - name: restock
+  #       description: Boolean indicating if the refund is a result of a restock.
+  #     - name: user_id
+  #       description: Reference to the user id which generated the refund.
+  #     - name: _fivetran_synced
+  #       description: "{{ doc('_fivetran_synced') }}"
+  #     - name: total_duties_set
+  #       description: Record representing total duties set for the refund.
+  #     - name: order_id
+        # description: Reference to the order which the refund is associated.
+        # tests:
+        #   - not_null
+        #   - relationships:
+        #       to: ref('stg_order_alice_ames')
+        #       field: order_id        
         
-  - name: stg_transaction_alice_ames
-    description: Each record represents a transaction in Shopify.
-    columns:
-      - name: transaction_key
-        description: Unique key for the table
-        tests:
-          - not_null
-          - unique
-      - name: transaction_id
-        description: The ID for the transaction.
-        tests:
-          - not_null
-          - unique
-      - name: order_id
-        description: The ID for the order that the transaction is associated with.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_alice_ames')
-              field: order_id        
-      - name: refund_id
-        description: The ID associated with a refund in the refund table.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_refund_alice_ames')
-              field: refund_id        
-      - name: amount
-        description: The amount of money included in the transaction.
-      - name: authorization
-        description: The authorization code associated with the transaction.
-      - name: created_at_utc
-        description: The date and time when the transaction was created.
-      - name: processed_at_utc
-        description: The date and time when a transaction was processed.
-      - name: device_id
-        description: The ID for the device.
-      - name: gateway
-        description: The name of the gateway the transaction was issued through.
-      - name: source_name
-        description: The origin of the transaction.
-      - name: message
-        description: A string generated by the payment provider with additional information about why the transaction succeeded or failed.
-      - name: currency
-        description: The three-letter code (ISO 4217 format) for the currency used for the payment.
-        tests:
-          - accepted_values:
-              values: ['USD']        
-      - name: location_id
-        description: The ID of the physical location where the transaction was processed.
-      - name: parent_transaction_id
-        description: The ID of an associated transaction.
-      - name: payment_avs_result_code
-        description: The response code from the address verification system.
-      - name: payment_credit_card_bin
-        description: The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer's credit card.
-      - name: payment_cvv_result_code
-        description: The response code from the credit card company indicating whether the customer entered the card security code, or card verification value, correctly.
-      - name: payment_credit_card_number
-        description: The customer's credit card number, with most of the leading digits redacted.
-      - name: payment_credit_card_company
-        description: The name of the company that issued the customer's credit card.
-      - name: kind
-        description: The transaction's type.
-      - name: receipt
-        description: A transaction receipt attached to the transaction by the gateway.
-      - name: currency_exchange_id
-        description: The ID of the adjustment.
-      - name: currency_exchange_adjustment
-        description: The difference between the amounts on the associated transaction and the parent transaction.
-      - name: currency_exchange_original_amount
-        description: The amount of the parent transaction in the shop currency.
-      - name: currency_exchange_final_amount
-        description: The amount of the associated transaction in the shop currency.
-      - name: currency_exchange_currency
-        description: The shop currency.
-      - name: error_code
-        description: A standardized error code, independent of the payment provider.
-      - name: status
-        description: The status of the transaction.
-      - name: test
-        description: Whether the transaction is a test transaction.
-      - name: user_id
-        description: The ID for the user who was logged into the Shopify POS device when the order was processed, if applicable.
-      - name: _fivetran_synced
-        description: "{{ doc('_fivetran_synced') }}"
+  # - name: stg_transaction_alice_ames
+  #   description: Each record represents a transaction in Shopify.
+  #   columns:
+  #     - name: transaction_key
+  #       description: Unique key for the table
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: transaction_id
+  #       description: The ID for the transaction.
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: order_id
+  #       description: The ID for the order that the transaction is associated with.
+  #       tests:
+  #         - not_null
+  #         - relationships:
+  #             to: ref('stg_order_alice_ames')
+  #             field: order_id        
+  #     - name: refund_id
+  #       description: The ID associated with a refund in the refund table.
+  #       tests:
+  #         - not_null
+  #         - relationships:
+  #             to: ref('stg_refund_alice_ames')
+  #             field: refund_id        
+  #     - name: amount
+  #       description: The amount of money included in the transaction.
+  #     - name: authorization
+  #       description: The authorization code associated with the transaction.
+  #     - name: created_at_utc
+  #       description: The date and time when the transaction was created.
+  #     - name: processed_at_utc
+  #       description: The date and time when a transaction was processed.
+  #     - name: device_id
+  #       description: The ID for the device.
+  #     - name: gateway
+  #       description: The name of the gateway the transaction was issued through.
+  #     - name: source_name
+  #       description: The origin of the transaction.
+  #     - name: message
+  #       description: A string generated by the payment provider with additional information about why the transaction succeeded or failed.
+  #     - name: currency
+  #       description: The three-letter code (ISO 4217 format) for the currency used for the payment.
+  #       tests:
+  #         - accepted_values:
+  #             values: ['USD']        
+  #     - name: location_id
+  #       description: The ID of the physical location where the transaction was processed.
+  #     - name: parent_transaction_id
+  #       description: The ID of an associated transaction.
+  #     - name: payment_avs_result_code
+  #       description: The response code from the address verification system.
+  #     - name: payment_credit_card_bin
+  #       description: The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer's credit card.
+  #     - name: payment_cvv_result_code
+  #       description: The response code from the credit card company indicating whether the customer entered the card security code, or card verification value, correctly.
+  #     - name: payment_credit_card_number
+  #       description: The customer's credit card number, with most of the leading digits redacted.
+  #     - name: payment_credit_card_company
+  #       description: The name of the company that issued the customer's credit card.
+  #     - name: kind
+  #       description: The transaction's type.
+  #     - name: receipt
+  #       description: A transaction receipt attached to the transaction by the gateway.
+  #     - name: currency_exchange_id
+  #       description: The ID of the adjustment.
+  #     - name: currency_exchange_adjustment
+  #       description: The difference between the amounts on the associated transaction and the parent transaction.
+  #     - name: currency_exchange_original_amount
+  #       description: The amount of the parent transaction in the shop currency.
+  #     - name: currency_exchange_final_amount
+  #       description: The amount of the associated transaction in the shop currency.
+  #     - name: currency_exchange_currency
+  #       description: The shop currency.
+  #     - name: error_code
+  #       description: A standardized error code, independent of the payment provider.
+  #     - name: status
+  #       description: The status of the transaction.
+  #     - name: test
+  #       description: Whether the transaction is a test transaction.
+  #     - name: user_id
+  #       description: The ID for the user who was logged into the Shopify POS device when the order was processed, if applicable.
+  #     - name: _fivetran_synced
+        # description: "{{ doc('_fivetran_synced') }}"
 
-  - name: stg_master_sku_list_alice_ames                   
-    description: Product variant level table with external product info
-    columns:
-      - name: product_variant_name
-        tests:
-          - not_null
-          - unique      
+  # - name: stg_master_sku_list_alice_ames                   
+  #   description: Product variant level table with external product info
+  #   columns:
+  #     - name: product_variant_name
+  #       tests:
+  #         - not_null
+  #         - unique      
 
 #####------#####
 
@@ -594,13 +594,15 @@ models:
       - name: order_id
         description: The ID of the related order.
         tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_alice_ames')
-              field: order_id        
-      
+          - not_null       
       - name: product_variant_name
         description: The name of the product variant.
+        tests:
+          - not_null       
+      - name: product_title
+        description: The title of the product.
+        tests:
+          - not_null
       - name: _fivetran_synced
         description: "{{ doc('_fivetran_synced') }}"
       - name: fulfillable_quantity
@@ -623,16 +625,8 @@ models:
         description: The item's SKU (stock keeping unit).
       - name: is_taxable
         description: Whether the item was taxable.
-      - name: product_title
-        description: The title of the product.
-        tests:
-          - not_null
       - name: product_variant_title
         description: The title of the product variant.
-        tests:
-          - relationships:
-              to: ref('stg_product_variant_alice_ames')
-              field: product_variant_title        
       - name: total_discount
         description: The total amount of the discount allocated to the line item in the shop currency.
       - name: vendor
@@ -641,19 +635,10 @@ models:
   - name: base_int_null_product_variant_backfill_alice_ames                   
     description: Contains product variant names with populated variant_ids generated via logic
     columns:
-      - name: product_variant_name || product_title
+      - name: product_variant_name || product_title || product_variant_id
         tests:
           - not_null
           - unique
-      - name: product_title
-        tests:
-          - not_null
-      - name: product_variant_id
-        tests:
-          - not_null
-      - name: product_id
-        tests:
-          - not_null
 
   - name: int_order_line_item_alice_ames
     description: Each record represents a line item from an order in Shopify.

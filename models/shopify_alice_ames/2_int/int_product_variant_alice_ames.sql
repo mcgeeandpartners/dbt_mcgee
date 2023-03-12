@@ -6,7 +6,7 @@ with stg_product as (
 )
 
 , null_product_variant_backfill as (
-    select 
+    select distinct
         product_variant_id,
         product_id,
         null as inventory_item_id,

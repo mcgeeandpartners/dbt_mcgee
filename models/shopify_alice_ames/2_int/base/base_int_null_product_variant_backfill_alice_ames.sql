@@ -35,7 +35,7 @@ from null_product_and_variant_ids
     select product_title, order_line_item_id, product_variant_id, product_variant_name
     from null_product_ids
     where product_variant_id is not null
-    qualify row_number() over (partition by product_title, product_variant_id order by order_line_item_id) = 1
+    qualify row_number() over (partition by product_title, product_variant_name, product_variant_id order by order_line_item_id) = 1
 ) 
 
 , null_product_and_not_null_variant_ids_backfill as (
