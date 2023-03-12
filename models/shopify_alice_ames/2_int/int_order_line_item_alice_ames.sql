@@ -63,6 +63,7 @@ with final as (
     left join  {{ ref('base_int_null_product_variant_backfill_alice_ames') }} as pvb2 
         on oli.product_variant_id = pvb2.product_variant_id
         and oli.product_title = pvb2.product_title
+        and oli.product_variant_name = pvb2.product_variant_name
         and pvb2.is_null_product_variant_id = false
 
 )
