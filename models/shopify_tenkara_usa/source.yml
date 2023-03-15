@@ -432,3 +432,9 @@ sources:
           - name: tax_amount_set
             description: Tax amount set towards the order adjustment.
           - name: _fivetran_synced
+      - name: order_discount_code
+        description: ""
+      - name: inventory_item
+        description: ""
+      - name: inventory_level
+        description: ""

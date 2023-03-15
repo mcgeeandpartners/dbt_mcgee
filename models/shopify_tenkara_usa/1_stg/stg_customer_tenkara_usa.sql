@@ -1,12 +1,11 @@
 select
-    {{ dbt_utils.surrogate_key(['id']) }} as customer_key,
-    id,
+    id as customer_id,
     first_name,
     last_name,
-    verified_email,
-    email,
+    nullif(lower(verified_email), '') as verified_email,
+    nullif(lower(email), '') as email,
     phone,
-    state,
+    nullif(lower(state), '') as customer_activity_state,
     currency,
     total_spent,
     lifetime_duration,
@@ -17,13 +16,14 @@ select
     can_delete,
     metafield,
     accepts_marketing,
-    accepts_marketing_updated_at,
+    accepts_marketing_updated_at as accepts_marketing_updated_at_utc,
     email_marketing_consent_state,
-    email_marketing_consent_consent_updated_at,
+    email_marketing_consent_consent_updated_at as email_marketing_consent_consent_updated_at_utc,
     email_marketing_consent_opt_in_level,
     note,
-    updated_at,
-    created_at,
+    updated_at as updated_at_utc,
+    created_at as created_at_utc,
     _fivetran_synced
+    
 from {{source('shopify_tenkara_usa', 'customer')}}
 where not _fivetran_deleted
