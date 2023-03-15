@@ -1,12 +1,29 @@
+--We have to resolve issues for null product ids in this table.
+--For som product titles, we have null product ids in some orders, but populated product ids in others. With following 3 ctes, we are getting those product titles so we can add them back in final cte.
+
 with source as (
     select * from {{ source('shopify_tenkara_usa', 'order_line') }}
+),
+
+existing_product_id_backfill as (
+    select 
+        a.product_title, a.product_id
+    from {{ ref('base_stg_null_product_backfill_tenkara_usa') }} as a 
+    where a.product_id is not null
+),
+
+existing_product_variant_id_backfill as (
+    select 
+        a.product_variant_name, a.product_variant_id
+    from {{ ref('base_stg_null_product_variant_backfill_tenkara_usa') }} as a 
+    where a.product_variant_id is not null
 )
 
 select
     oli.id as order_line_item_id,
     oli.order_id,
-    oli.variant_id as product_variant_id,
-    oli.product_id as product_id,
+    coalesce(oli.variant_id::varchar, pvib.product_variant_id) as product_variant_id,
+    coalesce(oli.product_id::varchar, pib.product_id) as product_id,
     lower(oli.variant_title) as product_variant_title,
     lower(oli.name) as product_variant_name,
     lower(oli.title) as product_title,
@@ -59,3 +76,7 @@ select
     oli._fivetran_synced
     
 from source as oli
+--Backfilling null product ids for product titles which have product ids in other orders
+left join existing_product_id_backfill as pib on lower(trim(oli.title)) = pib.product_title
+--Backfilling null product variant ids for product variant names which have product variant ids in other orders
+left join existing_product_variant_id_backfill as pvib on lower(trim(oli.name)) = pvib.product_variant_name

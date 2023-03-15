@@ -41,7 +41,7 @@ select
     //, sum(ol.total_discount) as total_line_item_discount #}
 
 from {{ref('stg_order_tenkara_usa')}} as o 
-left join {{ref('stg_order_line_item_tenkara_usa')}} as oli 
+left join {{ref('transform_order_line_item_tenkara_usa')}} as oli 
     on o.order_id = oli.order_id
 left join {{ref('dim_product_tenkara_usa')}} as p 
     on oli.product_id = p.product_id

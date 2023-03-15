@@ -7,7 +7,7 @@ select
     token as order_token,
     nullif(cancel_reason, '') as order_cancel_reason,
     nullif(fulfillment_status, '') as order_fulfillment_status,
-    email,
+    nullif(email, '') as email,
     order_number,
     nullif(shipping_address_address_1, '') as shipping_address_address_1,
     nullif(shipping_address_address_2, '') as shipping_address_address_2,
