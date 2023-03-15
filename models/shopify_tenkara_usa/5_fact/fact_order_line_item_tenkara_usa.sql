@@ -52,6 +52,6 @@ left join {{ref('dim_date_tenkara_usa')}} as d
     on d."DATE" = o.order_placed_at_utc::date
 {# left join {{ref('dim_discount_tenkara_usa')}} as discount 
     on discount.order_id = o.order_id #}
-left join {{ ref('int_historic_msrp') }} as i 
+left join {{ ref('int_historic_msrp_tenkara_usa') }} as i 
     on oli.product_title = i.product_title
     and o.order_placed_at_utc::date = i.order_date

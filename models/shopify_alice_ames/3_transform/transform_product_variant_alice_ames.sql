@@ -78,7 +78,7 @@ with missing_variant_ids_int_order_line as (
         null as _fivetran_synced,
         true as is_null_product_variant_id
 
-    from {{ ref('base_transform_null_variant_id_edge_cases') }}
+    from {{ ref('base_transform_null_variant_id_edge_cases_alice_ames') }}
 )
 
 select * from {{ ref('int_product_variant_alice_ames') }}

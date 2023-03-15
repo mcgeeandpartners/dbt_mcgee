@@ -56,5 +56,5 @@ select
     oli._fivetran_synced
 
 from {{ ref('int_order_line_item_alice_ames') }} as oli
-left join {{ ref('base_transform_null_variant_id_edge_cases') }} as b on oli.order_line_item_id = b.order_line_item_id
+left join {{ ref('base_transform_null_variant_id_edge_cases_alice_ames') }} as b on oli.order_line_item_id = b.order_line_item_id
 
