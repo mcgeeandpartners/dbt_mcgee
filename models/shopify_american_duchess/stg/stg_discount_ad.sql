@@ -1,7 +1,9 @@
-select created_at, 
-    updated_at, 
-    usage_count, 
+select 
+    id as discount_id,
     price_rule_id, 
-    code, 
-    id
-from {{ source("SHOPIFY_AMERICAN_DUCHESS", "DISCOUNT_CODE") }}
+    lower(code) as discount_code, 
+    usage_count, 
+    created_at as created_at_utc, 
+    updated_at as updated_at_utc
+    
+from {{ source("shopify_ad", "discount_code") }}
