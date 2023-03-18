@@ -1,14 +1,22 @@
+--Staging model for master sku list uploaded via Fivetran gsheet connector
+
 select
-	lower(trim(title)) as product_title, 
-    lower(trim(name)) as product_variant_name,
-    lower(trim(product_category)) as product_category,
-    lower(trim(product_sub_type)) as product_sub_type,
-    lower(trim(product_campaign)) as product_campaign,
-    campaign_year::varchar as campaign_year,
-    ifnull(is_print, 'false')::boolean as is_print,
-    lower(trim(print_solid_name)) as print_solid_name,
-    nullif(lower(trim(base_fabric_color)), '0') as base_fabric_color, --treating 0 as nulls to remove dupes
-    lower(trim(made_in)) as made_in,
-    lower(trim(manufacturer)) as manufacturer 
-from {{ source('seeds', 'master_sku_list_alice_ames') }}
-qualify row_number() over (partition by product_variant_name order by is_print) = 1
+    {{ dbt_utils.surrogate_key(['product_variant_id', 'product_id', 'product_title']) }} as sku_list_key, --5 cases that makes this not unique. We exclude them while testing
+    _row::varchar as row_sequence,
+    product_variant_id,
+    product_variant_name,
+    product_id,
+    product_title,
+    {{ standardize_column_values('base_fabric_color') }},
+    {{ standardize_column_values('print_solid_name') }},
+    {{ standardize_column_values('campaign_year') }},
+    {{ standardize_column_values('made_in') }},
+    {{ standardize_column_values('product_sub_type') }},
+    ifnull(print_t_f_, 0)::boolean as is_print,
+    {{ standardize_column_values('product_type') }},
+    {{ standardize_column_values('product_category') }},
+    {{ standardize_column_values('manufacturer') }},
+    {{ standardize_column_values('product_campaign') }},
+    _fivetran_synced
+
+from {{ source('aestuary_gheets', 'sku_list_alice_ames') }}
