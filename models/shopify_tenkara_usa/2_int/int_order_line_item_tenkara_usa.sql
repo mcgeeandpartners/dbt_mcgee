@@ -1,4 +1,9 @@
 --This is the version of staging order line table with backfilled dummy product and variant ids. 
+{{
+  config(
+    materialized = 'table'
+    )
+}}
 
 with final as (
     select

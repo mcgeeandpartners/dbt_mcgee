@@ -67,8 +67,16 @@ models:
       shopify_tenkara_usa:
         +materialized: table
         +schema: shopify_tenkara_usa
-        stg:
+        1_stg:
           +materialized: view
+        2_int:
+          +materialized: view
+        3_transform:
+          +materialized: view
+        4_dim:
+          +materialized: table
+        5_fact:
+          +materialized: table
       shopify_alice_ames:
         +schema: shopify_alice_ames
         1_stg:

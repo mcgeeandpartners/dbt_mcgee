@@ -3,6 +3,7 @@
     materialized = 'table'
     )
 }}
+
 select 
     oli.order_line_item_id,
     oli.order_id,
