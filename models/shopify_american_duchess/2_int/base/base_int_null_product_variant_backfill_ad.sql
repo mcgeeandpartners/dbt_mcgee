@@ -4,10 +4,11 @@ with null_product_ids as (
     where product_id is null
 )
 
---from the product ids that are null in oli table, we have 2 scenarios -> (a) product variant id is null -->244,633 (b) product variant id is not null --> 177,594
---we deal with each case differently
+--from the product ids that are null in oli table, unlike Alice Ames, we have only 1 scenario -> 
+-- (a) product variant id is null 
+-- (b) product variant id is not null --THIS IS NOT THE CASE AS OF TODAY, BUT WE WILL MAINTAIN THE CODE AS A BACKUP
 
--- (a) product variant id is null -->244,203
+-- (a) product variant id is null
 
 , null_product_and_variant_ids as (
     select product_title, order_line_item_id, product_variant_name

@@ -6,7 +6,7 @@ with null_product_ids as (
 
 --from the product ids that are null in oli table, unlike Alice Ames, we have only 1 scenario -> 
 -- (a) product variant id is null 
---(b) product variant id is not null --THIS IS NOT THE CASE AS OF TODAY, BUT WE WILL MAINTAIN THE CODE AS A BACKUP
+-- (b) product variant id is not null --THIS IS NOT THE CASE AS OF TODAY, BUT WE WILL MAINTAIN THE CODE AS A BACKUP
 
 
 -- (a) product variant id is null
