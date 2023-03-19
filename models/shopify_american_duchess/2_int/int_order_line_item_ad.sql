@@ -59,6 +59,7 @@ with final as (
         on oli.product_variant_name = pvb.product_variant_name
         and oli.product_title = pvb.product_title
         and pvb.is_null_product_variant_id = true
+    --THE FOLLOWING IS TO MAINTAIN THE CODE JUST IN CASE. NO REAL VALUE RIGHT NOW
     --for not null variant ids
     left join  {{ ref('base_int_null_product_variant_backfill_ad') }} as pvb2 
         on oli.product_variant_id = pvb2.product_variant_id

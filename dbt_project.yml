@@ -54,15 +54,15 @@ models:
           +materialized: table
       shopify_american_duchess:
         +schema: shopify_american_duchess
-        stg:
+        1_stg:
           +materialized: view
-        int:
+        2_int:
           +materialized: view
-        transform:
+        3_transform:
           +materialized: view
-        dim:
+        4_dim:
           +materialized: table
-        fact:
+        5_fact:
           +materialized: table
       shopify_tenkara_usa:
         +materialized: table
@@ -90,8 +90,8 @@ models:
         5_fact:
           +materialized: table
           
-seeds:
-    dbt_aestuary:
-      shopify_alice_ames:
-        +database: aestuary_raw
-        +schema: seeds
+# seeds:
+#     dbt_aestuary:
+#       shopify_alice_ames:
+#         +database: aestuary_raw
+#         +schema: seeds

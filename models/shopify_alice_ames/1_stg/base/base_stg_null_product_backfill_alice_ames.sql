@@ -14,10 +14,11 @@ null_products as (
 ),
 
 not_null_products as (
-    select distinct
+    select
         lower(trim(title)) as product_title, product_id
     from source as oli
     where product_id is not null
+    qualify row_number() over (partition by product_title order by id) = 1
 ),
 
 null_product_id_backfill as (

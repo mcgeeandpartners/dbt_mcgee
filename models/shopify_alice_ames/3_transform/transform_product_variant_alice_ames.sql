@@ -1,3 +1,4 @@
+--Need to union the variant ids that exist in order line table, but are missing from the variant table
 with missing_variant_ids_int_order_line as (
     select distinct
         a.product_id, 
