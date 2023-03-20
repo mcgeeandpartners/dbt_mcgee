@@ -17,6 +17,7 @@ select
     sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
     sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
     max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product, --msrp is on the product level so we take the max
+    sum(iff(is_vendor_route = false, oli.order_line_item_price, 0) * oli.order_line_item_units) over (partition by o.order_id) as order_gross_revenue_product_shopify,
     sum(oli.order_line_item_price_route) over (partition by o.order_id) * order_units_route as order_gross_revenue_route,
     o.total_tax as order_gross_revenue_tax,
     round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_gross_revenue_shipping,
@@ -28,9 +29,11 @@ select
 
     order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total,
     oli.order_line_item_vendor,
+    oli.order_line_item_price as order_line_item_price_shopify,
     nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
     oli.order_line_item_units,
     order_line_item_msrp * oli.order_line_item_units as order_line_item_gross_revenue,
+    oli.order_line_item_price * oli.order_line_item_units as order_line_item_gross_revenue_shopify,
     ((order_line_item_msrp - oli.order_line_item_price) * oli.order_line_item_units) + oli.total_discount as order_line_item_total_discount,    
     nvl(oli.sku, p.product_sku) as order_line_item_sku,
     p.product_barcode,
