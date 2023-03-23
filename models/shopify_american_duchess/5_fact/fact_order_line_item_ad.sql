@@ -16,7 +16,8 @@ select
 --Aggregations
     sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
     sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
-    max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product, --msrp is on the product level so we take the max
+    {# max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product, --msrp is on the product level so we take the max #}
+    sum(iff(is_vendor_route = false, i.msrp, 0) * oli.order_line_item_units) over (partition by o.order_id) as order_gross_revenue_product,
     sum(iff(is_vendor_route = false, oli.order_line_item_price, 0) * oli.order_line_item_units) over (partition by o.order_id) as order_gross_revenue_product_shopify,
     sum(oli.order_line_item_price_route) over (partition by o.order_id) * order_units_route as order_gross_revenue_route,
     o.total_tax as order_gross_revenue_tax,
@@ -27,7 +28,8 @@ select
 
     --we might be missing the order shipping discount. This can be calculated. 
 
-    order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total,
+    {# order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total, #}
+    max(o.current_total_price) over (partition by o.order_id) as order_net_revenue_total,
     oli.order_line_item_vendor,
     oli.order_line_item_price as order_line_item_price_shopify,
     nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
