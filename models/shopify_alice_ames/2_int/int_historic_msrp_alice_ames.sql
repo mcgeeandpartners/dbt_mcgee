@@ -17,7 +17,9 @@ with cte_max_daily_price as (
     from {{ ref('stg_order_line_item_alice_ames') }} as ol 
     inner join {{ ref('stg_order_alice_ames') }} as o 
         on ol.order_id = o.order_id
-    where order_line_item_vendor != 'route' --not business revenue
+    where 1 = 1
+        and (order_line_item_vendor in ('alice + ames', 'aliceandames')
+        or order_line_item_vendor is null) --exclude route line items
     group by 1,2
 
 )
