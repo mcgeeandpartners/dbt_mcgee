@@ -1,5 +1,31 @@
 {{ config(alias="fact_order_line_item") }}
 
+with unadjusted_shipping_revenue_calc as (
+    select 
+        o.order_id,
+        oli.order_line_item_id,
+        i.msrp as product_msrp,
+        sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
+        sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
+        sum(iff(is_vendor_route = false, product_msrp, 0) * oli.order_line_item_units) over (partition by o.order_id) as order_gross_revenue_product,
+        sum(oli.order_line_item_price_route) over (partition by o.order_id) * order_units_route as order_gross_revenue_route,
+        o.total_tax as order_gross_revenue_tax,
+        round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_gross_revenue_shipping_unadjusted,
+        order_gross_revenue_product + order_gross_revenue_route + order_gross_revenue_tax + order_gross_revenue_shipping_unadjusted as order_gross_revenue_total_unadjusted,
+        o.total_discounts + sum((nvl(product_msrp, oli.order_line_item_price) - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id) as order_discount,
+        round(o.total_price - o.current_total_price, 2) as order_refund,
+        order_gross_revenue_total_unadjusted - order_discount - order_refund as order_net_revenue_total_unadjusted,
+        max(o.current_total_price) over (partition by o.order_id) as order_net_revenue_total,
+        order_net_revenue_total - order_net_revenue_total_unadjusted as implied_unaccounted_shipping_revenue
+        
+    from {{ref('stg_order_alice_ames')}} as o 
+    left join {{ref('transform_order_line_item_alice_ames')}} as oli 
+        on o.order_id = oli.order_id
+    left join {{ ref('int_historic_msrp_alice_ames') }} as i 
+        on oli.product_title = i.product_title
+        and o.order_placed_at_utc::date = i.order_date  
+)
+
 select 
     d.date_key,
     c.customer_key,
@@ -14,25 +40,24 @@ select
     o.taxes_included as order_has_tax_included,
     iff(date_trunc('day', o.order_placed_at_utc) = date_trunc('day', c.customer_created_at), 1, 0)::boolean as is_new_customer_order,
 --Aggregations
-    sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
-    sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
+    uc.order_units_product,
+    uc.order_units_route,
     {# max(iff(is_vendor_route = false, i.msrp, 0)) over (partition by o.order_id) * order_units_product as order_gross_revenue_product_old, --msrp is on the product level so we take the max #}
-    sum(iff(is_vendor_route = false, i.msrp, 0) * oli.order_line_item_units) over (partition by o.order_id) as order_gross_revenue_product,
+    uc.order_gross_revenue_product,
     sum(iff(is_vendor_route = false, oli.order_line_item_price, 0) * oli.order_line_item_units) over (partition by o.order_id) as order_gross_revenue_product_shopify,
-    sum(oli.order_line_item_price_route) over (partition by o.order_id) * order_units_route as order_gross_revenue_route,
-    o.total_tax as order_gross_revenue_tax,
-    round(o.total_price - o.subtotal_price - o.total_tax, 2) as order_gross_revenue_shipping,
-    order_gross_revenue_product + order_gross_revenue_route + order_gross_revenue_tax + order_gross_revenue_shipping as order_gross_revenue_total,
-    o.total_discounts + sum((nvl(i.msrp, oli.order_line_item_price) - oli.order_line_item_price) * oli.order_line_item_units) over (partition by o.order_id) as order_discount,
-    round(o.total_price - o.current_total_price, 2) as order_refund,
+    uc.order_gross_revenue_route,
+    uc.order_gross_revenue_tax,
+    order_gross_revenue_shipping_unadjusted + implied_unaccounted_shipping_revenue as order_gross_revenue_shipping,
+    uc.order_gross_revenue_total_unadjusted + implied_unaccounted_shipping_revenue as order_gross_revenue_total,
+    uc.order_discount,
+    uc.order_refund,
+    uc.order_net_revenue_total,
 
     --we might be missing the order shipping discount. This can be calculated. 
 
-    {# order_gross_revenue_total - order_discount - order_refund as order_net_revenue_total, #}
-    max(o.current_total_price) over (partition by o.order_id) as order_net_revenue_total,
     oli.order_line_item_vendor,
     oli.order_line_item_price as order_line_item_price_shopify,
-    nvl(i.msrp, oli.order_line_item_price) as order_line_item_msrp,
+    nvl(uc.product_msrp, oli.order_line_item_price) as order_line_item_msrp,
     oli.order_line_item_units,
     order_line_item_msrp * oli.order_line_item_units as order_line_item_gross_revenue,
     oli.order_line_item_price * oli.order_line_item_units as order_line_item_gross_revenue_shopify,
@@ -57,6 +82,5 @@ left join {{ref('dim_date_alice_ames')}} as d
     on d."DATE" = o.order_placed_at_utc::date
 {# left join {{ref('dim_discount_alice_ames')}} as discount 
     on discount.order_id = o.order_id #}
-left join {{ ref('int_historic_msrp_alice_ames') }} as i 
-    on oli.product_title = i.product_title
-    and o.order_placed_at_utc::date = i.order_date
+left join unadjusted_shipping_revenue_calc as uc
+    on oli.order_line_item_id = uc.order_line_item_id    

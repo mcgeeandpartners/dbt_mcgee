@@ -107,6 +107,10 @@ models:
         tests:
           - not_null
           - unique
+          - relationships:
+              to: ref('transform_order_line_item_alice_ames')
+              field: order_id
+
 
   # - name: stg_order_discount_code_alice_ames
   #   description: Each record represents discount code associated with the order in Shopify.
