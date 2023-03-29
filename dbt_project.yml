@@ -89,6 +89,8 @@ models:
           +materialized: table
         5_fact:
           +materialized: table
+        6_reporting:
+          +materialized: table
           
 # seeds:
 #     dbt_aestuary:
