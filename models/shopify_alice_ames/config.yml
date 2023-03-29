@@ -16,15 +16,6 @@ models:
               to: ref('stg_customer_alice_ames')
               field: customer_id
 
-  - name: stg_customer_alice_ames
-    description: Each record represents a customer in Shopify.
-    columns:
-      - name: customer_id
-        description: A unique identifier for the customer.
-        tests:
-          - not_null
-          - unique
-
   # - name: stg_discount_alice_ames
   #   description: Each record represents a discount code.
   #   columns:
@@ -387,6 +378,15 @@ models:
           - unique
           - not_null          
 
+  - name: dim_customer_alice_ames
+    description: Each record represents a customer in Shopify.
+    columns:
+      - name: customer_key
+        description: A unique identifier for the customer dimension.
+        tests:
+          - not_null
+          - unique
+
   - name: fact_order_line_item_alice_ames                   
     # tests:
     #   - dbt_utils.equal_rowcount:
@@ -402,4 +402,40 @@ models:
       - name: date_key
         description: Unique key for the table
         tests:
-          - not_null          
+          - not_null
+
+  - name: base_rpt_customers_alice_ames
+    description: "."
+    columns:
+      - name: customer_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique
+
+  - name: base_rpt_product_alice_ames
+    description: "."
+    columns:
+      - name: product_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique
+
+  - name: base_rpt_order
+    description: "."
+    columns:
+      - name: order_id
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique          
+
+  - name: base_rpt_order_line_item
+    description: "."
+    columns:
+      - name: order_line_item_id
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique                    
