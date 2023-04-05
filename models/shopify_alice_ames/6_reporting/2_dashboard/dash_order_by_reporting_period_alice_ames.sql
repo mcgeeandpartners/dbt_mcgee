@@ -5,6 +5,7 @@
 with orders_l30d_ty as (
     select
           'L30D' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -18,6 +19,7 @@ with orders_l30d_ty as (
 , orders_l30d_ly as (
     select
           'L30D' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -31,6 +33,7 @@ with orders_l30d_ty as (
 , l30d as (
     select 
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -44,7 +47,8 @@ with orders_l30d_ty as (
 
 , orders_l30d_daily_ty AS (
     select
-          'L30D_Daily' as reporting_period
+          'L30D' as reporting_period
+        , 'Daily' as reporting_window
         , o.order_date as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -57,7 +61,8 @@ with orders_l30d_ty as (
 
 , orders_l30d_daily_ly AS (
     select
-          'L30D_Daily' as reporting_period
+          'L30D' as reporting_period
+        , 'Daily' as reporting_window
         , o.order_date as reporting_date
 
     {{ insert_kpi_metrics() }}
@@ -71,6 +76,7 @@ with orders_l30d_ty as (
 , l30d_daily AS (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -85,6 +91,7 @@ with orders_l30d_ty as (
 , orders_ytd_ty as (
     select
           'YTD' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -98,6 +105,7 @@ with orders_l30d_ty as (
 , orders_ytd_ly as (
     select
           'YTD' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -111,6 +119,7 @@ with orders_l30d_ty as (
 , ytd as (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -124,7 +133,8 @@ with orders_l30d_ty as (
 
 , orders_ytd_monthly_ty as (
     select
-          'YTD_Monthly' as reporting_period
+          'YTD' as reporting_period
+        , 'Monthly' as reporting_window
         , date_trunc('month',o.order_date) as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -137,7 +147,8 @@ with orders_l30d_ty as (
 
 , orders_ytd_monthly_ly as (
     select
-          'YTD_Monthly' as reporting_period
+          'YTD' as reporting_period
+        , 'Monthly' as reporting_window
         , date_trunc('month',o.order_date) as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -151,6 +162,7 @@ with orders_l30d_ty as (
 , ytd_monthly as (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -165,6 +177,7 @@ with orders_l30d_ty as (
 , orders_l12m_ty as (
     select
           'LTM' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -178,6 +191,7 @@ with orders_l30d_ty as (
 , orders_l12m_ly as (
     select
           'LTM' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -191,6 +205,7 @@ with orders_l30d_ty as (
 , l12m as (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -204,7 +219,8 @@ with orders_l30d_ty as (
 
 , orders_l12m_monthly_ty as (
     select
-          'LTM_Monthly' as reporting_period
+          'LTM' as reporting_period
+        , 'Monthly' as reporting_window
         , date_trunc('month',o.order_date) as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -217,7 +233,8 @@ with orders_l30d_ty as (
 
 , orders_l12m_monthly_ly as (
     select
-          'LTM_Monthly' as reporting_period
+          'LTM' as reporting_period
+        , 'Monthly' as reporting_window
         , date_trunc('month',o.order_date) as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -231,6 +248,7 @@ with orders_l30d_ty as (
 , l12m_monthly as (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -245,6 +263,7 @@ with orders_l30d_ty as (
 , orders_mtd_ty as (
     select
           'MTD' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -258,6 +277,7 @@ with orders_l30d_ty as (
 , orders_mtd_ly as (
     select
           'MTD' as reporting_period
+        , 'Aggregate' as reporting_window
         , null as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -271,6 +291,7 @@ with orders_l30d_ty as (
 , mtd as (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
@@ -284,7 +305,8 @@ with orders_l30d_ty as (
 
 , orders_mtd_daily_ty as (
     select
-          'MTD_Daily' as reporting_period
+          'MTD' as reporting_period
+        , 'Daily' as reporting_window
         , o.order_date as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -297,7 +319,8 @@ with orders_l30d_ty as (
 
 , orders_mtd_daily_ly as (
     select
-          'MTD_Daily' as reporting_period
+          'MTD' as reporting_period
+        , 'Daily' as reporting_window
         , o.order_date as reporting_date
 
         {{ insert_kpi_metrics() }}
@@ -311,6 +334,7 @@ with orders_l30d_ty as (
 , mtd_daily as (
     select
           ty.reporting_period
+        , ty.reporting_window
         , ty.reporting_date
 
         {{ insert_kpi_comparison_metrics() }}
