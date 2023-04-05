@@ -25,6 +25,12 @@ select
   , oli.is_new_customer_order
   /*Customer Dimension Fields*/
   , customers.customer_id
+  , customers.customer_cohort_month
+  , customers.cohort_size
+  , customers.customer_city
+  , customers.customer_state
+  , customers.customer_zipcode
+  , customers.customer_country
   /*Customer Fact Fields*/
   , datediff("month", customers.customer_cohort_month, dates.date) as customer_months_since_acq
   /*Order Fact Fields*/
@@ -46,4 +52,4 @@ left join {{ ref('dim_date_alice_ames') }} as dates
 left join {{ ref('base_rpt_customers_alice_ames') }} as customers
   on oli.customer_key = customers.customer_key
 
-{{ dbt_utils.group_by(n=22) }}
+{{ dbt_utils.group_by(n=28) }}
