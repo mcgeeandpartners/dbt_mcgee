@@ -46,12 +46,16 @@ o.*
 , m.yoy_reach_total
 , o.net_revenue_total/nullif(m.spend_total,0) as mer
 , o.ly_net_revenue_total/nullif(m.ly_spend_total,0) as ly_mer
-, (o.net_revenue_total/nullif(m.spend_total,0)) / (o.ly_net_revenue_total/nullif(m.ly_spend_total,0)) as yoy_mer
+, (o.net_revenue_total/nullif(m.spend_total,0)) / (o.ly_net_revenue_total/nullif(m.ly_spend_total,0))-1 as yoy_mer
 , o.net_revenue_total_new_customers/nullif(m.spend_total,0) as mer_acq
 , o.ly_net_revenue_total_new_customers/nullif(m.ly_spend_total,0) as ly_mer_acq
-, (o.net_revenue_total_new_customers/nullif(m.spend_total,0)) / (o.ly_net_revenue_total_new_customers/nullif(m.ly_spend_total,0)) as yoy_mer_acq
+, (o.net_revenue_total_new_customers/nullif(m.spend_total,0)) / (o.ly_net_revenue_total_new_customers/nullif(m.ly_spend_total,0))-1 as yoy_mer_acq
+, m.spend_total/nullif(o.unique_new_customers,0) as cac
+, m.ly_spend_total/nullif(o.ly_unique_new_customers,0) as ly_cac
+, (m.spend_total/nullif(o.unique_new_customers,0)) / (m.ly_spend_total/nullif(o.ly_unique_new_customers,0)) -1 as yoy_cac
+
 from {{ ref('dash_order_by_reporting_period_alice_ames') }} as o
 left join {{ ref('dash_marketing_by_reporting_period') }} as m
 on o.reporting_period = m.reporting_period
 and o.reporting_window = m.reporting_window
-and o.reporting_date = m.reporting_date
+and (o.reporting_date = m.reporting_date OR o.reporting_date is null)
