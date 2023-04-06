@@ -439,3 +439,21 @@ models:
         tests:
           - not_null
           - unique                    
+
+  - name: dash_marketing_by_reporting_period_alice_ames
+    description: "."
+    columns:
+      - name: reporting_period_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique                              
+
+  - name: dash_order_by_reporting_period_alice_ames
+    description: "."
+    columns:
+      - name: reporting_period_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique                                        

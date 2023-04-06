@@ -10,7 +10,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where datediff('day', m.reporting_date, current_date() ) <= 30
         and m.reporting_date != current_date()
     group by 1,2
@@ -24,7 +24,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where datediff('day', m.reporting_date, dateadd('day', -365, current_date()) ) <= 30
         and m.reporting_date < dateadd ('day', -365, current_date())
     group by 1,2
@@ -53,7 +53,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
   where datediff('day', m.reporting_date, current_date()) <= 30
     and m.reporting_date <> current_date()
   group by 1,2,3
@@ -67,7 +67,7 @@ with orders_l30d_ty as (
 
     {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where datediff('day', m.reporting_date, dateadd('day',-365,current_date())) <= 30
         and m.reporting_date < dateadd('day',-365,current_date())
     group by 1,2,3
@@ -96,7 +96,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= date_trunc('year',current_date()) 
         and m.reporting_date < current_date()
     group by 1,2,3
@@ -110,7 +110,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('year',-1,date_trunc('year',current_date())) 
         and m.reporting_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -139,7 +139,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= date_trunc('year',current_date()) 
         and m.reporting_date < current_date()
     group by 1,2,3
@@ -153,7 +153,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('year',-1,date_trunc('year',current_date())) 
         and m.reporting_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -182,7 +182,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('day',-365,current_date()) 
         and m.reporting_date < current_date() 
     group by 1,2,3
@@ -196,7 +196,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('day',-365*2,current_date()) 
         and m.reporting_date < dateadd('day',-365,current_date())
     group by 1,2,3
@@ -225,7 +225,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('day',-365,current_date()) 
         and m.reporting_date < current_date() 
     group by 1,2,3
@@ -239,7 +239,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('day',-365*2,current_date()) 
         and m.reporting_date < dateadd('day',-365,current_date())
     group by 1,2,3
@@ -268,7 +268,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= date_trunc('month',current_date()) 
         and m.reporting_date < current_date()
     group by 1,2,3
@@ -282,7 +282,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('year',-1,date_trunc('month', current_date())) 
         and m.reporting_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -311,7 +311,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= date_trunc('month',current_date()) 
         and m.reporting_date < current_date()
     group by 1,2,3
@@ -325,7 +325,7 @@ with orders_l30d_ty as (
 
         {{ insert_marketing_kpi_metrics() }}
 
-    from {{ ref('base_rpt_paid_media_metrics_by_day') }} as m
+    from {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     where m.reporting_date >= dateadd('year',-1,date_trunc('month', current_date())) 
         and m.reporting_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -344,19 +344,25 @@ with orders_l30d_ty as (
         on ty.reporting_date = dateadd('year',1, ly.reporting_date)
 )
 
+, final as (
+    select * from l30d 
+    union all
+    select * from l30d_daily
+    union all
+    select * from ytd
+    union all 
+    select * from ytd_monthly
+    union all 
+    select * from l12m
+    union all 
+    select * from l12m_monthly
+    union all
+    select * from mtd
+    union all 
+    select * from mtd_daily
+)
 
-select * from l30d 
-union all
-select * from l30d_daily
-union all
-select * from ytd
-union all 
-select * from ytd_monthly
-union all 
-select * from l12m
-union all 
-select * from l12m_monthly
-union all
-select * from mtd
-union all 
-select * from mtd_daily
+select 
+      md5(reporting_period || ' ' || ' ' || reporting_window || ifnull(reporting_date, '2099-12-31')) as reporting_period_key
+    , * 
+from final
