@@ -33,7 +33,7 @@ select
     pv.option_3 as product_option_3,
     pv.compare_at_price,
     pv.created_at_utc as product_created_at,
-    pv.updated_at_utc as product_updated_at
+    pv.updated_at_utc as product_updated_at,
     {# m.product_category,
     m.product_sub_type,
     m.product_campaign,
@@ -43,6 +43,10 @@ select
     m.base_fabric_color,
     m.made_in,
     m.manufacturer  #}
+    i.inventory_item_id, 
+    i.inventory_cost,
+    i.inventory_available_quantity
+
 
 from {{ ref('transform_product_tenkara_usa') }} as p
 left join {{ ref('transform_product_variant_tenkara_usa') }} as pv 
@@ -53,3 +57,7 @@ left join {{ ref('transform_product_variant_tenkara_usa') }} as pv
     and v.product_title = p.product_title
 left join {{ ref('stg_master_sku_list_alice_ames') }} as m 
     on v.product_variant_name = m.product_variant_name #}
+--Get inventory levels
+left join {{ ref('stg_inventory_item_level_tenkara_usa')}}  as i
+    on nullif(lower(pv.product_variant_sku), '') = i.product_sku
+    and i.is_most_recent = 1    

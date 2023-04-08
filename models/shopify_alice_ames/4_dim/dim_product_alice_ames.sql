@@ -44,7 +44,10 @@ select
     v.print_solid_name,
     v.base_fabric_color,
     v.made_in,
-    v.manufacturer 
+    v.manufacturer,
+    i.inventory_item_id, 
+    i.inventory_cost,
+    i.inventory_available_quantity
 
 from {{ ref('transform_product_alice_ames') }} as p
 inner join {{ ref('transform_product_variant_alice_ames') }} as pv 
@@ -54,3 +57,7 @@ left join variant_name_id_mapping as v
     on pv.product_variant_id = v.product_variant_id
     and pv.product_id = v.product_id
     and p.product_title = v.product_title
+--Get inventory levels
+left join {{ ref('stg_inventory_item_level_alice_ames')}}  as i
+    on nullif(lower(pv.product_variant_sku), '') = i.product_sku
+    and i.is_most_recent = 1    
