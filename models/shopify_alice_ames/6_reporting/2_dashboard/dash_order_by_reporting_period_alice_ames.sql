@@ -344,19 +344,25 @@ with orders_l30d_ty as (
         on ty.reporting_date = dateadd('year',1, ly.reporting_date)
 )
 
+, final as (
+    select * from l30d 
+    union all
+    select * from l30d_daily
+    union all
+    select * from ytd
+    union all 
+    select * from ytd_monthly
+    union all 
+    select * from l12m
+    union all 
+    select * from l12m_monthly
+    union all
+    select * from mtd
+    union all 
+    select * from mtd_daily
+)
 
-select * from l30d 
-union all
-select * from l30d_daily
-union all
-select * from ytd
-union all 
-select * from ytd_monthly
-union all 
-select * from l12m
-union all 
-select * from l12m_monthly
-union all
-select * from mtd
-union all 
-select * from mtd_daily
+select 
+      md5(reporting_period || ' ' || ' ' || reporting_window || ifnull(reporting_date, '2099-12-31')) as reporting_period_key
+    , * 
+from final

@@ -36,10 +36,6 @@ vars:
 
 models:
     dbt_aestuary:
-      aestuary_alice_ames:
-        enabled: false
-        +materialized: table
-        +schema: ALICE_AMES
       google_ads:
         +schema: google_ads
         dim:
