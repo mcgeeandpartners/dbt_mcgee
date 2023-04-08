@@ -4,13 +4,14 @@
     config(
       target_database='aestuary_dw',
       target_schema='snapshots',
-      unique_key='id',
+      unique_key='inventory_item_level_key',
       strategy='timestamp',
       updated_at='inventory_level_updated_at_utc',
     )
 }}
 
 select 
+    md5(i.id || l.location_id) as inventory_item_level_key,
     i.*,
     l.location_id,
     l.available, 
