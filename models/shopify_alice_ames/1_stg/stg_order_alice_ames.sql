@@ -1,8 +1,8 @@
-{{
+{# {{
   config(
     materialized = 'table'
     )
-}}
+}} #}
 
 select
     {{ dbt_utils.surrogate_key(['id']) }} as order_key,
