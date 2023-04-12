@@ -82,11 +82,11 @@ models:
         3_transform:
           +materialized: view
         4_dim:
-          +materialized: view
+          +materialized: table
         5_fact:
-          +materialized: view
+          +materialized: table
         6_reporting:
-          +materialized: view
+          +materialized: table
           
 # seeds:
 #     dbt_aestuary:
