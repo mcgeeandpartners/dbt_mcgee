@@ -14,7 +14,7 @@ select
   , m.spend_fb
   , m.ly_spend_fb
   , m.yoy_spend_fb
-  , m.reach_fb 
+  , m.reach_fb
   , m.ly_reach_fb
   , m.yoy_reach_fb
   , m.impressions_goog
