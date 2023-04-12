@@ -65,6 +65,9 @@ select
   , p.base_fabric_color as product_base_fabric_color
   , p.made_in as product_made_in
   , p.manufacturer as product_manufacturer
+  , p.inventory_item_id as product_inventory_id
+  , p.inventory_cost as product_current_cogs
+  , p.inventory_available_quantity as product_current_available_inventory
   , ol.max_daily_gross_revenue_lifetime 
   , ol.max_daily_net_revenue_lifetime
   , ol.first_order_date
