@@ -382,7 +382,16 @@ models:
       - name: product_key
         tests:
           - unique
-          - not_null          
+          - not_null      
+
+  - name: dim_customer_ad
+    description: Each record represents a customer in Shopify.
+    columns:
+      - name: customer_key
+        description: A unique identifier for the customer dimension.
+        tests:
+          - not_null
+          - unique    
 
   - name: fact_order_line_item_ad                   
     # tests:
@@ -399,4 +408,22 @@ models:
       - name: date_key
         description: Unique key for the table
         tests:
-          - not_null                    
+          - not_null 
+
+  - name: base_rpt_customers_ad
+    description: "."
+    columns:
+      - name: customer_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique
+
+  - name: base_rpt_product_ad
+    description: "."
+    columns:
+      - name: product_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique
