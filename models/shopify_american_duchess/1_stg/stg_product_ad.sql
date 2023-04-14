@@ -1,4 +1,5 @@
 with source as (
+
     select
         id::varchar as product_id,
         nullif(trim(lower(product_type)), '') as product_type,
@@ -13,8 +14,7 @@ with source as (
         created_at as created_at_utc,
         updated_at as updated_at_utc
         
-    from {{ ref('snapshot_product_ad') }}
-    where not _fivetran_deleted
-        and dbt_valid_to is null
+    from {{ source('shopify_ad', 'product') }}
 )
+
 select * from source

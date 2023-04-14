@@ -1,6 +1,5 @@
 {{ config(alias="dim_product") }}
 
-
 {# with variant_name_id_mapping as (
     select m.product_variant_name, m.product_title, oli.product_variant_id, order_line_item_id
     from {{ ref('stg_master_sku_list_tenkara_usa') }} as m
@@ -10,6 +9,8 @@
     --a product variant and proudct title combo can belong to >1 distinct varinat ids. So we dedupe them using qualify. It doesnt really affect anything. We just need to dedepe them.         
     qualify row_number() over (partition by m.product_title, oli.product_variant_id order by oli.order_line_item_id) = 1
     ) #}
+
+
 
 select
     pv.product_id,
@@ -35,15 +36,17 @@ select
     pv.compare_at_price,
     pv.created_at_utc as product_created_at,
     pv.updated_at_utc as product_updated_at,
-    {# m.product_category,
-    m.product_sub_type,
-    m.product_campaign,
-    m.campaign_year,
-    m.is_print,
-    m.print_solid_name,
-    m.base_fabric_color,
-    m.made_in,
-    m.manufacturer  #}
+    {# these fields need to be updated when we have the SKU mapping document #}
+    NULL as product_category,
+    NULL as product_sub_type,
+    NULL as product_heel,
+    NULL as product_era,
+    NULL as product_genre,
+    NULL as product_decade,
+    NULL as product_is_pre_order,
+    NULL as product_color,
+    NULL as product_made_in,
+    NULL as product_manufacturer,
     i.inventory_item_id, 
     i.inventory_cost,
     i.inventory_available_quantity
