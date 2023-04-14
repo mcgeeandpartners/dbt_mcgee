@@ -10,7 +10,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where datediff('day', o.order_date, current_date() ) <= 30
         and o.order_date != current_date()
     group by 1,2
@@ -24,7 +24,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where datediff('day', o.order_date, dateadd('day', -365, current_date()) ) <= 30
         and o.order_date < dateadd ('day', -365, current_date())
     group by 1,2
@@ -53,7 +53,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
   where datediff('day', o.order_date, current_date()) <= 30
     and o.order_date <> current_date()
   group by 1,2,3
@@ -67,7 +67,7 @@ with orders_l30d_ty as (
 
     {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where datediff('day', o.order_date, dateadd('day',-365,current_date())) <= 30
         and o.order_date < dateadd('day',-365,current_date())
     group by 1,2,3
@@ -96,7 +96,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= date_trunc('year',current_date()) 
         and o.order_date < current_date()
     group by 1,2,3
@@ -110,7 +110,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('year',-1,date_trunc('year',current_date())) 
         and o.order_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -139,7 +139,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= date_trunc('year',current_date()) 
         and o.order_date < current_date()
     group by 1,2,3
@@ -153,7 +153,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('year',-1,date_trunc('year',current_date())) 
         and o.order_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -182,7 +182,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('day',-365,current_date()) 
         and o.order_date < current_date() 
     group by 1,2,3
@@ -196,7 +196,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('day',-365*2,current_date()) 
         and o.order_date < dateadd('day',-365,current_date())
     group by 1,2,3
@@ -225,7 +225,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('day',-365,current_date()) 
         and o.order_date < current_date() 
     group by 1,2,3
@@ -239,7 +239,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('day',-365*2,current_date()) 
         and o.order_date < dateadd('day',-365,current_date())
     group by 1,2,3
@@ -268,7 +268,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= date_trunc('month',current_date()) 
         and o.order_date < current_date()
     group by 1,2,3
@@ -282,7 +282,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('year',-1,date_trunc('month', current_date())) 
         and o.order_date < dateadd('year',-1,current_date())
     group by 1,2,3
@@ -311,7 +311,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= date_trunc('month',current_date()) 
         and o.order_date < current_date()
     group by 1,2,3
@@ -325,7 +325,7 @@ with orders_l30d_ty as (
 
         {{ insert_kpi_metrics() }}
 
-    from {{ ref('base_rpt_order_alice_ames') }} as o
+    from {{ ref('base_rpt_order_ad') }} as o
     where o.order_date >= dateadd('year',-1,date_trunc('month', current_date())) 
         and o.order_date < dateadd('year',-1,current_date())
     group by 1,2,3

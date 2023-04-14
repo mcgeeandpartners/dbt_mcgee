@@ -30,9 +30,7 @@ with source as (
         updated_at as updated_at_utc,
         _fivetran_synced
 
-    from {{ ref('snapshot_product_variant_ad') }}
-    where 1 = 1
-        and dbt_valid_to is null
+    from {{ source('shopify_ad', 'product_variant') }}
 )
 
 select * from source

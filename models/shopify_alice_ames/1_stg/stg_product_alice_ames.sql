@@ -13,9 +13,7 @@ with source as (
         created_at as created_at_utc,
         updated_at as updated_at_utc
         
-    from {{ ref('snapshot_product_alice_ames') }}
-    where not _fivetran_deleted
-        and dbt_valid_to is null
+    from {{ source('shopify_alice_ames', 'product') }}
 )
 
 select * from source
