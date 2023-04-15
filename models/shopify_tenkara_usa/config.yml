@@ -1,6 +1,13 @@
 version: 2
 
 models:
+  - name: stg_inventory_item_level_tenkara_usa
+    columns:
+      - name: inventory_item_level_key
+        tests:
+          - not_null
+          - unique
+
   - name: base_stg_null_product_tenkara_usa
     description: Contains product titles with missing product_ids in order line table
     columns:
