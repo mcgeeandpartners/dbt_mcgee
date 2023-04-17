@@ -107,4 +107,40 @@ models:
       - name: date_key
         description: Unique key for the table
         tests:
-          - not_null                            
+          - not_null
+
+  - name: base_rpt_customers_tenkara_usa
+    description: "."
+    columns:
+      - name: customer_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique
+
+  - name: base_rpt_product_tenkara_usa
+    description: "."
+    columns:
+      - name: product_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique
+    
+  - name: base_rpt_order_tenkara_usa
+    description: "."
+    columns:
+      - name: order_id
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique          
+
+  - name: base_rpt_order_line_item_tenkara_usa
+    description: "."
+    columns:
+      - name: order_line_item_id
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique                   
