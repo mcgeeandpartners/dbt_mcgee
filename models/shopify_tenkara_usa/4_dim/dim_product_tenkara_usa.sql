@@ -37,12 +37,6 @@ select
     {# these fields need to be updated when we have the SKU mapping document #}
     NULL as product_category,
     NULL as product_sub_type,
-    NULL as product_heel,
-    NULL as product_era,
-    NULL as product_genre,
-    NULL as product_decade,
-    NULL as product_is_pre_order,
-    NULL as product_color,
     NULL as product_made_in,
     NULL as product_manufacturer,
     {# m.product_category,

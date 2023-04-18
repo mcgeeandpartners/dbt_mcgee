@@ -53,12 +53,6 @@ select
   , products.product_category
   , products.product_type
   , products.product_sub_type
-  , products.product_heel
-  , products.product_era
-  , products.product_genre
-  , products.product_decade
-  , products.product_is_pre_order
-  , products.product_color
   , products.product_made_in
   , products.product_manufacturer
 

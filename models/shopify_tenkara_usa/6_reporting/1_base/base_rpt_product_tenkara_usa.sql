@@ -59,12 +59,6 @@ select
   , NULL as product_category
   , NULL as product_type
   , NULL as product_sub_type
-  , NULL as product_heel
-  , NULL as product_era
-  , NULL as product_genre
-  , NULL as product_decade
-  , NULL As product_is_pre_order
-  , NULL as product_color
   , NULL as product_made_in
   , NULL as product_manufacturer
 
