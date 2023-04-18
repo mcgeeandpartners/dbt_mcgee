@@ -91,6 +91,8 @@ models:
           +materialized: table
         6_reporting:
           +materialized: table
+      shopify_reports:
+        +schema: shopify_reports
           
 # seeds:
 #     dbt_aestuary:
