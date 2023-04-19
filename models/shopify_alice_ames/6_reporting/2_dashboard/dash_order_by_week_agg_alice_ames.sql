@@ -11,7 +11,7 @@ with orders_by as (
 )
 
 select 
-    ty.order_by as ty_order_week
+    ty.order_by as order_week
     , ly.order_by as ly_order_week
 
     {{ insert_kpi_comparison_metrics() }}

@@ -11,7 +11,7 @@ with orders_by as (
 )
 
 select 
-    ty.order_by as ty_order_year
+    ty.order_by as order_year
     , ly.order_by as ly_order_year
 
     {{ insert_kpi_comparison_metrics() }}
