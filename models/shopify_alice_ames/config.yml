@@ -466,3 +466,30 @@ models:
         tests:
           - not_null
           - unique  
+
+  - name: dash_order_by_week_agg_alice_ames
+    description: "."
+    columns:
+      - name: reporting_period_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique  
+
+  - name: dash_order_by_month_agg_alice_ames
+    description: "."
+    columns:
+      - name: reporting_period_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique 
+
+  - name: dash_order_by_year_agg_alice_ames
+    description: "."
+    columns:
+      - name: reporting_period_key
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique 
