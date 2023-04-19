@@ -11,7 +11,7 @@ with orders_by as (
 )
 
 select 
-    ty.order_by as ty_order_month
+    ty.order_by as order_month
     , ly.order_by as ly_order_month
 
     {{ insert_kpi_comparison_metrics() }}
