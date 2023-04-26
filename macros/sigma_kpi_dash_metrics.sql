@@ -236,3 +236,91 @@
     , (ty.reach_total/nullif(ly.reach_total,0))-1 as yoy_reach_total
 
 {%- endmacro %}
+
+{% macro insert_order_line_agg_metrics() -%}
+
+  /*Customer metrics*/
+  , count(distinct o.customer_id) as unique_customers
+  , count(distinct case when o.is_new_customer_order then o.customer_id end) as unique_new_customers
+  , count(distinct case when not o.is_new_customer_order then o.customer_id end) as unique_recur_customers
+  , median(o.customer_months_since_acq) as median_age_customer_months_since_acq
+  , avg(o.customer_months_since_acq) as avg_age_customer_months_since_acq
+  /*Order and order line item metrics*/
+  , count(o.order_id) as orders
+  , sum(case when o.is_new_customer_order then 1 end) as orders_new_customers
+  , sum(case when not o.is_new_customer_order then 1 end) as orders_recur_customers
+  , sum(o.units) as units_sold
+  /*Financial metrics*/
+  , max(o.MSRP) as product_msrp
+  , sum(o.gross_revenue) as gross_revenue_product
+  , sum(case when o.is_new_customer_order then o.gross_revenue end) as gross_revenue_product_new_customers
+  , sum(case when not o.is_new_customer_order then o.gross_revenue end) as gross_revenue_product_recur_customers 
+  , sum(o.gross_revenue - o.discount_total) as net_revenue_product
+  , sum(case when o.is_new_customer_order then o.gross_revenue - o.discount_total end) as net_revenue_product_new_customers
+  , sum(case when not o.is_new_customer_order then o.gross_revenue - o.discount_total end) as net_revenue_product_recur_customers
+  , sum(o.discount_total) as discounts_total
+  , sum(case when o.is_new_customer_order then o.discount_total end) as discounts_total_new_customers
+  , sum(case when not o.is_new_customer_order then o.discount_total end) as discounts_total_recur_customers
+
+{%- endmacro %}
+
+{% macro insert_order_line_agg_comparison_metrics() -%}
+
+    , ty.unique_customers
+    , ly.unique_customers as ly_unique_customers
+    , (ty.unique_customers/nullif(ly.unique_customers,0))-1 as yoy_unique_customers
+    , ty.unique_new_customers
+    , ly.unique_new_customers as ly_unique_new_customers
+    , (ty.unique_new_customers/nullif(ly.unique_new_customers,0))-1 as yoy_unique_new_customers
+    , ty.unique_recur_customers
+    , ly.unique_recur_customers as ly_unique_recur_customers
+    , (ty.unique_recur_customers/nullif(ly.unique_recur_customers,0))-1 as yoy_unique_recur_customers    
+    , ty.median_age_customer_months_since_acq
+    , ly.median_age_customer_months_since_acq as ly_median_age_customer_months_since_acq
+    , (ty.median_age_customer_months_since_acq/nullif(ly.median_age_customer_months_since_acq,0))-1 as yoy_median_age_customer_months_since_acq
+    , ty.avg_age_customer_months_since_acq
+    , ly.avg_age_customer_months_since_acq as ly_avg_age_customer_months_since_acq
+    , (ty.avg_age_customer_months_since_acq/nullif(ly.avg_age_customer_months_since_acq,0))-1 as yoy_avg_age_customer_months_since_acq
+    /*orders metrics*/
+    , ty.orders
+    , ly.orders as ly_orders
+    , (ty.orders/nullif(ly.orders,0))-1 as yoy_orders
+    , ty.orders_new_customers
+    , ly.orders_new_customers as ly_orders_new_customers
+    , (ty.orders_new_customers/nullif(ly.orders_new_customers,0))-1 as yoy_orders_new_customers
+    , ty.orders_recur_customers
+    , ly.orders_recur_customers as ly_orders_recur_customers
+    , (ty.orders_recur_customers/nullif(ly.orders_recur_customers,0))-1 as yoy_orders_recur_customers
+    , ty.units_sold
+    , ly.units_sold as ly_units_sold
+    , (ty.units_sold/nullif(ly.units_sold,0))-1 as yoy_units_sold
+    /*financial metrics*/
+    , ty.gross_revenue_product
+    , ly.gross_revenue_product as ly_gross_revenue_product
+    , (ty.gross_revenue_product/nullif(ly.gross_revenue_product,0))-1 as yoy_gross_revenue_product
+    , ty.gross_revenue_product_new_customers
+    , ly.gross_revenue_product_new_customers as ly_gross_revenue_product_new_customers
+    , (ty.gross_revenue_product_new_customers/nullif(ly.gross_revenue_product_new_customers,0))-1 as yoy_gross_revenue_product_new_customers
+    , ty.gross_revenue_product_recur_customers
+    , ly.gross_revenue_product_recur_customers as ly_gross_revenue_product_recur_customers
+    , (ty.gross_revenue_product_recur_customers/nullif(ly.gross_revenue_product_recur_customers,0))-1 as yoy_gross_revenue_product_recur_customers
+    , ty.net_revenue_product
+    , ly.net_revenue_product as ly_net_revenue_product
+    , (ty.net_revenue_product/nullif(ly.net_revenue_product,0))-1 as yoy_net_revenue_product 
+    , ty.net_revenue_product_new_customers
+    , ly.net_revenue_product_new_customers as ly_net_revenue_product_new_customers
+    , (ty.net_revenue_product_new_customers/nullif(ly.net_revenue_product_new_customers,0))-1 as yoy_net_revenue_product_new_customers
+    , ty.net_revenue_product_recur_customers
+    , ly.net_revenue_product_recur_customers as ly_net_revenue_product_recur_customers
+    , (ty.net_revenue_product_recur_customers/nullif(ly.net_revenue_product_recur_customers,0))-1 as yoy_net_revenue_product_recur_customers
+    , ty.discounts_total
+    , ly.discounts_total as ly_discounts_total
+    , (ty.discounts_total/nullif(ly.discounts_total,0))-1 as yoy_discounts_total
+    , ty.discounts_total_new_customers
+    , ly.discounts_total_new_customers as ly_discounts_total_new_customers
+    , (ty.discounts_total_new_customers/nullif(ly.discounts_total_new_customers,0))-1 as yoy_discounts_total_new_customers
+    , ty.discounts_total_recur_customers
+    , ly.discounts_total_recur_customers as ly_discounts_total_recur_customers
+    , (ty.discounts_total_recur_customers/nullif(ly.discounts_total_recur_customers,0))-1 as yoy_discounts_total_recur_customers
+
+{%- endmacro %}
