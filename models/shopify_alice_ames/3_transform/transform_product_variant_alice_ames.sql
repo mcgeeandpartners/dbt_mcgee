@@ -1,13 +1,15 @@
 --Need to union the variant ids that exist in order line table, but are missing from the variant table
 with missing_variant_ids_int_order_line as (
-    select distinct
+    select
         a.product_id, 
-        a.product_variant_id
+        a.product_variant_id,
+        a.product_variant_name
     from {{ ref('int_order_line_item_alice_ames') }} as a 
     left join {{ ref('int_product_variant_alice_ames') }} as b 
         on a.product_variant_id = b.product_variant_id
     where b.product_variant_id is null 
         and a.product_variant_id is not null
+    qualify row_number() over (partition by a.product_variant_id order by a.order_line_item_id) = 1
 )
 
 , missing_variant_id_backfill as (
@@ -41,7 +43,8 @@ with missing_variant_ids_int_order_line as (
         null as created_at_utc,
         null as updated_at_utc,
         null as _fivetran_synced,
-        true as is_null_product_variant_id
+        true as is_null_product_variant_id,
+        product_variant_name
 
     from missing_variant_ids_int_order_line
 )
@@ -77,7 +80,8 @@ with missing_variant_ids_int_order_line as (
         null as created_at_utc,
         null as updated_at_utc,
         null as _fivetran_synced,
-        true as is_null_product_variant_id
+        true as is_null_product_variant_id,
+        product_variant_name
 
     from {{ ref('base_transform_null_variant_id_edge_cases_alice_ames') }}
 )

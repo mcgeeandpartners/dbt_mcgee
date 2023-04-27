@@ -20,3 +20,4 @@ select
     _fivetran_synced
 
 from {{ source('aestuary_gheets', 'sku_list_alice_ames') }}
+qualify row_number() over (partition by product_variant_name order by product_id desc, product_variant_id desc) = 1

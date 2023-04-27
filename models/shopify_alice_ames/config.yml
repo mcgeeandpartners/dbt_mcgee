@@ -323,6 +323,12 @@ models:
               config:
                 where: "product_status != 'deleted'"     
 
+      - name: product_title
+        description: The title of the product
+        tests:
+          - unique
+          - not_null
+
   - name: transform_order_line_item_alice_ames
     description: Each record represents a line item from an order in Shopify.
     columns:

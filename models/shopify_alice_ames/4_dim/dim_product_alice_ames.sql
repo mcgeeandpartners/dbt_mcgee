@@ -1,17 +1,5 @@
 {{ config(alias="dim_product") }}
 
-with variant_name_id_mapping as (
-    select m.*, oli.order_line_item_id
-    from {{ ref('stg_master_sku_list_alice_ames') }} as m
-    left join {{ ref('transform_order_line_item_alice_ames') }} as oli 
-    	on m.product_variant_name = oli.product_variant_name
-        and m.product_title = oli.product_title
-        and m.product_variant_id = oli.product_variant_id
-        and m.product_id = oli.product_id
-    --a product variant, product id and proudct title combo can belong to >1 distinct varinat names in 5 cases approx. So we dedupe them using qualify. It doesnt really affect anything. We just need to dedepe them.         
-    qualify row_number() over (partition by m.product_title, m.product_variant_id, m.product_id order by oli.order_line_item_id) = 1
-    )
-
 select
     pv.product_id,
     pv.product_variant_id,
@@ -53,10 +41,8 @@ from {{ ref('transform_product_alice_ames') }} as p
 inner join {{ ref('transform_product_variant_alice_ames') }} as pv 
     on p.product_id = pv.product_id
 --Following is for master SKU list fields
-left join variant_name_id_mapping as v 
-    on pv.product_variant_id = v.product_variant_id
-    and pv.product_id = v.product_id
-    and p.product_title = v.product_title
+left join {{ ref('stg_master_sku_list_alice_ames') }} as v
+    on pv.product_variant_name = v.product_variant_name
 --Get inventory levels
 left join {{ ref('stg_inventory_item_level_alice_ames')}}  as i
     on nullif(lower(pv.product_variant_sku), '') = i.product_sku
