@@ -1,7 +1,12 @@
 with stg_product as (
 
-    select *, false as is_null_product_variant_id
-    from {{ ref('stg_product_variant_alice_ames') }}
+    select a.*
+        , false as is_null_product_variant_id
+        , b.product_variant_name
+    from {{ ref('stg_product_variant_alice_ames') }} as a 
+    left join {{ ref('stg_order_line_item_alice_ames') }} as b 
+        on a.product_variant_id = b.product_variant_id
+    qualify row_number() over (partition by a.product_variant_id order by b.order_line_item_id) = 1
 
 )
 
@@ -36,7 +41,8 @@ with stg_product as (
         null as created_at_utc,
         null as updated_at_utc,
         null as _fivetran_synced,
-        is_null_product_variant_id
+        is_null_product_variant_id,
+        product_variant_name
 
     from {{ ref('base_int_null_product_variant_backfill_alice_ames') }}
     where is_null_product_variant_id = true
