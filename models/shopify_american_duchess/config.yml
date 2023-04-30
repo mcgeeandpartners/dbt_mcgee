@@ -481,3 +481,12 @@ models:
         tests:
           - not_null
           - unique 
+
+  - name: stg_master_sku_list_ad
+    description: "."
+    columns:
+      - name: product_variant_name
+        description: Unique identifier
+        tests:
+          - not_null
+          - unique          
