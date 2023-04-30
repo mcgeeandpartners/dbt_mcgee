@@ -441,6 +441,9 @@ sources:
             description: Record representing total duties set for the refund.
           - name: order_id
             description: Reference to the order which the refund is associated.
+      - name: product_tag
+      - name: collection_product
+      - name: collection        
 
   - name: seeds
     schema: seeds
