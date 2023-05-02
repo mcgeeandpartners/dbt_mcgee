@@ -245,16 +245,6 @@ models:
 
 #####------#####
 
-  - name: stg_master_sku_list_ad                   
-    description: External product info via fivetran gsheet connector
-    columns:
-      - name: sku_list_key
-        tests:
-          - not_null
-          - unique:
-              config:
-                where: "sku_list_key not in ('2a2842ebd019d49c0675829e21abce45', 'e39e8cb4ba66c389ee54bbfe65c63c95', 'bf304f5f21c6f008faf85bbc4acdd940', 'e76acc51066fad0291a5fce3d9ea99af', 'a4bbf9b0b3d98054fb8903fa031c80e3')"
-
   - name: base_stg_null_product_backfill_ad
     description: Contains product titles with missing product_ids in order line table
     columns:
