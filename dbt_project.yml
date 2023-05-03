@@ -62,6 +62,16 @@ models:
           +materialized: table
         6_reporting:
           +materialized: table
+      shopify_american_duchess_eu:
+        +schema: shopify_american_duchess_eu
+        1_stg:
+          +materialized: view
+        2_int:
+          +materialized: view
+        3_dim:
+          +materialized: table
+        4_fact:
+          +materialized: table
       shopify_tenkara_usa:
         +materialized: table
         +schema: shopify_tenkara_usa
@@ -93,9 +103,3 @@ models:
           +materialized: table
       consolidated_bi_reports:
         +schema: consolidated_bi_reports
-          
-# seeds:
-#     dbt_aestuary:
-#       shopify_alice_ames:
-#         +database: aestuary_raw
-#         +schema: seeds
