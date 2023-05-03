@@ -443,14 +443,4 @@ sources:
             description: Reference to the order which the refund is associated.
       - name: product_tag
       - name: collection_product
-      - name: collection        
-
-  - name: seeds
-    schema: seeds
-    database: aestuary_raw
-    tables:
-      - name: marketing_calendar_ad
-        description: "."
-      - name: master_sku_list_ad
-        description: "."
-    
+      - name: collection
