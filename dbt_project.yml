@@ -72,6 +72,8 @@ models:
           +materialized: table
         4_fact:
           +materialized: table
+        5_reporting:
+          +materialized: table
       shopify_tenkara_usa:
         +materialized: table
         +schema: shopify_tenkara_usa
