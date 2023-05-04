@@ -27,7 +27,6 @@ select
     v.volume_proxy, 
     v.product_title_adj, 
     v.product_category, 
-    v.product_type, 
     v.product_sub_type, 
     v.product_heel, 
     v.product_era, 
