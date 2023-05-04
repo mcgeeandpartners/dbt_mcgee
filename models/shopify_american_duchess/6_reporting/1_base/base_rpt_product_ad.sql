@@ -56,17 +56,17 @@ select
   , p.product_price as product_current_price
   , p.compare_at_price as product_current_compare_at_price
   /*Eventually need to fill these in with SKU mapping work*/
-  , NULL as product_category
-  , NULL as product_type
-  , NULL as product_sub_type
-  , NULL as product_heel
-  , NULL as product_era
-  , NULL as product_genre
-  , NULL as product_decade
-  , NULL As product_is_pre_order
-  , NULL as product_color
-  , NULL as product_made_in
-  , NULL as product_manufacturer
+  , p.product_category as product_category
+  , p.product_type as product_type
+  , p.product_sub_type as product_sub_type
+  , p.product_heel as product_heel
+  , p.product_era as product_era
+  , p.product_genre as product_genre
+  , p.product_decade as product_decade
+  , p.product_is_pre_order As product_is_pre_order
+  , p.product_color as product_color
+  , p.product_made_in as product_made_in
+  , p.product_manufacturer as product_manufacturer
 
   , p.inventory_item_id as product_inventory_id
   , p.inventory_cost as product_current_cogs
