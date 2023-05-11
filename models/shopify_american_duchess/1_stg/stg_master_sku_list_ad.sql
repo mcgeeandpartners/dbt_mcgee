@@ -40,7 +40,7 @@ with product_details AS (
             WHEN position('ladies', pd.product_tags) > 0 
                 OR position('ladies' in pd.product_title) >0 
                 OR position('womens', pd.product_tags) >0 
-                OR contains(pd.product_title, 'women\'s')
+                OR contains(pd.product_title, 'women\s')
                 /*Some styles I have to manually map*/ 
                 OR contains(pd.product_title, 'addie')
                 OR contains(pd.product_title, 'alice') 
@@ -549,6 +549,8 @@ with product_details AS (
     , product_color
     , product_style
     , product_is_pre_order
+    , product_is_clearance
+    , product_tags
     from product_mapping_temp
 )
 , clean_up AS (
@@ -562,6 +564,7 @@ with product_details AS (
     , max(product_decade) as product_decade
     , max(product_style) as product_style
     , max(product_heel) as product_heel
+    , max(product_tags) as product_tags
     FROM product_mapping
     GROUP BY 1
 )
@@ -578,7 +581,9 @@ with product_details AS (
         , c.product_decade
         , map.product_color
         , c.product_style
-        , map.product_is_pre_order 
+        , map.product_is_pre_order
+        , map.product_is_clearance
+        , c.product_tags
     FROM product_mapping map
     LEFT JOIN clean_up c ON map.product_title_adj = c.product_title_adj
 )
@@ -606,6 +611,8 @@ with product_details AS (
         , map.product_color
         , map.product_style
         , map.product_is_pre_order
+        , map.product_is_clearance
+        , map.product_tags
     FROM unique_variant_list ul
     LEFT JOIN final_mapping map on ul.product_title = map.product_title
 )
@@ -617,6 +624,7 @@ with product_details AS (
     group by 1
     having sum(volume_proxy) > 100,000
 )*/
+
 SELECT
 full_set.*
 FROM full_set
