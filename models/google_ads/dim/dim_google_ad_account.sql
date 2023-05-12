@@ -1,5 +1,5 @@
 select 
-    {{ dbt_utils.surrogate_key(['account_id']) }} as account_key,
+    {{ dbt_utils.generate_surrogate_key(['account_id']) }} as account_key,
     account_id,
     account_name, 
     auto_tagging_enabled,

@@ -1,5 +1,5 @@
 select 
-    {{ dbt_utils.surrogate_key(['criterion_id']) }} as criterion_key,
+    {{ dbt_utils.generate_surrogate_key(['criterion_id']) }} as criterion_key,
     criterion_id,
     type,
     status,

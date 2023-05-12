@@ -1,5 +1,5 @@
 select 
-    {{ dbt_utils.surrogate_key(['ad_id']) }} as ad_key,
+    {{ dbt_utils.generate_surrogate_key(['ad_id']) }} as ad_key,
     ad_id,
     ad_name, 
     ad_status,

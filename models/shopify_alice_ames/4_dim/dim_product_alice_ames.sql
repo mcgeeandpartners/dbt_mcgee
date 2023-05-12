@@ -3,7 +3,7 @@
 select
     pv.product_id,
     pv.product_variant_id,
-    {{ dbt_utils.surrogate_key(['pv.product_variant_id', 'pv.product_id']) }} as product_key,
+    {{ dbt_utils.generate_surrogate_key(['pv.product_variant_id', 'pv.product_id']) }} as product_key,
     p.product_title,
     p.product_handle,
     p.product_type,

@@ -1,6 +1,6 @@
 select
     id as refund_id,
-    {{ dbt_utils.surrogate_key(['id']) }} as refund_key,
+    {{ dbt_utils.generate_surrogate_key(['id']) }} as refund_key,
     order_id,
     user_id,
     note,
