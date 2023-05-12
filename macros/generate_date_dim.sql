@@ -1,6 +1,6 @@
 {% macro generate_date_dim() -%}
 
-select {{ dbt_utils.surrogate_key(['DATE_COLUMN']) }} as DATE_KEY,
+select {{ dbt_utils.generate_surrogate_key(['DATE_COLUMN']) }} as DATE_KEY,
 		DATE_COLUMN AS DATE,
         FULL_DATE_DESC,
 		DAY_NUM_IN_WEEK,

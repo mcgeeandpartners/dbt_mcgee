@@ -5,7 +5,7 @@
 }}
 
 select
-    {{ dbt_utils.surrogate_key(['id']) }} as order_key,
+    {{ dbt_utils.generate_surrogate_key(['id']) }} as order_key,
     id as order_id,
     customer_id,
     app_id,

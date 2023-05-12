@@ -1,7 +1,7 @@
 --Staging model for master sku list uploaded via Fivetran gsheet connector
 
 select
-    {{ dbt_utils.surrogate_key(['product_variant_id', 'product_id', 'product_title']) }} as sku_list_key, --5 cases that makes this not unique. We exclude them while testing
+    {{ dbt_utils.generate_surrogate_key(['product_variant_id', 'product_id', 'product_title']) }} as sku_list_key, --5 cases that makes this not unique. We exclude them while testing
     _row::varchar as row_sequence,
     lower(trim(product_id))::varchar as product_id,
     lower(trim(product_title))::varchar as product_title,

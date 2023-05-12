@@ -13,7 +13,7 @@ with cohorts as (
 staging as (
     select
         c.customer_id,
-        {{ dbt_utils.surrogate_key(['c.customer_id']) }} as customer_key,
+        {{ dbt_utils.generate_surrogate_key(['c.customer_id']) }} as customer_key,
         c.first_name ||' '|| c.last_name as name,
         c.email,
         c.created_at_utc as customer_created_at,

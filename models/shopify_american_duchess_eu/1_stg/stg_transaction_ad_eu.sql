@@ -1,5 +1,5 @@
 select 
-    {{ dbt_utils.surrogate_key(['id']) }} as transaction_key,
+    {{ dbt_utils.generate_surrogate_key(['id']) }} as transaction_key,
     id as transaction_id,
     order_id,
     refund_id,

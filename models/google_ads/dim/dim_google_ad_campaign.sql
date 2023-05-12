@@ -1,5 +1,5 @@
 select 
-    {{ dbt_utils.surrogate_key(['campaign_id']) }} as campaign_key,
+    {{ dbt_utils.generate_surrogate_key(['campaign_id']) }} as campaign_key,
     campaign_id,
     campaign_name, 
     advertising_channel_type, 

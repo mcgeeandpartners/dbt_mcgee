@@ -6,7 +6,7 @@ select
     d.discount_id,
     da.order_id,
     da.discount_code,
-    {{ dbt_utils.surrogate_key(['d.discount_id', 'da.order_id', 'da.discount_code']) }} as discount_key,
+    {{ dbt_utils.generate_surrogate_key(['d.discount_id', 'da.order_id', 'da.discount_code']) }} as discount_key,
     da.type,
     da.allocation_method,
     da.value_type,

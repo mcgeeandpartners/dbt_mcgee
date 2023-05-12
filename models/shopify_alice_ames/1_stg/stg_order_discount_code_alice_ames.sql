@@ -1,5 +1,5 @@
 select 
-    {{ dbt_utils.surrogate_key(['order_id', 'code']) }} as order_discount_code_id,
+    {{ dbt_utils.generate_surrogate_key(['order_id', 'code']) }} as order_discount_code_id,
     order_id,
     lower(code) as discount_code,
     index,
