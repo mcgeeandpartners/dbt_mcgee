@@ -5,7 +5,6 @@
 }}
 
 select
-    {{ dbt_utils.generate_surrogate_key(['id']) }} as order_key,
     id as order_id,
     customer_id,
     app_id,
@@ -40,6 +39,7 @@ select
     browser_ip,
     nullif(financial_status, '') as order_financial_status,
     currency,
+    presentment_currency,
     nullif(referring_site, '') as referring_site,
     landing_site_base_url,
     note,
@@ -50,6 +50,7 @@ select
     subtotal_price,
     total_price,
     total_price_usd,
+    total_price_set:presentment_money:amount::varchar as total_presentment_price,
     total_tax,
     current_total_price,
     current_subtotal_price,

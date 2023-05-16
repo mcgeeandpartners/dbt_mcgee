@@ -1,4 +1,5 @@
 --This is the version of staging order line table with backfilled dummy product and variant ids. 
+--NOTE: The prices in this model are not converted to USD. That happens in fact table
 
 with final as (
     select
@@ -19,8 +20,6 @@ with final as (
         oli.order_line_item_units_product, --sum this up on order in fact table
         oli.order_line_item_units_route,
         oli.price_set,
-        oli.pre_tax_price,
-        oli.pre_tax_price_set,
         oli.sku,
         oli.total_discount,
         oli.total_discount_set,

@@ -13,4 +13,25 @@ models:
       - name: date_key
         description: Unique key for the table
         tests:
-          - not_null 
+          - not_null
+
+  - name: stg_order_ad_eu
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_order_line_item_ad_eu
+    columns:
+      - name: order_line_item_id
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_order_ad_eu')
+              field: order_id
+          

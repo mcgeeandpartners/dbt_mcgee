@@ -1,6 +1,3 @@
---We have to resolve issues for null product ids in this table.
---For som product titles, we have null product ids in some orders, but populated product ids in others. With following 3 ctes, we are getting those product titles so we can add them back in final cte.
-
 with source as (
     select * from {{ source('shopify_ad_eu', 'order_line') }}
 )
@@ -9,9 +6,7 @@ select
     oli.id as order_line_item_id,
     oli.order_id,
     oli.variant_id::varchar as product_variant_id,
-    {# coalesce(oli.variant_id::varchar, pvib.product_variant_id) as product_variant_id, #}
     oli.product_id::varchar as product_id,
-    {# coalesce(oli.product_id::varchar, pib.product_id) as product_id, #}
     lower(oli.variant_title) as product_variant_title,
     lower(oli.name) as product_variant_name,
     lower(oli.title) as product_title,
@@ -22,17 +17,22 @@ select
         when nvl(order_line_item_vendor, '') = 'route' then true
         else NULL
     end as is_vendor_route,
-    oli.price as order_line_item_price,
+    oli.price as order_line_item_price_eur,
+    oli.price * b.implied_eur_to_usd_rate_per_order as order_line_item_price,
     oli.quantity as order_line_item_units,
-    iff(is_vendor_route = false, oli.price, 0) as order_line_item_price_product,
-    iff(is_vendor_route = true, oli.price, 0) as order_line_item_price_route,
-    iff(is_vendor_route = false, oli.quantity, 0) as order_line_item_units_product, --sum this up on order in fact table
+    iff(is_vendor_route = false, oli.price, 0) as order_line_item_price_product_eur,
+    order_line_item_price_product_eur * b.implied_eur_to_usd_rate_per_order as order_line_item_price_product,
+    iff(is_vendor_route = true, oli.price, 0) as order_line_item_price_route_eur,
+    order_line_item_price_route_eur * b.implied_eur_to_usd_rate_per_order as order_line_item_price_route,
+
+    iff(is_vendor_route = false, oli.quantity, 0) as order_line_item_units_product,
     iff(is_vendor_route = true, oli.quantity, 0) as order_line_item_units_route,
     oli.price_set,
-    oli.pre_tax_price,
-    oli.pre_tax_price_set,
     nullif(lower(oli.sku), '') as sku,
-    oli.total_discount,
+
+    oli.total_discount as total_discount_eur,
+    oli.total_discount * b.implied_eur_to_usd_rate_per_order as total_discount,
+    
     oli.total_discount_set,
     oli.destination_location_address_2,
     oli.fulfillable_quantity,
@@ -64,3 +64,5 @@ select
     oli._fivetran_synced
     
 from source as oli
+left join {{ ref('base_stg_usd_conversion_rate_per_order_eu') }} as b 
+    on oli.order_id = b.order_id
