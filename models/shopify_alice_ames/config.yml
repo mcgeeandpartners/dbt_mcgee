@@ -16,40 +16,6 @@ models:
               to: ref('stg_customer_alice_ames')
               field: customer_id
 
-  # - name: stg_discount_alice_ames
-  #   description: Each record represents a discount code.
-  #   columns:
-  #     - name: discount_id
-  #       description: Unique key for the table
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: discount_code
-  #       tests:
-  #         - not_null
-  #     - name: price_rule_id
-        # tests:
-        #   - not_null
-
-  # - name: stg_discount_application_alice_ames
-  #   description: Each record represents the discount being applied to an order in Shopify for a given target type.
-  #   columns:
-  #     - name: discount_code
-  #       tests:
-  #         # - not_null -- This is null which is why we are using order_discount_code table primarily
-  #         - relationships:
-  #             to: ref('stg_discount_alice_ames')
-  #             field: discount_code
-  #     - name: order_id
-  #       tests:
-  #         - not_null
-  #         - relationships:
-  #             to: ref('stg_order_alice_ames')
-  #             field: order_id
-  #     - name: target_type
-        # tests:
-        #   - not_null
-
   - name: stg_inventory_item_level_alice_ames
     columns:
       - name: inventory_item_id
@@ -83,11 +49,6 @@ models:
   - name: stg_order_alice_ames
     description: Each record represents an order in Shopify.
     columns:
-      - name: order_key
-        description: Unique key for the table
-        tests:
-          - not_null
-          - unique
       - name: currency
         description: The three-letter code for the shop currency.
         tests:
@@ -101,55 +62,6 @@ models:
           - relationships:
               to: ref('transform_order_line_item_alice_ames')
               field: order_id
-
-
-  # - name: stg_order_discount_code_alice_ames
-  #   description: Each record represents discount code associated with the order in Shopify.
-  #   columns:
-  #     - name: order_discount_code_id
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: order_id
-  #       tests:
-  #         - not_null
-  #         - relationships:
-  #             to: ref('stg_order_alice_ames')
-  #             field: order_id
-  #     - name: discount_code
-        # tests:
-        #   - not_null
-        #   - relationships:
-        #       to: ref('stg_discount_alice_ames')
-        #       field: discount_code
-
-  # - name: stg_order_line_refund_alice_ames
-  #   description: Each record represents a line item from an order in Shopify.
-  #   columns:
-  #     - name: order_line_refund_key
-  #       description: Unique key for the table
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: order_line_refund_id
-  #       description: The unique identifier of the line item in the refund.
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: order_line_item_id
-  #       description: The ID of the related line item in the order.
-  #       tests:
-  #         - not_null
-  #         - relationships:
-  #             to: ref('stg_order_line_item_alice_ames')
-  #             field: order_line_item_id        
-  #     - name: refund_id
-  #       description: The ID of the related refund.
-  #       tests:
-  #         - not_null
-  #         - relationships:
-  #             to: ref('stg_refund_alice_ames')
-  #             field: refund_id        
 
   - name: stg_product_alice_ames
     description: Each record represents a product in Shopify.
@@ -183,72 +95,6 @@ models:
           - relationships:
               to: ref('stg_inventory_item_level_alice_ames')
               field: inventory_item_id        
-
-  # - name: stg_refund_alice_ames
-  #   description: Each record represents a refund within Shopify.
-  #   columns:
-  #     - name: refund_key
-  #       description: Unique key for the table
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: refund_id
-  #       description: The unique numeric identifier for the refund.
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: order_id
-        # description: Reference to the order which the refund is associated.
-        # tests:
-        #   - not_null
-        #   - relationships:
-        #       to: ref('stg_order_alice_ames')
-        #       field: order_id        
-        
-  # - name: stg_transaction_alice_ames
-  #   description: Each record represents a transaction in Shopify.
-  #   columns:
-  #     - name: transaction_key
-  #       description: Unique key for the table
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: transaction_id
-  #       description: The ID for the transaction.
-  #       tests:
-  #         - not_null
-  #         - unique
-  #     - name: order_id
-  #       description: The ID for the order that the transaction is associated with.
-  #       tests:
-  #         - not_null
-  #         - relationships:
-  #             to: ref('stg_order_alice_ames')
-  #             field: order_id        
-  #     - name: refund_id
-  #       description: The ID associated with a refund in the refund table.
-  #       tests:
-  #         - not_null
-  #         - relationships:
-  #             to: ref('stg_refund_alice_ames')
-  #             field: refund_id        
-  #     - name: currency
-  #       description: The three-letter code (ISO 4217 format) for the currency used for the payment.
-  #       tests:
-  #         - accepted_values:
-  #             values: ['USD']        
-
-#####------#####
-
-  # - name: stg_master_sku_list_alice_ames                   
-  #   description: External product info via fivetran gsheet connector
-  #   columns:
-  #     - name: sku_list_key
-  #       tests:
-  #         - not_null
-  #         - unique:
-  #             config:
-  #               where: "sku_list_key not in ('2a2842ebd019d49c0675829e21abce45', 'e39e8cb4ba66c389ee54bbfe65c63c95', 'bf304f5f21c6f008faf85bbc4acdd940', 'e76acc51066fad0291a5fce3d9ea99af', 'a4bbf9b0b3d98054fb8903fa031c80e3')"
 
   - name: base_stg_null_product_backfill_alice_ames
     description: Contains product titles with missing product_ids in order line table

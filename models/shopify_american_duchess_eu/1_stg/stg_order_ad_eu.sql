@@ -1,5 +1,4 @@
 select
-    {{ dbt_utils.generate_surrogate_key(['id']) }} as order_key,
     id as order_id,
     customer_id,
     app_id,
@@ -33,24 +32,42 @@ select
     source_name,
     browser_ip,
     nullif(financial_status, '') as order_financial_status,
-    currency,
+    o.currency,
+    o.presentment_currency, 
     nullif(referring_site, '') as referring_site,
     landing_site_base_url,
     note,
     processing_method,
     taxes_included,
-    total_line_items_price,
-    total_discounts,
-    subtotal_price,
-    total_price,
-    total_price_usd,
-    total_tax,
-    current_total_price,
-    current_subtotal_price,
-    current_total_discounts,
-    current_total_tax,
-    total_price - current_total_price as refund_total,
-    total_price + o.total_discounts - total_tax - total_line_items_price  as revenue_shipping,
+
+    --Besides the usd and presentment fields, all other are currency fields in euros
+    o.total_line_items_price as total_line_items_price_eur,
+    o.total_discounts as total_discounts_eur,
+    o.subtotal_price as subtotal_price_eur,
+    o.total_price as total_price_eur,
+    o.total_tax as total_tax_eur,
+    o.current_total_price as current_total_price_eur,
+    o.current_subtotal_price as current_subtotal_price_eur,
+    o.current_total_discounts as current_total_discounts_eur,
+    o.current_total_tax as current_total_tax_eur,
+    total_price_eur - current_total_price_eur as refund_total_eur,
+    total_price_eur + total_discounts_eur - total_tax_eur - total_line_items_price_eur  as revenue_shipping_eur,
+
+    --converting the euro fields in usd based on the implied rate
+    total_line_items_price_eur * b.implied_eur_to_usd_rate_per_order as total_line_items_price,
+    total_discounts_eur * b.implied_eur_to_usd_rate_per_order as total_discounts,
+    subtotal_price_eur * b.implied_eur_to_usd_rate_per_order as subtotal_price,
+    total_price_eur * b.implied_eur_to_usd_rate_per_order as total_price,
+    o.total_price_usd,
+    total_price_set:presentment_money:amount::varchar as total_presentment_price,
+    total_tax_eur * b.implied_eur_to_usd_rate_per_order as total_tax,
+    current_total_price_eur * b.implied_eur_to_usd_rate_per_order as current_total_price,
+    current_subtotal_price_eur * b.implied_eur_to_usd_rate_per_order as current_subtotal_price,
+    current_total_discounts_eur * b.implied_eur_to_usd_rate_per_order as current_total_discounts,
+    current_total_tax_eur * b.implied_eur_to_usd_rate_per_order as current_total_tax,
+    refund_total_eur  * b.implied_eur_to_usd_rate_per_order as refund_total,
+    revenue_shipping_eur  * b.implied_eur_to_usd_rate_per_order as revenue_shipping,
+
     total_shipping_price_set,
     created_at as order_placed_at_utc,
     cancelled_at as cancelled_at_utc,
@@ -59,4 +76,6 @@ select
     updated_at as updated_at_utc
   
 from {{ source('shopify_ad_eu', 'order') }} as o
+left join {{ ref('base_stg_usd_conversion_rate_per_order') }} as b 
+    on o.id = b.order_id
 where not _fivetran_deleted
