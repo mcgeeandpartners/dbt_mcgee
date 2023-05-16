@@ -76,6 +76,6 @@ select
     updated_at as updated_at_utc
   
 from {{ source('shopify_ad_eu', 'order') }} as o
-left join {{ ref('base_stg_usd_conversion_rate_per_order') }} as b 
+left join {{ ref('base_stg_usd_conversion_rate_per_order_eu') }} as b 
     on o.id = b.order_id
 where not _fivetran_deleted

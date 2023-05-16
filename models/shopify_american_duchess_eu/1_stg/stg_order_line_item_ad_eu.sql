@@ -64,5 +64,5 @@ select
     oli._fivetran_synced
     
 from source as oli
-left join {{ ref('base_stg_usd_conversion_rate_per_order') }} as b 
+left join {{ ref('base_stg_usd_conversion_rate_per_order_eu') }} as b 
     on oli.order_id = b.order_id

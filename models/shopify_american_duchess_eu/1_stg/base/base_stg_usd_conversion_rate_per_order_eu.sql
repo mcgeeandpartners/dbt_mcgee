@@ -1,3 +1,5 @@
+{{ config(alias="implied_usd_conversion_rate_per_order_eu") }}
+
 select 
     id as order_id, 
     currency, 
