@@ -1,6 +1,12 @@
 --This is the version of staging order line table with backfilled dummy product and variant ids. 
 --NOTE: The prices in this model are not converted to USD. That happens in fact table
 
+{{
+  config(
+    materialized = 'table'
+    )
+}}
+
 with final as (
     select
         oli.order_line_item_id,
