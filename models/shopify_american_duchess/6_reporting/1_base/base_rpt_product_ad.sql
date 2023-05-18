@@ -66,6 +66,7 @@ select
   , p.product_is_pre_order As product_is_pre_order
   , p.product_is_clearance
   , p.product_tags
+  , p.product_pre_order
   , p.product_color as product_color
   , p.product_made_in as product_made_in
   , p.product_manufacturer as product_manufacturer

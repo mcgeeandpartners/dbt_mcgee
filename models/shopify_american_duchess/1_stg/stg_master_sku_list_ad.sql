@@ -551,6 +551,9 @@ with product_details AS (
     , product_is_pre_order
     , product_is_clearance
     , product_tags
+    , SUBSTR(product_tags, position ('pre-order', product_tags)-5, 
+        position(',', SUBSTR(product_tags, position ('pre-order', product_tags)-5))-1)
+        AS product_pre_order
     from product_mapping_temp
 )
 , clean_up AS (
@@ -565,6 +568,7 @@ with product_details AS (
     , max(product_style) as product_style
     , max(product_heel) as product_heel
     , max(product_tags) as product_tags
+    , max(product_pre_order) as product_pre_order
     FROM product_mapping
     GROUP BY 1
 )
@@ -584,6 +588,7 @@ with product_details AS (
         , map.product_is_pre_order
         , map.product_is_clearance
         , c.product_tags
+        , c.product_pre_order
     FROM product_mapping map
     LEFT JOIN clean_up c ON map.product_title_adj = c.product_title_adj
 )
@@ -613,6 +618,7 @@ with product_details AS (
         , map.product_is_pre_order
         , map.product_is_clearance
         , map.product_tags
+        , map.product_pre_order
     FROM unique_variant_list ul
     LEFT JOIN final_mapping map on ul.product_title = map.product_title
 )
