@@ -37,6 +37,7 @@ select
     v.product_is_clearance,
     v.product_style, 
     v.product_tags,
+    v.product_pre_order,
     NULL as product_made_in,
     NULL as product_manufacturer,
     i.inventory_item_id, 
