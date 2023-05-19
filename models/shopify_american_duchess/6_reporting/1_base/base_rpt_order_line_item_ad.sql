@@ -58,6 +58,7 @@ select
   , products.product_genre
   , products.product_decade
   , products.product_is_pre_order
+  , products.product_pre_order
   , products.product_is_clearance
   , products.product_tags
   , products.product_color
