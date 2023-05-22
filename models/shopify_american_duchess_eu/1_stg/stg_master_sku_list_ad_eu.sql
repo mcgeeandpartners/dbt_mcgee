@@ -3,10 +3,10 @@ with product_details AS (
         lower(p.title) as product_title
         , lower(listagg(pt.value, ', ')) as product_tags
         , lower(listagg(c.title, ', ')) as collection_titles
-    from {{ source('shopify_ad', 'product') }} as p
-    left join {{ source('shopify_ad', 'product_tag') }} as pt on p.id = pt.product_id
-    left join {{ source('shopify_ad', 'collection_product') }} as cp on p.id = cp.product_id
-    left join {{ source('shopify_ad', 'collection') }} as c on c.id = cp.collection_id
+    from {{ source('shopify_ad_eu', 'product') }} as p
+    left join {{ source('shopify_ad_eu', 'product_tag') }} as pt on p.id = pt.product_id
+    left join {{ source('shopify_ad_eu', 'collection_product') }} as cp on p.id = cp.product_id
+    left join {{ source('shopify_ad_eu', 'collection') }} as c on c.id = cp.collection_id
     group by 1
 )
 , products_oli AS (
@@ -14,7 +14,7 @@ with product_details AS (
           product_title
         , null as product_tags
         , null as collection_titles
-    from {{ ref('transform_order_line_item_ad') }}
+    from {{ ref('int_order_line_item_ad_eu') }}
 )
 , product_details_full as(
     select * from product_details
@@ -597,7 +597,7 @@ with product_details AS (
     product_title
     , product_variant_name
     , sum(order_line_item_price*order_line_item_units) as volume_proxy
-    from {{ ref('transform_order_line_item_ad') }}
+    from {{ ref('int_order_line_item_ad_eu') }}
     group by 1,2
 )
 , full_set AS (
