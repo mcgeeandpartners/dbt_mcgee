@@ -23,29 +23,6 @@ models:
           - not_null
           - unique
 
-  - name: stg_order_adjustment_alice_ames
-    description: Each record represents an adjustment to an order within Shopify.
-    columns:
-      - name: order_adjustment_id
-        description: The unique numeric identifier for the order adjustment.
-        tests:
-          - not_null
-          - unique
-      - name: order_id
-        description: Reference to the order which the adjustment is associated.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_order_alice_ames')
-              field: order_id
-      - name: refund_id
-        description: Reference to the refund which the adjustment is associated.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_refund_alice_ames')
-              field: refund_id
-
   - name: stg_order_alice_ames
     description: Each record represents an order in Shopify.
     columns:
@@ -96,27 +73,6 @@ models:
               to: ref('stg_inventory_item_level_alice_ames')
               field: inventory_item_id        
 
-  - name: base_stg_null_product_backfill_alice_ames
-    description: Contains product titles with missing product_ids in order line table
-    columns:
-      - name: product_title || product_id
-        tests:
-          - unique        
-      - name: order_line_item_id
-        tests:
-          - unique         
-
-  - name: base_stg_null_product_variant_backfill_alice_ames                   
-    description: Contains product variant names with missing variant_ids in order line table
-    columns:
-      - name: product_variant_name || product_variant_id
-        tests:
-          - unique
-      - name: order_line_item_id
-        tests:
-          - not_null
-          - unique               
-
   - name: stg_order_line_item_alice_ames
     description: Each record represents a line item from an order in Shopify.
     columns:
@@ -138,90 +94,6 @@ models:
         tests:
           - not_null
 
-  - name: base_int_null_product_variant_backfill_alice_ames                   
-    description: Contains product variant names with populated variant_ids generated via logic
-    columns:
-      - name: product_variant_name || product_title || product_variant_id
-        tests:
-          - not_null
-          - unique
-
-  - name: int_order_line_item_alice_ames
-    description: Each record represents a line item from an order in Shopify.
-    columns:
-      - name: order_line_item_id
-        description: The ID of the line item.
-        tests:
-          - not_null
-          - unique
-
-  - name: int_product_alice_ames
-    description: Each record represents product in Shopify.
-    columns:
-      - name: product_id
-        description: The ID of the product
-        tests:
-          - unique
-          - not_null
-          - relationships:
-              to: ref('stg_product_alice_ames')
-              field: product_id
-              config:
-                where: "product_status != 'deleted'"     
-
-      - name: product_title
-        description: The title of the product
-        tests:
-          - unique
-          - not_null
-
-  - name: transform_order_line_item_alice_ames
-    description: Each record represents a line item from an order in Shopify.
-    columns:
-      - name: order_line_item_id
-        description: The ID of the line item.
-        tests:
-          - not_null
-          - unique
-      - name: product_id
-        description: The ID of the product that the line item belongs to. Can be null if the original product associated with the order is deleted at a later date.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('transform_product_alice_ames')
-              field: product_id        
-      - name: product_variant_id
-        description: The ID of the product variant.
-        tests:
-          - not_null
-          - relationships:
-              to: ref('transform_product_variant_alice_ames')
-              field: product_variant_id        
-
-  - name: transform_product_variant_alice_ames
-    description: Each record represents unique combindation of product id and variant in Shopify.
-    columns:
-      - name: product_variant_id || product_id
-        description: The ID of the product
-        tests:
-          - unique
-          - not_null
-      - name: product_id
-        description: The ID of the product
-        tests:
-          - not_null
-          - relationships:
-              to: ref('transform_product_alice_ames')
-              field: product_id
-              
-  - name: transform_product_alice_ames                   
-    description: Product level transformed model
-    columns:
-      - name: product_id
-        tests:
-          - unique
-          - not_null
-
   - name: dim_product_alice_ames                   
     description: Product level dim
     columns:
@@ -240,9 +112,6 @@ models:
           - unique
 
   - name: fact_order_line_item_alice_ames                   
-    # tests:
-    #   - dbt_utils.equal_rowcount:
-    #       compare_model: ref('stg_order_line_item_alice_ames')
     columns:
       - name: order_line_item_id
         tests:
@@ -272,25 +141,7 @@ models:
         description: Unique identifier
         tests:
           - not_null
-          - unique
-
-  - name: base_rpt_order
-    description: "."
-    columns:
-      - name: order_id
-        description: Unique identifier
-        tests:
-          - not_null
-          - unique          
-
-  - name: base_rpt_order_line_item
-    description: "."
-    columns:
-      - name: order_line_item_id
-        description: Unique identifier
-        tests:
-          - not_null
-          - unique                    
+          - unique                      
 
   - name: dash_marketing_by_reporting_period_alice_ames
     description: "."
