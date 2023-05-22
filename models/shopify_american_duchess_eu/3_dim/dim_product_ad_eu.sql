@@ -6,7 +6,6 @@ select
     {{ dbt_utils.generate_surrogate_key(['pv.product_variant_id', 'pv.product_id']) }} as product_key,
     p.product_title,
     p.product_handle,
-    p.product_type,
     p.product_status,
     pv.product_variant_title,
     pv.price as product_price,
@@ -24,15 +23,21 @@ select
     pv.compare_at_price,
     pv.created_at_utc as product_created_at,
     pv.updated_at_utc as product_updated_at,
-    {# these fields need to be updated when we have the SKU mapping document #}
-    NULL as product_category,
-    NULL as product_sub_type,
-    NULL as product_heel,
-    NULL as product_era,
-    NULL as product_genre,
-    NULL as product_decade,
-    NULL as product_is_pre_order,
-    NULL as product_color,
+    v.volume_proxy, 
+    v.product_title_adj, 
+    v.product_category, 
+    v.product_type,
+    v.product_sub_type, 
+    v.product_heel, 
+    v.product_era, 
+    v.product_genre, 
+    v.product_decade, 
+    v.product_color, 
+    v.product_is_pre_order, 
+    v.product_is_clearance,
+    v.product_style, 
+    v.product_tags,
+    v.product_pre_order,
     NULL as product_made_in,
     NULL as product_manufacturer,
     i.inventory_item_id, 
@@ -46,3 +51,7 @@ left join {{ ref('int_product_variant_ad_eu') }} as pv
 left join {{ ref('stg_inventory_item_level_ad_eu')}}  as i
     on nullif(lower(pv.product_variant_sku), '') = i.product_sku
     and i.is_most_recent = 1
+--Following is for master SKU list fields
+left join {{ ref('stg_master_sku_list_ad_eu') }} as v
+    on pv.product_variant_name = v.product_variant_name
+
