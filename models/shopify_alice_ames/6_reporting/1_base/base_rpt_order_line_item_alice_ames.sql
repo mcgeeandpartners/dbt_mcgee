@@ -33,7 +33,7 @@ select
   , oli.order_line_item_units as units
   , oli.order_line_item_gross_revenue as gross_revenue
   , oli.order_line_item_total_discount as discount_total
-  , round(discount_total/nullif(gross_revenue,0),2) as discount_percent
+  , round(discount_total/nullif(order_line_item_msrp,0),2) as discount_percent
   /*customer fields*/
   , customers.customer_id
   , customers.customer_cohort_month
@@ -44,6 +44,7 @@ select
   , customers.customer_country
   , datediff("month", customers.customer_cohort_month, dates.date) as customer_months_since_acq
   /*product fields*/
+  , products.product_key
   , products.product_variant_id
   , products.product_id
   , products.product_title
