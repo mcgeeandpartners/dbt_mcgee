@@ -2,6 +2,7 @@
 
 select
     oli.order_line_item_id
+    , oli.order_id
   /*date dimensions*/
   , dates.date as order_date
   , dates.day_num_in_week
@@ -41,7 +42,9 @@ select
   , customers.customer_state
   , customers.customer_zipcode
   , customers.customer_country
+  , datediff("month", customers.customer_cohort_month, dates.date) as customer_months_since_acq
   /*product fields*/
+  , products.product_key
   , products.product_variant_id
   , products.product_id
   , products.product_title
