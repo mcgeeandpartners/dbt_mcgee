@@ -441,6 +441,14 @@ sources:
             description: Record representing total duties set for the refund.
           - name: order_id
             description: Reference to the order which the refund is associated.
+      - name: order_url_tag
+        description: Each record represents a marketing attribution dimension on a particular order.
+        columns:
+          - name: order_id
+          - name: key
+          - name: value
+          - name: _fivetran_synced
+
 
   - name: aestuary_gheets
     schema: aestuary_google_sheets
