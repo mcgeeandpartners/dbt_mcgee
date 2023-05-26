@@ -55,7 +55,7 @@ left join {{ ref('dim_date_alice_ames') }} as dates
 	on oli.date_key = dates.date_key
 left join {{ ref('base_rpt_customers_alice_ames') }} as customers
   on oli.customer_key = customers.customer_key
-left join {{ ref('base_rpt_order_marketing_attribution_alice_ames') }} as mkt_attri
+left join {{ ref('stg_order_url_tag_alice_ames') }} as mkt_attri
   on oli.order_id = mkt_attri.order_id
 
 {{ dbt_utils.group_by(n=31) }}
