@@ -23,6 +23,10 @@ select
   , oli.order_fulfillment_status as fulfillment_status
   , oli.order_currency as currency
   , oli.is_new_customer_order
+  /*Order Marketing Dimension Fields*/
+  , mkt_attri.utm_campaign
+  , mkt_attri.utm_medium
+  , mkt_attri.utm_source
   /*Customer Dimension Fields*/
   , customers.customer_id
   , customers.customer_cohort_month
@@ -51,5 +55,7 @@ left join {{ ref('dim_date_alice_ames') }} as dates
 	on oli.date_key = dates.date_key
 left join {{ ref('base_rpt_customers_alice_ames') }} as customers
   on oli.customer_key = customers.customer_key
+left join {{ ref('stg_order_url_tag_alice_ames') }} as mkt_attri
+  on oli.order_id = mkt_attri.order_id
 
-{{ dbt_utils.group_by(n=28) }}
+{{ dbt_utils.group_by(n=31) }}
