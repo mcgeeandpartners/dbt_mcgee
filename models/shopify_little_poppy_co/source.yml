@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: shopify_little_poppy_co
+    schema: shopify_little_poppy_co
+    database: aestuary_raw
+    tables:
+      - name: customer_address
+        description: Each record represents the different addresses assocaited with a customer in customer table.
+      - name: customer
+        description: Each record represents a customer in Shopify.
+      - name: inventory_item
+        description: Each record is 1:1 with a product variant id
+      - name: inventory_level
+        description: Joins to inventory_item table to provide the item available quantity
+      - name: order
+        identifier: ORDER
+        quoting:
+          identifier: true
+        description: Each record represents an order in Shopify.
+      - name: order_line
+        description: Each record represents a line item for an order in Shopify.
+      - name: product
+        description: Each record represents a product in Shopify.
+      - name: product_variant
+        description: Each record represents a product variant in Shopify
