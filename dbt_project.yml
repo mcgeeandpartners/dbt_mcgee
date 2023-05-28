@@ -103,5 +103,19 @@ models:
           +materialized: table
         6_reporting:
           +materialized: table
+      shopify_little_poppy_co:
+        +schema: shopify_little_poppy_co
+        1_stg:
+          +materialized: view
+        2_int:
+          +materialized: view
+        3_transform:
+          +materialized: view
+        4_dim:
+          +materialized: table
+        5_fact:
+          +materialized: table
+        6_reporting:
+          +materialized: table
       consolidated_bi_reports:
         +schema: consolidated_bi_reports
