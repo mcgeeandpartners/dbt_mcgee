@@ -27,6 +27,8 @@ select
   , mkt_attri.utm_campaign
   , mkt_attri.utm_medium
   , mkt_attri.utm_source
+  , oli.landing_site_base_url
+  , oli.referring_site
   /*Customer Dimension Fields*/
   , customers.customer_id
   , customers.customer_cohort_month
@@ -58,4 +60,4 @@ left join {{ ref('base_rpt_customers_alice_ames') }} as customers
 left join {{ ref('stg_order_url_tag_alice_ames') }} as mkt_attri
   on oli.order_id = mkt_attri.order_id
 
-{{ dbt_utils.group_by(n=31) }}
+{{ dbt_utils.group_by(n=33) }}
