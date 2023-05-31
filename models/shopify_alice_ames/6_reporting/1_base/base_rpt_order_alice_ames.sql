@@ -77,4 +77,4 @@ left join {{ ref('base_rpt_customers_alice_ames') }} as customers
 left join {{ ref('stg_order_url_tag_alice_ames') }} as mkt_attri
   on oli.order_id = mkt_attri.order_id
 
-{{ dbt_utils.group_by(n=33) }}
+{{ dbt_utils.group_by(n=34) }}
