@@ -13,6 +13,9 @@ select
     o.currency as order_currency,
     o.taxes_included as order_has_tax_included,
     iff(date_trunc('day', o.order_placed_at_utc) = date_trunc('day', c.customer_created_at), 1, 0)::boolean as is_new_customer_order,
+    /*Marketing Fields*/
+    o.landing_site_base_url,
+    o.referring_site,
 --Aggregations
     sum(order_line_item_units_product) over (partition by o.order_id) as order_units_product,
     sum(order_line_item_units_route) over (partition by o.order_id) as order_units_route,
