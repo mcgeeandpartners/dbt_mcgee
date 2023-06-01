@@ -31,6 +31,29 @@ select
   , customers.customer_state
   , customers.customer_zipcode
   , customers.customer_country
+  /*Order Marketing Dimension Fields*/
+  , mkt_attri.utm_campaign
+  , mkt_attri.utm_medium
+  , mkt_attri.utm_source
+  , oli.landing_site_base_url
+  , oli.referring_site
+  , CASE WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'google') THEN 'Google'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'linkin.bio') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'instagram') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'facebook') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'snappic') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'retailmenot') THEN 'Direct'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'Newsletter') THEN 'Email'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'attentive') THEN 'SMS'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'IGShopping') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'retailmenot') THEN 'Direct'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'smsbump-campaigns') THEN 'SMS'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'smsbump-flows') THEN 'SMS'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'bing') THEN 'Bing'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'aliceandames.com') THEN 'Direct'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'duckduckgo') THEN 'Direct'
+    ELSE Coalesce(mkt_attri.utm_source, case when length(oli.referring_site) = 0 then NULL else oli.referring_site end, 'Direct')
+    END as Shopify_Last_Click_Attr
   /*Customer Fact Fields*/
   , datediff("month", customers.customer_cohort_month, dates.date) as customer_months_since_acq
   /*Order Fact Fields*/
@@ -51,5 +74,7 @@ left join {{ ref('dim_date_ad') }} as dates
 	on oli.date_key = dates.date_key
 left join {{ ref('base_rpt_customers_ad') }} as customers
   on oli.customer_key = customers.customer_key
+left join {{ ref('stg_order_url_tag_ad') }} as mkt_attri
+  on oli.order_id = mkt_attri.order_id
 
-{{ dbt_utils.group_by(n=28) }}
+{{ dbt_utils.group_by(n=34) }}

@@ -24,3 +24,10 @@ sources:
         description: Each record represents a product in Shopify.
       - name: product_variant
         description: Each record represents a product variant in Shopify
+      - name: order_url_tag
+        description: Each record represents a marketing attribution dimension on a particular order.
+        columns:
+          - name: order_id
+          - name: key
+          - name: value
+          - name: _fivetran_synced

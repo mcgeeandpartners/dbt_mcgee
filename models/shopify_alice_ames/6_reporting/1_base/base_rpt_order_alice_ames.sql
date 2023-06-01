@@ -29,6 +29,23 @@ select
   , mkt_attri.utm_source
   , oli.landing_site_base_url
   , oli.referring_site
+  , CASE WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'google') THEN 'Google'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'linkin.bio') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'instagram') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'facebook') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'snappic') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'retailmenot') THEN 'Direct'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'Newsletter') THEN 'Email'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'attentive') THEN 'SMS'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'IGShopping') THEN 'Meta'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'retailmenot') THEN 'Direct'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'smsbump-campaigns') THEN 'SMS'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'smsbump-flows') THEN 'SMS'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'bing') THEN 'Bing'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'aliceandames.com') THEN 'Direct'
+    WHEN Contains(Coalesce(mkt_attri.utm_source, oli.referring_site, 'Direct'), 'duckduckgo') THEN 'Direct'
+    ELSE Coalesce(mkt_attri.utm_source, case when length(oli.referring_site) = 0 then NULL else oli.referring_site end, 'Direct')
+    END as Shopify_Last_Click_Attr
   /*Customer Dimension Fields*/
   , customers.customer_id
   , customers.customer_cohort_month
@@ -60,4 +77,4 @@ left join {{ ref('base_rpt_customers_alice_ames') }} as customers
 left join {{ ref('stg_order_url_tag_alice_ames') }} as mkt_attri
   on oli.order_id = mkt_attri.order_id
 
-{{ dbt_utils.group_by(n=33) }}
+{{ dbt_utils.group_by(n=34) }}
