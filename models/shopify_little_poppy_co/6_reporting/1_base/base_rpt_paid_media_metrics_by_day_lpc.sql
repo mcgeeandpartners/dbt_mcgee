@@ -11,7 +11,7 @@ with facebook_data as (
   from {{ ref('fact_facebook_ad')}} as ads 
   left join {{ ref('dim_facebook_ad_account')}} as act
     on ads.account_key = act.account_key
-  where act.account_name = 'Little Poppy Co' 
+  where act.account_name = 'Little Poppy Co' or act.account_name = '10151479030333457'
   group by 1
 )
 
