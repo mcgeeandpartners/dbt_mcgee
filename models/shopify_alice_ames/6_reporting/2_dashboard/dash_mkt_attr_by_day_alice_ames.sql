@@ -9,8 +9,6 @@ with orders_by_day as (
 
         {{ insert_kpi_metrics() }}
 
-
-
     from {{ ref('base_rpt_order_alice_ames') }} as o
 group by 1,2,3,4
 )
@@ -29,6 +27,9 @@ SELECT
     , CASE WHEN o.attr_channel = 'Meta' THEN m.reach_fb 
         WHEN o.attr_channel = 'Google' THEN m.reach_goog    
     END as reach
+    , o.net_revenue_total/nullif(spend, 0) as mer
+    , o.net_revenue_total_new_customers/nullif(spend,0) as mer_acq
+    , spend/nullif(o.unique_new_customers,0) as cac
 FROM orders_by_day o
 left join {{ ref('base_rpt_paid_media_metrics_by_day_alice_ames') }} as m
     on o.order_date = m.reporting_date

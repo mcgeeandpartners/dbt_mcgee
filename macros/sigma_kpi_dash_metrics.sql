@@ -30,13 +30,13 @@
   , avg(case when o.is_new_customer_order then o.gross_revenue_total end) as AOV_gross_total_new_customers
   , avg(case when not o.is_new_customer_order then o.gross_revenue_total end) as AOV_gross_total_recur_customers  
   , sum(o.discount_total) as discounts_total
-  , sum(o.discount_total)/sum(o.gross_revenue_total) as discounts_percent
+  , sum(o.discount_total)/nullif(sum(o.gross_revenue_total),0) as discounts_percent
   , sum(case when o.is_new_customer_order then o.discount_total end) as discounts_total_new_customers
   , sum(case when o.is_new_customer_order then o.discount_total end)
-        /sum(case when o.is_new_customer_order then o.gross_revenue_total end) as discounts_percent_new_customers
+        /nullif(sum(case when o.is_new_customer_order then o.gross_revenue_total end),0) as discounts_percent_new_customers
   , sum(case when not o.is_new_customer_order then o.discount_total end) as discounts_total_recur_customers
   , sum(case when not o.is_new_customer_order then o.discount_total end)
-        /sum(case when not o.is_new_customer_order then o.gross_revenue_total end) as discounts_percent_recur_customers
+        /nullif(sum(case when not o.is_new_customer_order then o.gross_revenue_total end),0) as discounts_percent_recur_customers
   , sum(o.refunds_total) as refunds_total
   , sum(o.net_revenue_total) as net_revenue_total
   , sum(case when o.is_new_customer_order then o.net_revenue_total end) as net_revenue_total_new_customers
