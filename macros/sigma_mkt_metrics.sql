@@ -17,8 +17,8 @@
     WHEN Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'amazon') THEN 'Amazon'
     WHEN Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'email')
         OR Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'newsletter')
+        OR Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'klaviyo')
         THEN 'Email'
-    WHEN Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'klaviyo') THEN 'Klaviyo'
     WHEN Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'retailmenot')
         OR Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'aliceandames')
         OR Contains(lower(concat(ifnull(mkt_attri.utm_medium,''),ifnull(mkt_attri.utm_source,''),ifnull(oli.referring_site,''))),'americanduchess')
