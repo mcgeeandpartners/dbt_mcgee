@@ -17,7 +17,6 @@ select
     p.billing_address_zip,
     p.billing_address_company,
     p.billing_address_phone,
-    p.billing_address_phone,
     p.billing_address_country_code,
     p.default::boolean as is_default_payment_method,
     p.payment_details_exp_year,

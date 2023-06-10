@@ -148,8 +148,6 @@ sources:
             description: The order 's position in the shop's count of orders starting at 1001. Order numbers are sequential and start at 1001.
           - name: processed_at
             description: The date and time when an order was processed. This value is the date that appears on your orders and that's used in the analytic reports.
-          - name: processing_method
-            description: How the payment was processed.
           - name: referring_site
             description: The website where the customer clicked a link to the shop.
           - name: shipping_address_address_1
@@ -214,8 +212,6 @@ sources:
           - name: _fivetran_synced
           - name: fulfillable_quantity
             description: "The amount available to fulfill, calculated as follows: quantity - max(refunded_quantity, fulfilled_quantity) - pending_fulfilled_quantity - open_fulfilled_quantity"
-          - name: fulfillment_service
-            description: The service provider that's fulfilling the item.
           - name: fulfillment_status
             description: How far along an order is in terms line items fulfilled.
           - name: gift_card
@@ -301,8 +297,6 @@ sources:
             description: The original price of the item before an adjustment or a sale.
           - name: created_at
             description: The date and time (ISO 8601 format) when the product variant was created.
-          - name: fulfillment_service
-            description: The fulfillment service associated with the product variant.
           - name: grams
             description: The weight of the product variant in grams.
           - name: id

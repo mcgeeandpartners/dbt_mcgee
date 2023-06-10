@@ -5,7 +5,6 @@ with source as (
         inventory_item_id,
         price,
         nullif(trim(lower(sku)), '') as product_variant_sku,
-        nullif(trim(lower(title)), '') as product_variant_title,
         weight,
         compare_at_price,
         nullif(trim(barcode), '') as barcode,

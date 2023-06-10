@@ -45,7 +45,6 @@ select
   , products.product_variant_id
   , products.product_id
   , products.product_title
-  , products.product_variant_title
   , products.product_sku
   , products.product_barcode
   , products.product_price as product_current_price

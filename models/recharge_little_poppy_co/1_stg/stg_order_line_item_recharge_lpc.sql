@@ -10,11 +10,10 @@ final as (
     select
         order_id,
         index,
-        nvl(external_product_id_ecommerce, shopify_product_id) as shopify_product_id
-        nvl(external_variant_id_ecommerce, shopify_variant_id) as shopify_variant_id
+        nvl(external_product_id_ecommerce, shopify_product_id) as shopify_product_id,
+        nvl(external_variant_id_ecommerce, shopify_variant_id) as shopify_variant_id,
         purchase_item_id,
         title as product_title,
-        variant_title as product_variant_title,
         sku,
         quantity,
         grams,
