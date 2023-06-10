@@ -20,11 +20,10 @@ final as (
         status,
         quantity,
         external_product_id_ecommerce,
-        nvl(external_variant_id_ecommerce, shopify_variant_id) as shopify_variant_id
+        nvl(external_variant_id_ecommerce, shopify_variant_id) as shopify_variant_id,
         recharge_product_id,
         sku
     from base
-    where not coalesce(_fivetran_deleted, false)
 )
 
 select *

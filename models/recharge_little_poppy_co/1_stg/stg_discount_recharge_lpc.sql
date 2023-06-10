@@ -16,7 +16,7 @@ final as (
         code as discount_code,
         value,
         status,
-        usage_limits,
+        usage_limit,
         applies_to,
         applies_to_resource,
         applies_to_ids,

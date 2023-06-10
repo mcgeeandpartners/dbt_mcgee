@@ -11,7 +11,6 @@ with orders_by_day as (
         , o.product_variant_id
         , o.product_id
         , o.product_title
-        , o.product_variant_title
         , o.product_sku
         , o.product_barcode
         , o.product_category
@@ -30,7 +29,7 @@ with orders_by_day as (
         {{ insert_order_line_agg_metrics() }}
 
     from {{ ref('base_rpt_order_line_item_alice_ames') }} as o
-    group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
+    group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
 )
 
 select 
@@ -44,7 +43,6 @@ select
     , ty.product_variant_id
     , ty.product_id
     , ty.product_title
-    , ty.product_variant_title
     , ty.product_sku
     , ty.product_barcode
     , ty.product_category

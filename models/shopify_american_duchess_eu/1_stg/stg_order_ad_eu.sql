@@ -43,7 +43,6 @@ select
     nullif(referring_site, '') as referring_site,
     landing_site_base_url,
     note,
-    processing_method,
     taxes_included,
 
     --Besides the usd and presentment fields, all other are currency fields in euros
