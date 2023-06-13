@@ -8,6 +8,7 @@ select
     oli.order_line_item_id,
     oli.order_id,
     coalesce(oli.product_variant_id, b.product_variant_id) as product_variant_id,
+    oli.product_variant_title,
     oli.product_variant_name,
     oli.product_id,
     oli.product_title,
