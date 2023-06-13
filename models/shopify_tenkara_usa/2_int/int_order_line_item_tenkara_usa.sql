@@ -10,6 +10,7 @@ with final as (
         oli.order_line_item_id,
         oli.order_id,
         coalesce(oli.product_variant_id, pvb.product_variant_id) as product_variant_id,
+        oli.product_variant_title,
         oli.product_variant_name,
         coalesce(oli.product_id, pvb.product_id, pvb2.product_id) as product_id,
         oli.product_title,

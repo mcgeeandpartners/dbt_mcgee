@@ -12,6 +12,7 @@ with stg_product as (
         null as inventory_item_id,
         null as price,
         null as product_variant_sku,
+        null as product_variant_title,
         null as weight,
         null as compare_at_price,
         null as barcode,

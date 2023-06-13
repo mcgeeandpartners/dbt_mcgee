@@ -5,6 +5,7 @@ with orders_by_day as (
         o.order_date
         , p.product_key
         , p.product_title
+        , p.product_variant_title
         , p.product_sku
         , p.product_barcode
         , p.product_category
@@ -16,13 +17,14 @@ with orders_by_day as (
     from {{ ref('base_rpt_order_line_item_tenkara_usa') }} as o
     left join {{ ref('dim_product_tenkara_usa') }} as p
         ON o.product_key = p.product_key
-    group by 1,2,3,4,5,6,7,8
+    group by 1,2,3,4,5,6,7,8,9
 )
 
 select 
     ty.order_date
     , ly.order_date as ly_order_date
     , NVL(ty.product_title, ly.product_title) as product_title
+    , NVL(ty.product_variant_title, ly.product_variant_title) as product_variant_title
     , NVL(ty.product_sku, ly.product_sku) as product_sku
     , NVL(ty.product_barcode, ly.product_barcode) as product_barcode
     , NVL(ty.product_category, ly.product_category) as product_category
