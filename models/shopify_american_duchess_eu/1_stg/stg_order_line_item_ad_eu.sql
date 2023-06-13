@@ -7,6 +7,7 @@ select
     oli.order_id,
     oli.variant_id::varchar as product_variant_id,
     oli.product_id::varchar as product_id,
+    lower(oli.variant_title) as product_variant_title,
     lower(oli.name) as product_variant_name,
     lower(oli.title) as product_title,
     oli.index as order_line_index,

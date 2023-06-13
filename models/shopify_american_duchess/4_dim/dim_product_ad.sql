@@ -7,6 +7,7 @@ select
     p.product_title,
     p.product_handle,
     p.product_status,
+    pv.product_variant_title,
     pv.price as product_price,
     nullif(lower(pv.product_variant_sku), '') as product_sku,
     pv.product_variant_position as product_position,

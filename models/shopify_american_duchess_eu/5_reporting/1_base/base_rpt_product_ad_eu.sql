@@ -50,6 +50,7 @@ select
   , p.product_variant_id
   , p.product_id
   , p.product_title
+  , p.product_variant_title
   , p.product_sku
   , p.product_barcode
   , p.product_price as product_current_price

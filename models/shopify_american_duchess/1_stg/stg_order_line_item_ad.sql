@@ -24,6 +24,7 @@ select
     oli.order_id,
     coalesce(oli.variant_id::varchar, pvib.product_variant_id) as product_variant_id,
     coalesce(oli.product_id::varchar, pib.product_id) as product_id,--, npi.product_id) as product_id,
+    lower(oli.variant_title) as product_variant_title,
     lower(oli.name) as product_variant_name,
     lower(oli.title) as product_title,
     oli.index as order_line_index,
