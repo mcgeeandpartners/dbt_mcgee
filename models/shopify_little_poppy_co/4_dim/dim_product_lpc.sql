@@ -26,13 +26,12 @@ select
     pv.updated_at_utc as product_updated_at,
     {# v.product_category,
     v.product_sub_type,
-    v.product_campaign,
-    v.campaign_year,
-    v.is_print,
-    v.print_solid_name,
-    v.base_fabric_color,
     v.made_in,
     v.manufacturer, #}
+    NULL as product_category,
+    NULL as product_sub_type,
+    NULL as product_made_in,
+    NULL as product_manufacturer,
     i.inventory_item_id, 
     i.inventory_cost,
     i.inventory_available_quantity
