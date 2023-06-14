@@ -50,20 +50,11 @@ select
   , products.product_barcode
   , products.product_price as product_current_price
   , products.compare_at_price as product_current_compare_at_price
-  {# , products.product_category
+  , products.product_category
   , products.product_type
   , products.product_sub_type
-  , products.product_heel
-  , products.product_era
-  , products.product_genre
-  , products.product_decade
-  , products.product_is_pre_order
-  , products.product_pre_order
-  , products.product_is_clearance
-  , products.product_tags
-  , products.product_color
   , products.product_made_in
-  , products.product_manufacturer #}
+  , products.product_manufacturer
 
 from {{ ref('fact_order_line_item_lpc') }} as oli
 left join {{ ref('dim_date_lpc') }} as dates
