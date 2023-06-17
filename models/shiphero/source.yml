@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: shiphero
+    database: aestuary_raw  
+    schema: shiphero_alice_ames  
+    tables:
+      - name: orders
+      - name: products
+      - name: returns
+      - name: warehouse_products
