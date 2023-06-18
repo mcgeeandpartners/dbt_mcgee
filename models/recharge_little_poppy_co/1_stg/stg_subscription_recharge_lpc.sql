@@ -15,8 +15,8 @@ final as (
         product_title,
         variant_title,
         sku,
-        price,
-        quantity,
+        price as subscription_price,
+        quantity as subscription_quantity,
         status as subscription_status,
         next_charge_scheduled_at as subscription_next_charge_scheduled_at,
         charge_interval_frequency,
@@ -26,12 +26,11 @@ final as (
         order_interval_unit,
         order_day_of_week,
         order_day_of_month,
-        cast(created_at as {{ dbt.type_timestamp() }}) as subscription_created_at,
-        cast(updated_at as {{ dbt.type_timestamp() }}) as subscription_updated_at,
-        cast(cancelled_at as {{ dbt.type_timestamp() }}) as subscription_cancelled_at,
+        cast(created_at as {{ dbt.type_timestamp() }}) as subscription_created_at_utc,
+        cast(updated_at as {{ dbt.type_timestamp() }}) as subscription_updated_at_utc,
+        cast(cancelled_at as {{ dbt.type_timestamp() }}) as subscription_cancelled_at_utc,
         cancellation_reason,
         cancellation_reason_comments
-
     from base
     where not coalesce(_fivetran_deleted, false)
 )
