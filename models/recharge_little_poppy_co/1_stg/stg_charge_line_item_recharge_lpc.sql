@@ -8,6 +8,7 @@ with base as (
 final as (
     
     select
+        charge_id || ' - ' ||index as charge_line_item_id,
         charge_id,
         subscription_id,
         nvl(external_product_id_ecommerce, shopify_product_id) as shopify_product_id,
