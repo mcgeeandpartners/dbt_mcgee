@@ -1,7 +1,7 @@
 {{ config(alias="dim_customer") }}
 
 SELECT ID as customer_id,
-    {{ dbt_utils.surrogate_key(['ID']) }} as customer_key,
+    {{ dbt_utils.generate_surrogate_key(['ID']) }} as customer_key,
     ROLE,
     AVATAR_URL,
     USERNAME,
@@ -75,7 +75,7 @@ SELECT 0 as customer_id,
 union all 
 
 SELECT CUSTOMER_ID,
-    {{ dbt_utils.surrogate_key(['CUSTOMER_ID']) }} as customer_key,
+    {{ dbt_utils.generate_surrogate_key(['CUSTOMER_ID']) }} as customer_key,
     NULL as ROLE,
     NULL as AVATAR_URL,
     NULL as USERNAME,

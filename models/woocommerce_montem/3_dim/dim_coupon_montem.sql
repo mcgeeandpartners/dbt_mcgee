@@ -1,7 +1,7 @@
 {{ config(alias="dim_coupon") }}
 
 SELECT ID as coupon_id,
-    {{ dbt_utils.surrogate_key(['ID']) }} as coupon_key,
+    {{ dbt_utils.generate_surrogate_key(['ID']) }} as coupon_key,
     DATE_EXPIRES_GMT,
     PRODUCT_IDS,
     USAGE_LIMIT,

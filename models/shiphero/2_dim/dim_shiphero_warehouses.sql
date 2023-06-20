@@ -2,7 +2,7 @@
 
 
 select id,
-    {{ dbt_utils.surrogate_key(['id']) }} as warehouse_key,
+    {{ dbt_utils.generate_surrogate_key(['id']) }} as warehouse_key,
     address_name,
     address1,
     address2,

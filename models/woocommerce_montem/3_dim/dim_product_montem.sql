@@ -1,7 +1,7 @@
 {{ config(alias="dim_product") }}
 
 select ID::varchar as ID,
-    {{ dbt_utils.surrogate_key(['ID']) }} as product_key,
+    {{ dbt_utils.generate_surrogate_key(['ID']) }} as product_key,
     BUTTON_TEXT,
     DOWNLOADABLE,
     DATE_ON_SALE_TO,
@@ -66,7 +66,7 @@ where not _FIVETRAN_DELETED
 union all 
 
 select product_id::varchar as ID,
-    {{ dbt_utils.surrogate_key(['product_id']) }} as product_key,
+    {{ dbt_utils.generate_surrogate_key(['product_id']) }} as product_key,
     NULL as BUTTON_TEXT,
     NULL as DOWNLOADABLE,
     NULL as DATE_ON_SALE_TO,
