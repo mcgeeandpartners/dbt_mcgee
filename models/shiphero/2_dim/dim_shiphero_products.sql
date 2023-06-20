@@ -1,7 +1,7 @@
 {{ config(alias="dim_products") }}
 
 select id,
-    {{ dbt_utils.surrogate_key(['id']) }} as product_key,
+    {{ dbt_utils.generate_surrogate_key(['id']) }} as product_key,
     virtual,
     kit_build,
     created_at,

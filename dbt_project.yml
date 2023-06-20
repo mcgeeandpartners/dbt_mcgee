@@ -134,3 +134,23 @@ models:
         #   +materialized: table
       consolidated_bi_reports:
         +schema: consolidated_bi_reports
+      
+      woocommerce_montem:
+        +schema: woocommerce_montem
+        1_stg:
+          +materialized: view
+        2_int:
+          +materialized: view
+        3_dim:
+          +materialized: table
+        4_fact:
+          +materialized: table
+      
+      shiphero:
+        +schema: shiphero
+        1_stg:
+          +materialized: view
+        2_dim:
+          +materialized: table
+        3_fact:
+          +materialized: table

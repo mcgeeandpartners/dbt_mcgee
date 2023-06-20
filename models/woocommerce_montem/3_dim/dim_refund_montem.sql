@@ -1,7 +1,7 @@
 {{ config(alias="dim_refund") }}
 
 SELECT ID,
-    {{ dbt_utils.surrogate_key(['ID']) }} as refund_key,
+    {{ dbt_utils.generate_surrogate_key(['ID']) }} as refund_key,
     DATE_CREATED,
     DATE_CREATED_GMT,
     AMOUNT,

@@ -1,7 +1,7 @@
 {{ config(alias="dim_orders") }}
 
 select id,
-        {{ dbt_utils.surrogate_key(['id']) }} as order_key,
+        {{ dbt_utils.generate_surrogate_key(['id']) }} as order_key,
         insurance,
         fulfillment_status,
         has_dry_ice,

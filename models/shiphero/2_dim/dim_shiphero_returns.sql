@@ -12,7 +12,7 @@ select
     shipping_carrier,
     shipping_method,
     id,
-    {{ dbt_utils.surrogate_key(['id']) }} as return_key,
+    {{ dbt_utils.generate_surrogate_key(['id']) }} as return_key,
     order_id,
     status,
     label_cost
