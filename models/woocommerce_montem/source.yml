@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: woocommerce_montem
+    database: aestuary_raw  
+    schema: woocommerce_montem  
+    tables:
+      - name: refund
+      - name: coupon
+      - name: customer
+      - name: order
+        identifier: ORDER
+        quoting:
+          identifier: true
+      - name: product_attribute
+      - name: product_category
+      - name: product
+      - name: product_variation
+      - name: order_line_item
+      - name: order_fee_line
+      - name: order_refund
+
