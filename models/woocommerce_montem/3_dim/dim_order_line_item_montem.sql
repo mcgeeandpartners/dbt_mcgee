@@ -44,7 +44,7 @@ where sto.product_id = 0
 union all
 
 select
-    null as oli_id,
+    null as id,
     ofl_id,
     total,
     null as sku,
