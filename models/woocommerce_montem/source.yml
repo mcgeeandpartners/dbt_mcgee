@@ -9,7 +9,7 @@ sources:
       - name: coupon
       - name: customer
       - name: order
-        identifier: ORDER
+        identifier: ORDERS
         quoting:
           identifier: true
       - name: product_attribute
