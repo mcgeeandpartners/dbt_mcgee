@@ -2,12 +2,12 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'dbt_aestuary'
+name: 'dbt_mcgee'
 version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'dbt_aestuary'
+profile: 'dbt_mcgee'
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
@@ -24,8 +24,6 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-vars:
-  channel_created_date: '2022-09-01'
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -35,122 +33,5 @@ vars:
 # using the `{{ config(...) }}` macro.
 
 models:
-    dbt_aestuary:
-      google_ads:
-        +schema: google_ads
-        dim:
-          +materialized: table
-        fact:
-          +materialized: table
-      facebook_ads:
-        +schema: facebook_ads
-        dim:
-          +materialized: table
-        fact:
-          +materialized: table
-      shopify_american_duchess:
-        +schema: shopify_american_duchess
-        1_stg:
-          +materialized: view
-        2_int:
-          +materialized: view
-        3_transform:
-          +materialized: view
-        4_dim:
-          +materialized: table
-        5_fact:
-          +materialized: table
-        6_reporting:
-          +materialized: table
-      shopify_american_duchess_eu:
-        +schema: shopify_american_duchess_eu
-        1_stg:
-          +materialized: view
-        2_int:
-          +materialized: view
-        3_dim:
-          +materialized: table
-        4_fact:
-          +materialized: table
-        5_reporting:
-          +materialized: table
-      shopify_tenkara_usa:
-        +materialized: table
-        +schema: shopify_tenkara_usa
-        1_stg:
-          +materialized: view
-        2_int:
-          +materialized: view
-        3_transform:
-          +materialized: view
-        4_dim:
-          +materialized: table
-        5_fact:
-          +materialized: table
-        6_reporting:
-          +materialized: table
-      shopify_alice_ames:
-        +schema: shopify_alice_ames
-        1_stg:
-          +materialized: view
-        2_int:
-          +materialized: view
-        3_transform:
-          +materialized: view
-        4_dim:
-          +materialized: table
-        5_fact:
-          +materialized: table
-        6_reporting:
-          +materialized: table
-      shopify_little_poppy_co:
-        +schema: shopify_little_poppy_co
-        1_stg:
-          +materialized: view
-        2_int:
-          +materialized: view
-        3_transform:
-          +materialized: view
-        4_dim:
-          +materialized: table
-        5_fact:
-          +materialized: table
-        6_reporting:
-          +materialized: table
-      recharge_little_poppy_co:
-        +schema: recharge_little_poppy_co
-        1_stg:
-          +materialized: view
-          
-        # 2_int:
-        #   +materialized: view
-        # 3_transform:
-        #   +materialized: view
-        # 4_dim:
-        #   +materialized: table
-        # 5_fact:
-        #   +materialized: table
-        # 6_reporting:
-        #   +materialized: table
-      consolidated_bi_reports:
-        +schema: consolidated_bi_reports
-      
-      woocommerce_montem:
-        +schema: woocommerce_montem
-        1_stg:
-          +materialized: view
-        2_int:
-          +materialized: view
-        3_dim:
-          +materialized: table
-        4_fact:
-          +materialized: table
-      
-      shiphero:
-        +schema: shiphero
-        1_stg:
-          +materialized: view
-        2_dim:
-          +materialized: table
-        3_fact:
-          +materialized: table
+  dbt_mcgee:
+    +materialized: table

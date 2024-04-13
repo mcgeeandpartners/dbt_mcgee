@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: pipedrive
+    database: swoop_database  
+    schema: pipedrive  
+    tables:
+      - name: deal_history
+      - name: pipeline
+      - name: organization
+      - name: person_email
+      - name: person
+      - name: stage
