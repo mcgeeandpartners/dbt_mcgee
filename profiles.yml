@@ -1,0 +1,18 @@
+dbt_mcgee:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: eg99003.australia-east.azure
+
+      # User/password auth
+      user: LENINMISHRA
+      password: Chinmayee@030320
+
+      role: SYSADMIN
+      database: TRANSFORMED_WH
+      warehouse: FIVETRAN_WAREHOUSE
+      schema: transformed
+      threads: 4
+      client_session_keep_alive: False
+      query_tag: lenin
