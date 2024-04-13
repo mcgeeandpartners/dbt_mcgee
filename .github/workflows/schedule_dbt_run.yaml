@@ -1,0 +1,31 @@
+name: Run dbt model 
+
+on:
+  workflow_dispatch: # Allow manual triggering
+  schedule:
+    - cron: '0 1 * * *' # Run hourly
+
+jobs:
+  run_dbt_model:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9 # Set the desired Python version
+
+      - name: Install dbt
+        run: pip install dbt-snowflake
+
+      - name: Debug dbt Environment
+        run: dbt debug --profile dbt_mcgee --target dev
+
+      - name: Download dbt packages
+        run: dbt deps 
+
+      - name: Run dbt models
+        run: dbt run 
