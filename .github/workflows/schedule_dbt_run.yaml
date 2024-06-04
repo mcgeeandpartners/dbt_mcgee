@@ -2,8 +2,6 @@ name: Run dbt model
 
 on:
   workflow_dispatch: # Allow manual triggering
-  schedule:
-    - cron: '0 1 * * *' # Run hourly
 
 jobs:
   run_dbt_model:
