@@ -27,9 +27,7 @@ select
     current_year as year,
     fiscal_week_num,
     fiscal_month_num,
-    fiscal_yearmonth,
     fiscal_quarter,
-    fiscal_yearquarter,
     fiscal_halfyear,
     fiscal_year,
     sql_timestamp,
@@ -39,7 +37,7 @@ select
 from
     (  /* <<Modify date for preferred table start date*/
         select
-            to_date('2015-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS') as dd,
+            to_date('2010-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS') as dd,
             seq1() as sl,
             row_number() over (order by sl) as row_numbers,
             dateadd(day, row_numbers, dd) as v_date,
@@ -587,8 +585,8 @@ from
             year(v_date_1) || '-0' || quarter(v_date_1) as yearquarter,
             year(v_date_1) as current_year,
             /* Modify the following based on company fiscal year - assumes Jan 01*/
-            to_date(year(v_date_1) || '-01-01', 'YYYY-MM-DD') as fiscal_cur_year,
-            to_date(year(v_date_1) -1 || '-01-01', 'YYYY-MM-DD') as fiscal_prev_year,
+            to_date(year(v_date_1) || '-07-01', 'YYYY-MM-DD') as fiscal_cur_year,
+            to_date(year(v_date_1) -1 || '-07-01', 'YYYY-MM-DD') as fiscal_prev_year,
             case
                 when v_date_1 < fiscal_cur_year
                 then datediff('week', fiscal_prev_year, v_date_1)
@@ -596,63 +594,40 @@ from
             end as fiscal_week_num,
             decode(
                 datediff('MONTH', fiscal_cur_year, v_date_1) + 1,
-                -2,
-                10,
-                -1,
-                11,
-                0,
-                12,
+                -5,
+                7,
+                -4,
+                8,
+                -3,
+                9,
                 datediff('MONTH', fiscal_cur_year, v_date_1) + 1
             ) as fiscal_month_num,
-            concat(
-                year(fiscal_cur_year),
-                case
-                    when
-                        to_number(fiscal_month_num) = 10
-                        or to_number(fiscal_month_num) = 11
-                        or to_number(fiscal_month_num) = 12
-                    then '-' || fiscal_month_num
-                    else concat('-0', fiscal_month_num)
-                end
-            ) as fiscal_yearmonth,
             case
                 when quarter(v_date_1) = 4
-                then 4
-                when quarter(v_date_1) = 3
-                then 3
-                when quarter(v_date_1) = 2
                 then 2
-                when quarter(v_date_1) = 1
+                when quarter(v_date_1) = 3
                 then 1
+                when quarter(v_date_1) = 2
+                then 4
+                when quarter(v_date_1) = 1
+                then 3
             end as fiscal_quarter,
 
             case
-                when v_date_1 < fiscal_cur_year
-                then year(fiscal_cur_year)
-                else year(fiscal_cur_year) + 1
-            end
-            || '-0'
-            || case
                 when quarter(v_date_1) = 4
-                then 4
+                then 1
                 when quarter(v_date_1) = 3
-                then 3
+                then 1
+                when quarter(v_date_1) = 1
+                then 2
                 when quarter(v_date_1) = 2
                 then 2
-                when quarter(v_date_1) = 1
-                then 1
-            end as fiscal_yearquarter,
-            case
-                when quarter(v_date_1) = 4
-                then 2
-                when quarter(v_date_1) = 3
-                then 2
-                when quarter(v_date_1) = 1
-                then 1
-                when quarter(v_date_1) = 2
-                then 1
             end as fiscal_halfyear,
-            year(fiscal_cur_year) as fiscal_year,
+            'FY'||case
+                when month(v_date_1) < 7 then year(fiscal_cur_year) 
+                else year(fiscal_cur_year) + 1
+                end as fiscal_year
+            ,
             to_timestamp_ntz(v_date) as sql_timestamp,
             'Y' as current_row_ind,
             to_date(current_timestamp) as effective_date,

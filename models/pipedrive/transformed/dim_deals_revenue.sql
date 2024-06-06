@@ -1,7 +1,10 @@
 select
     deal_id,
-    status,
     stage_name,
+    pipeline_name,
+    organization_name,
+    status,
+    expected_invoice_date,
     subscription_start_date,
     case
         when day(subscription_start_date) <= 15

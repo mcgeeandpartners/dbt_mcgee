@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: xero
+    database: swoop_database  
+    schema: swoop_xero  
+    tables:
+      - name: journal_line
+      - name: journal
+      - name: journal_line_has_tracking_category
+      - name: tracking_category_has_option
+      - name: tracking_category_option
+      - name: tracking_category
+      - name: invoice
+  - name: xero_gs
+    database: swoop_database  
+    schema: swoop_googlesheets  
+    tables:
+      - name: swoop_coa_metadata
+      - name: payroll_regions

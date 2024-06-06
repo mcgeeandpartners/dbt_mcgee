@@ -3,6 +3,9 @@ select
     status,
     stage_name,
     subscription_start_date,
+    region,
+    country,
+    organization_name,
     case
         when day(subscription_start_date) <= 15
         then date_trunc('MONTH', subscription_start_date)

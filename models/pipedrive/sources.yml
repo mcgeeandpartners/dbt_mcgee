@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: pipedrive
     database: swoop_database  
-    schema: pipedrive  
+    schema: swoop_pipedrive  
     tables:
       - name: deal_history
       - name: pipeline

@@ -6,12 +6,11 @@ dbt_mcgee:
       account: eg99003.australia-east.azure
 
       # User/password auth
-      user: LENINMISHRA
-      password: Chinmayee@030320
-
-      role: SYSADMIN
-      database: TRANSFORMED_WH
-      warehouse: FIVETRAN_WAREHOUSE
+      user: Lenin_Mishra
+      password: Sarata@1960
+      role: ACCOUNTADMIN
+      database: SWOOP_QUERIES
+      warehouse: COMPUTE_WH
       schema: transformed
       threads: 4
       client_session_keep_alive: False

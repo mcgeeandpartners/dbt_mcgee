@@ -36,6 +36,8 @@ select
     created_at::date as created_at,
     active,
     custom_subscription_period::date as subscription_start_date,
-    custom_end_date_of_subscription_period::date as subscription_end_date
+    custom_end_date_of_subscription_period::date as subscription_end_date,
+    custom_region as region,
+    custom_country as country
 from {{ source("pipedrive", "deal_history") }}
 where _fivetran_active
