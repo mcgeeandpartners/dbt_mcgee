@@ -6,8 +6,8 @@ dbt_mcgee:
       account: eg99003.australia-east.azure
 
       # User/password auth
-      user: Lenin_Mishra
-      password: Sarata@1960
+      user: dbt
+      password: $9kLp*1xW@Bz3T!q
       role: ACCOUNTADMIN
       database: SWOOP_QUERIES
       warehouse: COMPUTE_WH
