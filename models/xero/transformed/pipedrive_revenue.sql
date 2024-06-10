@@ -7,8 +7,12 @@ select dm.deal_id,
     end as revenue_type, 
     dm.stage_name, 
     dm.organization_name as customer_name, 
-    dm.status
+    dm.status,
+    cms.region,
+    cms.country
 from {{ref('dim_deals_mrr')}} dm
+left join {{source('xero_sp', 'customer_metadata_sheet_1')}} cms 
+on lower(cms.CUSTOMER_XERO_) = lower(dm.organization_name)
 where deal_id in (
     select distinct deal_id from {{ref('dim_deals')}}
     where expected_invoice_date > (select max(date)

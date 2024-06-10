@@ -22,8 +22,9 @@ select jl.journal_line_id,
     jlt.option,
     tcho.tracking_option_id,
     tco.name as customer_name,
-    tc.name as tracking_category_name
-
+    tc.name as tracking_category_name,
+    cms.country,
+    cms.region
 from {{source('xero', 'journal')}} j 
 left join {{source('xero', 'journal_line')}} jl
 on j.journal_id = jl.journal_id
@@ -37,3 +38,5 @@ left join {{source('xero', 'tracking_category_option')}} tco
 on tcho.tracking_option_id = tco.tracking_option_id
 left join {{source('xero', 'tracking_category')}} tc 
 on tc.tracking_category_id = jlt.tracking_category_id
+left join {{source('xero_sp', 'customer_metadata_sheet_1')}} cms 
+on lower(cms.CUSTOMER_XERO_) = lower(tco.name)

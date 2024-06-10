@@ -23,7 +23,9 @@ select journal_line_id,
     option,
     tracking_option_id,
     customer_name,
-    tracking_category_name
+    tracking_category_name,
+    country, 
+    region
 from {{ref('xero_base')}} jl
 where jl.account_type in ('OVERHEADS', 'EXPENSE')
 ),
@@ -44,10 +46,10 @@ on xo.option =  pr.payroll_region
 ),
 net_amount as (
 SELECT date_trunc('month', journal_date) as month,
-        ACCOUNT_CATEGORY, ACCOUNT_NAME, PAYROLL_STATE, GLOBAL_REGION, DEPARTMENT,
+        ACCOUNT_CATEGORY, ACCOUNT_NAME, PAYROLL_STATE, GLOBAL_REGION, DEPARTMENT, region, country,
         sum(net_amount) as net_amount
     from filtered_overheads
-    group by 1, 2, 3, 4, 5, 6
+    group by 1, 2, 3, 4, 5, 6, 7, 8
 )
 select cr.*,
     dd.fiscal_year,

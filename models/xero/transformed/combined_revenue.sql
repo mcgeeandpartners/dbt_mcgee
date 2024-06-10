@@ -2,17 +2,21 @@ with xero_revenue as (
     SELECT date_trunc('month', journal_date) as month,
         customer_name,
         revenue_type,
+        region,
+        country,
         sum(net_amount) as net_amount
     from {{ref('xero_revenue')}}
-    group by 1, 2, 3
+    group by 1, 2, 3, 4, 5
 ),
 pipedrive_revenue as (
     SELECT month,
         customer_name,
         revenue_type,
+        region,
+        country,
         sum(net_amount) as net_amount
     from {{ref('pipedrive_revenue')}}
-    group by 1, 2, 3
+    group by 1, 2, 3, 4, 5
 ),
 combined_revenue as (
 select *,

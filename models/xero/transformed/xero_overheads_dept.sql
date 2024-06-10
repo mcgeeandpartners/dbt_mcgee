@@ -4,6 +4,8 @@ select month,
     GLOBAL_REGION, 
     DEPARTMENT,
     NET_AMOUNT,
+    region, 
+    country,
 case 
     when department = 'DEVE' then 'Development Costs'
     when department = 'CUST' then 'Customer Success Costs'

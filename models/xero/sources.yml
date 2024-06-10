@@ -18,3 +18,8 @@ sources:
     tables:
       - name: swoop_coa_metadata
       - name: payroll_regions
+  - name: xero_sp
+    database: swoop_database  
+    schema: swoop_sharepoint  
+    tables:
+      - name: customer_metadata_sheet_1
