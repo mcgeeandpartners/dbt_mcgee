@@ -1,8 +1,8 @@
 select customer_name,
     region,
     country,
-    sum(case when fiscal_year='FY2024' and month(month)=5 then net_amount else 0 end) as fy_2024_revenue,
-    sum(case when fiscal_year='FY2023' and month(month)=5 then net_amount else 0 end) as fy_2023_revenue,
+    sum(case when fiscal_year='FY2024' and month(month)=6 then net_amount else 0 end) as fy_2024_revenue,/*change every month*/
+    sum(case when fiscal_year='FY2023' and month(month)=6 then net_amount else 0 end) as fy_2023_revenue,/*change every month*/
     case 
         when fy_2023_revenue <= 0 then 0 
         when fy_2023_revenue > 0 then fy_2024_revenue
