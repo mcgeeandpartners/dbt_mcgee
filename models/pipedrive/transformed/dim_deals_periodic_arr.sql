@@ -35,9 +35,21 @@ select
     end as next_june_30,
     case
         when
-            status = 'won'
-            and previous_june_30
-            between subscription_start_date and subscription_end_date
+            (
+                (status = 'won')
+                or (
+                    status = 'open'
+                    and stage_name in (
+                        'Cruise',
+                        'Deal Won - Invoiced',
+                        'Negotiation',
+                        'Negotiating',
+                        'Signed'
+                    )
+                )
+            )
+            and previous_june_30 >= adjusted_subscription_start_date 
+            and previous_june_30 < adjusted_subscription_end_date
         then arr
         else 0
     end as past,
@@ -56,8 +68,8 @@ select
                     )
                 )
             )
-            and current_date()::date
-            between subscription_start_date and subscription_end_date
+            and current_date()::date >= adjusted_subscription_start_date 
+            and current_date()::date < adjusted_subscription_end_date
         then arr
         else 0
     end as today,
@@ -76,7 +88,8 @@ select
                     )
                 )
             )
-            and next_june_30 between subscription_start_date and subscription_end_date
+            and next_june_30 >= adjusted_subscription_start_date 
+            and next_june_30 < adjusted_subscription_end_date
         then arr
         else 0
     end as future
