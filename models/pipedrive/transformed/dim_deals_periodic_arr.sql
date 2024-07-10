@@ -48,7 +48,7 @@ select
                     )
                 )
             )
-            and previous_june_30 >= adjusted_subscription_start_date 
+            and previous_june_30 >= adjusted_subscription_start_date
             and previous_june_30 < adjusted_subscription_end_date
         then arr
         else 0
@@ -68,7 +68,7 @@ select
                     )
                 )
             )
-            and current_date()::date >= adjusted_subscription_start_date 
+            and current_date()::date >= adjusted_subscription_start_date
             and current_date()::date < adjusted_subscription_end_date
         then arr
         else 0
@@ -88,7 +88,7 @@ select
                     )
                 )
             )
-            and next_june_30 >= adjusted_subscription_start_date 
+            and next_june_30 >= adjusted_subscription_start_date
             and next_june_30 < adjusted_subscription_end_date
         then arr
         else 0

@@ -1,3 +1,5 @@
+{{ config(materialized="view") }}
+
 select
     id,
     update_time::date as update_time,
