@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: google_sheets
+    database: swoop_database  
+    schema: swoop_sharepoint  
+    tables:
+      - name: customer_metadata_sheet_1
+      - name: salary_forecast_sheet_1

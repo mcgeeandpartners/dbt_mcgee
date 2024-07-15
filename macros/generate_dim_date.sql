@@ -623,11 +623,11 @@ from
                 when quarter(v_date_1) = 2
                 then 2
             end as fiscal_halfyear,
-            'FY'||case
-                when month(v_date_1) < 7 then year(fiscal_cur_year) 
+            'FY' || case
+                when month(v_date_1) < 7
+                then year(fiscal_cur_year)
                 else year(fiscal_cur_year) + 1
-                end as fiscal_year
-            ,
+            end as fiscal_year,
             to_timestamp_ntz(v_date) as sql_timestamp,
             'Y' as current_row_ind,
             to_date(current_timestamp) as effective_date,
