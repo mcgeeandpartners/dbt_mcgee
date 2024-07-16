@@ -5,7 +5,7 @@ select
     region,
     country,
     net_amount,
-    datasource,
+    datasource,  -- original datasource
     case
         when datasource = 'xero'
         then 'ACTUAL'
@@ -14,7 +14,7 @@ select
     end as data_type,
     fiscal_year,
     fiscal_quarter,
-    'combined_revenue' as source
+    'combined_revenue' as source  -- dbt model being referenced
 from {{ ref("combined_revenue") }}
 
 union all
@@ -79,3 +79,19 @@ select
     fiscal_quarter,
     'xero_other_income' as source
 from {{ ref("xero_other_income") }}
+
+union all
+
+select
+    month_year_date,
+    null as customer_name,
+    null as revenue_type,
+    region,
+    null as country,
+    amount as net_amount,
+    null as datasource,
+    data_type,
+    fiscal_year,
+    fiscal_quarter,
+    'SALARY_FORECAST' as source
+from {{ ref("salary_forecast") }}
