@@ -1,64 +1,49 @@
-select
-    department,
-    employee_name,
-    employment_type,
-    region,
-    annual_cost,
-    payroll_region,
-    role,
-    estimate_cac_,
-    case
-        when substr(month_year, 1, 3) = 'JAN'
-        then 'JANUARY'
-        when substr(month_year, 1, 3) = 'FEB'
-        then 'FEBRUARY'
-        when substr(month_year, 1, 3) = 'MAR'
-        then 'MARCH'
-        when substr(month_year, 1, 3) = 'APR'
-        then 'APRIL'
-        when substr(month_year, 1, 3) = 'MAY'
-        then 'MAY'
-        when substr(month_year, 1, 3) = 'JUN'
-        then 'JUNE'
-        when substr(month_year, 1, 3) = 'JUL'
-        then 'JULY'
-        when substr(month_year, 1, 3) = 'AUG'
-        then 'AUGUST'
-        when substr(month_year, 1, 3) = 'SEP'
-        then 'SEPTEMBER'
-        when substr(month_year, 1, 3) = 'OCT'
-        then 'OCTOBER'
-        when substr(month_year, 1, 3) = 'NOV'
-        then 'NOVEMBER'
-        when substr(month_year, 1, 3) = 'DEC'
-        then 'DECEMBER'
-    end as month,
-    '20' || substr(month_year, 5, 2) as year,
-    amount
-from
-    {{ source("google_sheets", "salary_forecast_sheet_1") }} unpivot (
-        amount for month_year in (
-            jan_24,
-            feb_24,
-            mar_24,
-            apr_24,
-            may_24,
-            jun_24,
-            jul_24,
-            aug_24,
-            sep_24,
-            oct_24,
-            nov_24,
-            dec_24,
-            jan_25,
-            feb_25,
-            mar_25,
-            apr_25,
-            jul_23,
-            aug_23,
-            sep_23,
-            oct_23,
-            nov_23,
-            dec_23
-        )
-    ) as unpvt
+SELECT 
+    DEPARTMENT,
+    EMPLOYEE_NAME,
+    EMPLOYMENT_TYPE,
+    REGION,
+    ANNUAL_COST,
+    PAYROLL_REGION,
+    ROLE,
+    ESTIMATE_CAC_,
+    ACCOUNT_ID,
+    CASE 
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'JAN' THEN '01'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'FEB' THEN '02'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'MAR' THEN '03'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'APR' THEN '04'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'MAY' THEN '05'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'JUN' THEN '06'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'JUL' THEN '07'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'AUG' THEN '08'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'SEP' THEN '09'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'OCT' THEN '10'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'NOV' THEN '11'
+        WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'DEC' THEN '12'
+    END AS MONTH,
+    '20' || SUBSTR(MONTH_YEAR, 5, 2) AS YEAR,
+    TO_DATE(CONCAT('20', SUBSTR(MONTH_YEAR, 5, 2), '-', 
+        CASE 
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'JAN' THEN '01'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'FEB' THEN '02'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'MAR' THEN '03'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'APR' THEN '04'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'MAY' THEN '05'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'JUN' THEN '06'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'JUL' THEN '07'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'AUG' THEN '08'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'SEP' THEN '09'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'OCT' THEN '10'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'NOV' THEN '11'
+            WHEN SUBSTR(MONTH_YEAR, 1, 3) = 'DEC' THEN '12'
+        END, '-01'), 'YYYY-MM-DD') AS MONTH_YEAR_DATE,
+    AMOUNT
+FROM {{ source("google_sheets", "salary_forecast") }}
+UNPIVOT (
+    AMOUNT FOR MONTH_YEAR IN (
+        JAN_24, FEB_24, MAR_24, APR_24, MAY_24, JUN_24, JUL_24, AUG_24, SEP_24, OCT_24, NOV_24, DEC_24,
+        JAN_25, FEB_25, MAR_25, APR_25, MAY_25, JUN_25, JUL_25,
+        JUL_23, AUG_23, SEP_23, OCT_23, NOV_23, DEC_23
+    )
+) AS UNPVT

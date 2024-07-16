@@ -7,3 +7,5 @@ sources:
     tables:
       - name: customer_metadata_sheet_1
       - name: salary_forecast_sheet_1
+      - name: salary_forecast
+        identifier: salary_forecast_salary_forecast
