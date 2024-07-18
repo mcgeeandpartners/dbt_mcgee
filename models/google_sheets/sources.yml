@@ -11,3 +11,5 @@ sources:
         identifier: salary_forecast_salary_forecast
       - name: overhead_forecast
         identifier: overhead_forecast_forecast
+      - name: swoop_coa_metadata
+        identifier: COA_METADATA_COA_METADATA

@@ -34,7 +34,7 @@ with
     filtered_overheads as (
         select
             xo.*,
-            coa.category as account_category,
+            coa.account_category as account_category,
             pr.payroll_state,
             pr.region as global_region,
             case
@@ -44,7 +44,7 @@ with
             end as department
         from xero_overheads xo
         left join
-            {{ source("xero_gs", "swoop_coa_metadata") }} coa
+            {{ source("xero_sp", "swoop_coa_metadata") }} coa
             on xo.account_id = coa.account_id
         left join
             {{ source("xero_gs", "payroll_regions") }} pr

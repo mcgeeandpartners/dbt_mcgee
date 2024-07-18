@@ -2,6 +2,8 @@ select
     month::date as month,
     customer_name,
     revenue_type,
+    null as account_category,
+    null as account_name,
     region,
     country,
     net_amount,
@@ -23,6 +25,8 @@ select
     month,
     null as customer_name,
     null as revenue_type,
+    account_category,
+    account_name,
     region,
     country,
     net_amount,
@@ -44,6 +48,8 @@ select
     month,
     customer_name,
     revenue_type,
+    null as account_category,
+    null as account_name,
     null as region,
     null as country,
     net_amount,
@@ -65,6 +71,8 @@ select
     month,
     customer_name,
     revenue_type,
+    null as account_category,
+    null as account_name,
     null as region,
     null as country,
     net_amount,
@@ -86,6 +94,8 @@ select
     month_year_date,
     null as customer_name,
     null as revenue_type,
+    null as account_category,
+    null as account_name,
     region,
     null as country,
     amount as net_amount,
@@ -95,3 +105,21 @@ select
     fiscal_quarter,
     'SALARY_FORECAST' as source
 from {{ ref("salary_forecast") }}
+
+union all
+
+select
+    month_year_date,
+    null as customer_name,
+    null as revenue_type,
+    account_category,
+    null as account_name,
+    null as region,
+    null as country,
+    amount as net_amount,
+    null as datasource,
+    data_type,
+    fiscal_year,
+    fiscal_quarter,
+    'OVERHEAD_FORECAST' as source
+from {{ ref("overhead_forecast") }}

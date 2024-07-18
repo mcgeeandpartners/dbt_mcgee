@@ -57,6 +57,14 @@ with
                 )
             ) as unpvt
     )
-select base.*, dd.fiscal_year, dd.fiscal_quarter, 'FORECAST' as data_type
+select
+    base.*,
+    scm.account_category,
+    dd.fiscal_year,
+    dd.fiscal_quarter,
+    'FORECAST' as data_type
 from base
 left join {{ ref("dim_date") }} dd on base.month_year_date::date = dd.date
+left join
+    {{ source("google_sheets", "swoop_coa_metadata") }} scm
+    on scm.account_id = base.account_id

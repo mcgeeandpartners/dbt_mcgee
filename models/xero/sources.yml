@@ -16,7 +16,6 @@ sources:
     database: swoop_database  
     schema: swoop_googlesheets  
     tables:
-      - name: swoop_coa_metadata
       - name: payroll_regions
   - name: xero_sp
     database: swoop_database  
@@ -24,3 +23,5 @@ sources:
     tables:
       - name: customer_metadata_sheet_1
       - name: salary_forecast_salary_forecast
+      - name: swoop_coa_metadata
+        identifier: COA_METADATA_COA_METADATA
