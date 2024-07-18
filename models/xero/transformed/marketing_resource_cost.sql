@@ -20,7 +20,7 @@ with
                     + aug_23
                     + jul_23
             end as rolling_sum_last_12_months
-        from {{ source("xero_sp", "salary_forecast_sheet_1") }}
+        from {{ source("xero_sp", "salary_forecast_salary_forecast") }}
     )
 select *, estimate_cac_ * rolling_sum_last_12_months as total_marketing_expense
 from columnmapping
