@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: polymer
+    database: polymer_reactivate_database    
+    schema: polymer_xero  
+    tables:
+      - name: journal_line
+      - name: journal
+      - name: journal_line_has_tracking_category
+      - name: tracking_category_has_option
+      - name: tracking_category_option
+      - name: tracking_category
+      - name: invoice
+  - name: reactivate
+    database: polymer_reactivate_database    
+    schema: reactivate_xero  
+    tables:
+      - name: journal_line
+      - name: journal
+      - name: journal_line_has_tracking_category
+      - name: tracking_category_has_option
+      - name: tracking_category_option
+      - name: tracking_category
+      - name: invoice
+  # - name: polymer_gs
+  #   database: swoop_database  
+  #   schema: swoop_googlesheets  
+  #   tables:
+  #     - name: payroll_regions
+  - name: polymer_sp
+    database: polymer_reactivate_database  
+    schema: polymer_sharepoint  
+    tables:
+      - name: coa_metadata_account
