@@ -44,4 +44,4 @@ left join
     on tc.tracking_category_id = jlt.tracking_category_id
 left join
     {{ source("xero_sp", "customer_metadata_sheet_1") }} cms
-    on lower(cms.customer_xero_) = lower(tco.name)
+    on lower(cms.account_name) = lower(tco.name)

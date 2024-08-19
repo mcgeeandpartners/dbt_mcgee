@@ -12,6 +12,19 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
+
+  # - name: polymer_gs
+  #   database: swoop_database  
+  #   schema: swoop_googlesheets  
+  #   tables:
+  #     - name: payroll_regions
+  - name: polymer_sp
+    database: polymer_reactivate_database  
+    schema: polymer_sharepoint  
+    tables:
+      - name: coa_metadata_account
+
+##reactivate
   - name: reactivate
     database: polymer_reactivate_database    
     schema: reactivate_xero  
@@ -23,13 +36,4 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
-  # - name: polymer_gs
-  #   database: swoop_database  
-  #   schema: swoop_googlesheets  
-  #   tables:
-  #     - name: payroll_regions
-  - name: polymer_sp
-    database: polymer_reactivate_database  
-    schema: polymer_sharepoint  
-    tables:
-      - name: coa_metadata_account
+
