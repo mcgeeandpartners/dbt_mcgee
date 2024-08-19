@@ -15,7 +15,12 @@
     psp.account_category, 
     psp.account_report, 
     psp.account_class,
-    'POLYMER' as entity
+    'POLYMER' as entity,
+    jlt.tracking_category_id,
+    jlt.option,
+    tcho.tracking_option_id,
+    tco.name as customer_name,
+    tc.name as tracking_category_name
 
 from {{ source("polymer", "journal") }} j
 left join {{ source("polymer", "journal_line") }} jl on j.journal_id = jl.journal_id
@@ -56,7 +61,12 @@ left join
     psp.account_category, 
     psp.account_report, 
     psp.account_class,
-    'REACTIVATE' as entity
+    'REACTIVATE' as entity,
+    jlt.tracking_category_id,
+    jlt.option,
+    tcho.tracking_option_id,
+    tco.name as customer_name,
+    tc.name as tracking_category_name
 
 from {{ source("reactivate", "journal") }} j
 left join {{ source("reactivate", "journal_line") }} jl on j.journal_id = jl.journal_id
