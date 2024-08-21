@@ -5,11 +5,11 @@
     jl.account_code, 
     jl.account_type, 
     jl.account_name, 
+    jl.net_amount  as net_amount_original,  
     CASE 
-    WHEN ACCOUNT_REPORT = 'PROFITLOSS' THEN jl.net_amount * -1  
+    WHEN jl.account_type in ('REVENUE','DIRECTCOSTS')THEN jl.net_amount * -1  
     ELSE jl.net_amount * 1
     END AS net_amount,
-    jl.net_amount  as net_amount_original, 
     j.journal_id, 
     j.journal_date, 
     psp.account_category, 
@@ -23,7 +23,7 @@
  --   tco.name as customer_name,
  --   tc.name as tracking_category_name,
    tco.name as Client
- 
+
 from {{ source("polymer", "journal") }} j
 left join {{ source("polymer", "journal_line") }} jl on j.journal_id = jl.journal_id
 left join
@@ -54,11 +54,11 @@ where tc.name='Clients' or tc.name is NULL
     jl.account_code, 
     jl.account_type, 
     jl.account_name, 
+    jl.net_amount  as net_amount_original,  
     CASE 
-    WHEN ACCOUNT_REPORT = 'PROFITLOSS' THEN jl.net_amount * -1  
+    WHEN jl.account_type in ('REVENUE','DIRECTCOSTS')THEN jl.net_amount * -1  
     ELSE jl.net_amount * 1
-    END AS net_amount,
-    jl.net_amount  as net_amount_original, 
+    END AS net_amount, 
     j.journal_id, 
     j.journal_date, 
     psp.account_category, 
@@ -102,8 +102,8 @@ polymer as (
     COALESCE(pd.account_code, pc.account_code) AS account_code,
     COALESCE(pd.account_type, pc.account_type) AS account_type,
     COALESCE(pd.account_name, pc.account_name) AS account_name,
-    COALESCE(pd.net_amount,pc.net_amount) as net_amount,
-    COALESCE(pd.net_amount, pc.net_amount) AS net_amount_original,
+    COALESCE(pd.net_amount_original,pc.net_amount_original) as net_amount_original,
+    COALESCE(pd.net_amount, pc.net_amount) AS net_amount,
     COALESCE(pd.journal_id, pc.journal_id) AS journal_id,
     COALESCE(pd.journal_date, pc.journal_date) AS journal_date,
     COALESCE(pd.account_category, pc.account_category) AS account_category,
@@ -111,6 +111,7 @@ polymer as (
     COALESCE(pd.account_class, pc.account_class) AS account_class,
     COALESCE(pd.working_apital_, pc.working_apital_) AS working_apital,
     'POLYMER' AS entity,
+
    -- COALESCE(pd.tracking_category_id, pc.tracking_category_id) AS tracking_category_id,
    -- COALESCE(pd.option, pc.option) AS option,
    -- COALESCE(pd.tracking_option_id, pc.tracking_option_id) AS tracking_option_id,
@@ -127,12 +128,12 @@ polymer as (
     jl.account_id, 
     jl.account_code, 
     jl.account_type, 
-    jl.account_name, 
+    jl.account_name,
+    jl.net_amount  as net_amount_original,  
     CASE 
-    WHEN ACCOUNT_REPORT = 'PROFITLOSS' THEN jl.net_amount * -1  
+    WHEN jl.account_type in ('REVENUE','DIRECTCOSTS')THEN jl.net_amount * -1  
     ELSE jl.net_amount * 1
     END AS net_amount,
-    jl.net_amount  as net_amount_original, 
     j.journal_id, 
     j.journal_date, 
     psp.account_category, 
