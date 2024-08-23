@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: impress
+    database: IMPRESS_DATABASE
+    schema: IMPRESS_XERO 
+    tables:
+      - name: journal_line
+      - name: journal
+      - name: journal_line_has_tracking_category
+      - name: tracking_category_has_option
+      - name: tracking_category_option
+      - name: tracking_category
+      - name: invoice
+
+  - name: impress_sp
+    database: impress_database
+    schema: impress_share_point  
+    tables:
+      - name: coa_metadata
+
+##reactivate
+  - name: pearshop
+    database: impress_database    
+    schema: pearshop_xero  
+    tables:
+      - name: journal_line
+      - name: journal
+      - name: journal_line_has_tracking_category
+      - name: tracking_category_has_option
+      - name: tracking_category_option
+      - name: tracking_category
+      - name: invoice
+

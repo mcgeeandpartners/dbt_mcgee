@@ -42,3 +42,6 @@ models:
     polymer:
       +materialized: table
       +database: POLYMER_REACTIVATE_QUERIES
+    impress:
+      +materialized: table
+      +database: IMPRESS_QUERIES
