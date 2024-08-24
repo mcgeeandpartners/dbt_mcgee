@@ -92,7 +92,7 @@ left join
 
 left join
     {{ source("polymer_sp", "coa_metadata_account") }} psp
-    on lower(psp.account_id) = lower(jl.account_id)
+    on (psp.account_id) = (jl.account_id)
 where tc.name='Division'
 ),
 polymer as (
