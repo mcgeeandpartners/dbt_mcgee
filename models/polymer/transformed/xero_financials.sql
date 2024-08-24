@@ -7,7 +7,7 @@
     jl.account_name, 
     jl.net_amount  as net_amount_original,  
     CASE 
-    WHEN jl.account_type in ('REVENUE','DIRECTCOSTS')THEN jl.net_amount * -1  
+    WHEN jl.account_type in ('REVENUE','OTHERINCOME')THEN jl.net_amount * -1  
     ELSE jl.net_amount * 1
     END AS net_amount,
     j.journal_id, 
@@ -56,7 +56,7 @@ where tc.name='Clients' or tc.name is NULL
     jl.account_name, 
     jl.net_amount  as net_amount_original,  
     CASE 
-    WHEN jl.account_type in ('REVENUE','DIRECTCOSTS')THEN jl.net_amount * -1  
+    WHEN jl.account_type in ('REVENUE','OTHERINCOME')THEN jl.net_amount * -1  
     ELSE jl.net_amount * 1
     END AS net_amount, 
     j.journal_id, 
@@ -131,7 +131,7 @@ polymer as (
     jl.account_name,
     jl.net_amount  as net_amount_original,  
     CASE 
-    WHEN jl.account_type in ('REVENUE','DIRECTCOSTS')THEN jl.net_amount * -1  
+    WHEN jl.account_type in ('REVENUE','OTHERINCOME')THEN jl.net_amount * -1  
     ELSE jl.net_amount * 1
     END AS net_amount,
     j.journal_id, 

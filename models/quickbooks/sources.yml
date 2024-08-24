@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: qb
+    database: wwp_database    
+    schema: wwp_quickbooks  
+    tables:
+      - name: journal_entry
+      - name: journal_entry_line
+      - name: department
+      - name: class
+      - name: account
+
