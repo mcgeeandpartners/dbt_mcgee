@@ -12,6 +12,7 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
+      - name : account
 
   # - name: polymer_gs
   #   database: swoop_database  
@@ -36,4 +37,5 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
+      - name: account
 
