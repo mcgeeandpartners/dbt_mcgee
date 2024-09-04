@@ -14,7 +14,8 @@
     j.journal_date, 
     psp.account_category, 
     psp.account_report, 
-    psp.account_class,
+    --psp.account_class,
+    a.class as account_class,
     psp.working_apital_,
     'IMPRESS' as entity,
  --   jlt.tracking_category_id,
@@ -40,7 +41,9 @@ left join
 left join
     {{ source("impress", "tracking_category") }} tc
     on tc.tracking_category_id = jlt.tracking_category_id
-
+left join
+    {{ source("impress", "account") }} a
+    on jl.account_id = a.id
 left join
     {{ source("impress_sp", "coa_metadata") }} psp
     on lower(psp.account_id) = lower(jl.account_id)
@@ -63,7 +66,8 @@ where tc.name='Client' or tc.name is NULL
     j.journal_date, 
     psp.account_category, 
     psp.account_report, 
-    psp.account_class,
+    --psp.account_class,
+    a.class as account_class,
     psp.working_apital_,
     'IMPRESS' as entity,
    -- jlt.tracking_category_id,
@@ -89,7 +93,9 @@ left join
 left join
     {{ source("impress", "tracking_category") }} tc
     on tc.tracking_category_id = jlt.tracking_category_id
-
+left join
+    {{ source("impress", "account") }} a
+    on jl.account_id = a.id
 left join
     {{ source("impress_sp", "coa_metadata") }} psp
     on lower(psp.account_id) = lower(jl.account_id)
@@ -105,7 +111,7 @@ impress as (
     COALESCE(pd.net_amount_original,pc.net_amount_original) as net_amount_original,
     COALESCE(pd.net_amount, pc.net_amount) AS net_amount,
     COALESCE(pd.journal_id, pc.journal_id) AS journal_id,
-    COALESCE(pd.journal_date, pc.journal_date) AS journal_date,
+    COALESCE(pd.journal_date, pc.journal_date) AS transaction_date,
     COALESCE(pd.account_category, pc.account_category) AS account_category,
     COALESCE(pd.account_report, pc.account_report) AS account_report,
     COALESCE(pd.account_class, pc.account_class) AS account_class,
@@ -138,7 +144,8 @@ impress as (
     j.journal_date, 
     psp.account_category, 
     psp.account_report, 
-    psp.account_class,
+    --psp.account_class,
+    a.class as account_class,
     psp.working_apital_,
     'PEARSHOP' as entity,
     -- jlt.tracking_category_id,
@@ -165,7 +172,9 @@ left join
 left join
     {{ source("pearshop", "tracking_category") }} tc
     on tc.tracking_category_id = jlt.tracking_category_id
-
+left join
+    {{ source("pearshop", "account") }} a
+    on jl.account_id = a.id
 left join
     {{ source("impress_sp", "coa_metadata") }} psp
     on lower(psp.account_id) = lower(jl.account_id)
@@ -187,7 +196,8 @@ pearshop_division as (
     j.journal_date, 
     psp.account_category, 
     psp.account_report, 
-    psp.account_class,
+    -- psp.account_class,
+    a.class as account_class,
     psp.working_apital_,
     'IMPRESS' as entity,
    -- jlt.tracking_category_id,
@@ -213,7 +223,9 @@ left join
 left join
     {{ source("pearshop", "tracking_category") }} tc
     on tc.tracking_category_id = jlt.tracking_category_id
-
+left join
+    {{ source("pearshop", "account") }} a
+    on jl.account_id = a.id
 left join
     {{ source("impress_sp", "coa_metadata") }} psp
     on lower(psp.account_id) = lower(jl.account_id)
@@ -229,7 +241,7 @@ pearshop as (
     COALESCE(rd.net_amount_original,rc.net_amount_original) as net_amount_original,
     COALESCE(rd.net_amount, rc.net_amount) AS net_amount,
     COALESCE(rd.journal_id, rc.journal_id) AS journal_id,
-    COALESCE(rd.journal_date, rc.journal_date) AS journal_date,
+    COALESCE(rd.journal_date, rc.journal_date) AS transaction_date,
     COALESCE(rd.account_category, rc.account_category) AS account_category,
     COALESCE(rd.account_report, rc.account_report) AS account_report,
     COALESCE(rd.account_class, rc.account_class) AS account_class,
@@ -246,13 +258,14 @@ pearshop as (
      from pearshop_clients rc
     full outer join pearshop_division  rd on rc.journal_line_id=rd.journal_line_id 
 )
-select pl.*, dd.fiscal_year, dd.fiscal_quarter,dd.yearmonth from impress pl
+select 
+pl.*, 'ACTUAL' AS DATA_TYPE, dd.fiscal_year, dd.fiscal_quarter,dd.yearmonth from impress pl
 
 left join {{ ref("dim_date") }} dd on pl.journal_date::date = dd.date
 
 union all
 
-select rl.*, dd.fiscal_year, dd.fiscal_quarter,dd.yearmonth from pearshop rl
+select rl.*, 'ACTUAL' AS DATA_TYPE, dd.fiscal_year, dd.fiscal_quarter,dd.yearmonth from pearshop rl
 
 left join {{ ref("dim_date") }} dd on rl.journal_date::date = dd.date
 

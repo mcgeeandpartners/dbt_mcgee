@@ -12,6 +12,7 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
+      - name: account
 
   - name: impress_sp
     database: impress_database
@@ -19,7 +20,7 @@ sources:
     tables:
       - name: coa_metadata
 
-##reactivate
+
   - name: pearshop
     database: impress_database    
     schema: pearshop_xero  
@@ -31,4 +32,21 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
+      - name: account
+
+
+##combined
+  - name: combined_forecast
+    database: impress_database
+    schema: impress_share_point
+    tables:
+      - name: forecast_snowflake_combined_forecast
+
+
+##financials impress
+  - name: impress_new
+    database: impress_queries
+    schema: transformed
+    tables: 
+      - name: financials_impress_new
 
