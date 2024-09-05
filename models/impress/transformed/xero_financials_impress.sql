@@ -1,5 +1,5 @@
 {% set dict_data={'impress': ['Client', 'Directors'],'pearshop': ['Client', 'Directors']} %}
-{%  set sp=['sp_impress'] %}
+{%  set sp='sp_impress' %}
 select *,'ACTUAL' as DATA_TYPE from (
 {{ xero_financials_common(dict_data,sp) }}
 )

@@ -46,9 +46,9 @@ with
         on tcho.tracking_option_id = tco.tracking_option_id
     left join {{ source(cte_name, "tracking_category") }} tc
         on tc.tracking_category_id = jlt.tracking_category_id
-       {% for tbl_src in sp %}
-    left join {{ source(tbl_src, "coa_metadata") }} psp
-    {% endfor %}
+     
+    left join {{ source(sp, "coa_metadata") }} psp
+ 
    
         on lower(psp.account_id) = lower(jl.account_id)
     where tc.name IN (
