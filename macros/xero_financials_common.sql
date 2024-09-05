@@ -21,7 +21,7 @@ with
         psp.account_category, 
         psp.account_report, 
         psp.account_class,
-        psp.working_apital_,
+        psp.working_apital_ as working_capital,
         '{{cte_name}}' as entity,
    {% for cc in cte_category %}
         CASE 
