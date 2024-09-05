@@ -44,7 +44,7 @@ with
         on tcho.tracking_option_id = tco.tracking_option_id
     left join {{ source(cte_name, "tracking_category") }} tc
         on tc.tracking_category_id = jlt.tracking_category_id
-    left join {{ source("polymer_sp", "coa_metadata_account") }} psp
+    left join {{ source("sp", "coa_metadata") }} psp
         on lower(psp.account_id) = lower(jl.account_id)
     where tc.name IN (
            {% for cc in cte_category %}

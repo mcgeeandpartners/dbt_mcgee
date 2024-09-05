@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: polymer
-    database: polymer_reactivate_database    
-    schema: polymer_xero  
+  - name: impress
+    database: impress_database    
+    schema: impress_xero  
     tables:
       - name: journal_line
       - name: journal
@@ -20,17 +20,18 @@ sources:
   #   tables:
   #     - name: payroll_regions
   - name: sp
-    database: polymer_reactivate_database  
-    schema: polymer_sharepoint  
+    database: impress_database  
+    schema: impress_share_point  
     tables:
-      - name: coa_metadata_account
+      - name: coa_metadata
         identifier: coa_metadata
+      
 
 
-##reactivate
-  - name: reactivate
-    database: polymer_reactivate_database    
-    schema: reactivate_xero  
+##pearshop
+  - name: pearshop
+    database: impress_database    
+    schema: pearshop_xero  
     tables:
       - name: journal_line
       - name: journal
