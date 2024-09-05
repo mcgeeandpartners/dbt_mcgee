@@ -19,12 +19,12 @@ sources:
   #   schema: swoop_googlesheets  
   #   tables:
   #     - name: payroll_regions
-  - name: sp
+  - name: sp_polymer
     database: polymer_reactivate_database  
     schema: polymer_sharepoint  
     tables:
-      - name: coa_metadata_account
-        identifier: coa_metadata
+      - name: coa_metadata
+        identifier: coa_metadata_account
 
 
 ##reactivate

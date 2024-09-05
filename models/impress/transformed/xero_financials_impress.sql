@@ -1,7 +1,7 @@
-{% set dict_data={'impress': ['Client', 'Directors','IAG436'],'pearshop': ['Client', 'Directors','IAG436']} %}
-
+{% set dict_data={'impress': ['Client', 'Directors'],'pearshop': ['Client', 'Directors']} %}
+{%  set sp=['sp_impress'] %}
 select *,'ACTUAL' as DATA_TYPE from (
-{{ xero_financials_common(dict_data) }}
+{{ xero_financials_common(dict_data,sp) }}
 )
 
 union all
@@ -26,9 +26,8 @@ WORKING_CAPITAL,
 ENTITY,
 NULL as DIRECTORS,
 NULL as CLIENT,
-NULL as IAG436,
 FISCAL_YEAR,
 FISCAL_QUARTER,
 TO_CHAR(YEARMONTH::TIMESTAMP, 'YYYY-MM')  as YEARMONTH,
 DATA_TYPE
- from impress_database.impress_share_point.FORECAST_SNOWFLAKE_COMBINED_FORECAST
+ from {{source('sp_impress','forecast_snowflake_combined_forecast')}}

@@ -19,13 +19,13 @@ sources:
   #   schema: swoop_googlesheets  
   #   tables:
   #     - name: payroll_regions
-  - name: sp
+  - name: sp_impress
     database: impress_database  
     schema: impress_share_point  
     tables:
       - name: coa_metadata
         identifier: coa_metadata
-      
+      - name: forecast_snowflake_combined_forecast
 
 
 ##pearshop

@@ -1,16 +1,16 @@
 
-{% macro xero_financials_common(dict_data) %}
+{% macro xero_financials_common(dict_data,sp) %}
 
-
+{{ log(sp, info=True) }}
 with  
 {% for cte_name,cte_category in dict_data.items() %}
 {{cte_name}}_combined as
    ( select
         jl.journal_line_id, 
         jl.account_id, 
-        jl.account_code, 
-        jl.account_type, 
-        jl.account_name, 
+        psp.account_code, --jl
+        psp.account_type, --jl
+        psp.account_name, --jl
         jl.net_amount as net_amount_original,  
         CASE 
             WHEN jl.account_type in ('REVENUE','OTHERINCOME') THEN jl.net_amount * -1  
@@ -20,8 +20,8 @@ with
         j.journal_date, 
         psp.account_category, 
         psp.account_report, 
-        psp.account_class,
-        psp.working_apital_ as working_capital,
+        a.class as account_class,
+        psp.working_capital as working_capital,
         '{{cte_name}}' as entity,
    {% for cc in cte_category %}
         CASE 
@@ -37,6 +37,8 @@ with
     left join {{ source(cte_name, "journal_line_has_tracking_category") }} jlt
         on jl.journal_line_id = jlt.journal_line_id
         and jl.journal_id = jlt.journal_id
+    left join {{source (cte_name,"account")}} a on jl.account_id=a.account_id
+
     left join {{ source(cte_name, "tracking_category_has_option") }} tcho
         on jlt.tracking_category_id = tcho.tracking_category_id
         and jlt.tracking_category_option_id = tcho.tracking_option_id
@@ -44,7 +46,10 @@ with
         on tcho.tracking_option_id = tco.tracking_option_id
     left join {{ source(cte_name, "tracking_category") }} tc
         on tc.tracking_category_id = jlt.tracking_category_id
-    left join {{ source("sp", "coa_metadata") }} psp
+       {% for tbl_src in sp %}
+    left join {{ source(tbl_src, "coa_metadata") }} psp
+    {% endfor %}
+   
         on lower(psp.account_id) = lower(jl.account_id)
     where tc.name IN (
            {% for cc in cte_category %}
