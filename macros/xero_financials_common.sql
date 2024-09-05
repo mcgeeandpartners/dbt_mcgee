@@ -46,7 +46,7 @@ with
         on tcho.tracking_option_id = tco.tracking_option_id
     left join {{ source(cte_name, "tracking_category") }} tc
         on tc.tracking_category_id = jlt.tracking_category_id
-     
+     and tc.STATUS='ACTIVE'
     left join {{ source(sp, "coa_metadata") }} psp
  
    
