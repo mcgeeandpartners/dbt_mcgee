@@ -50,3 +50,9 @@ models:
       +materialized: table
       +database: impress_queries
 
+seeds:
+  dbt_mcgee:
+    +schema: transformed   # Default schema for seeds
+    swoop:
+      +materialized: seed
+      +database: SWOOP_DATABASE

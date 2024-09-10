@@ -12,6 +12,7 @@ sources:
       - name: tracking_category_option
       - name: tracking_category
       - name: invoice
+      - name: account
   - name: xero_gs
     database: swoop_database  
     schema: swoop_googlesheets  
@@ -25,3 +26,6 @@ sources:
       - name: salary_forecast_salary_forecast
       - name: swoop_coa_metadata
         identifier: COA_METADATA_COA_METADATA
+      - name: coa_metadata
+        identifier: COA_METADATA_COA_METADATA
+        
