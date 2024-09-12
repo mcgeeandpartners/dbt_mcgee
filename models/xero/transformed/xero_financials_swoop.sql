@@ -6,6 +6,8 @@ JOURNAL_LINE_ID,
  ACCOUNT_ID,
 ACCOUNT_CODE,
 ACCOUNT_TYPE,
+PRODUCT,
+REVENUE_TYPE,
 ACCOUNT_NAME,
 NET_AMOUNT_ORIGINAL, 
 NET_AMOUNT,
@@ -35,6 +37,12 @@ xero_combined as
         jl.account_id, 
         psp.account_code, --jl
         psp.account_type, --jl
+        case when   psp.account_type='REVENUE'
+        then split( psp.account_name,'-')[0]::string
+        else null end as PRODUCT,
+        case when   psp.account_type='REVENUE'
+        then split( psp.account_name,'-')[1]::string
+        else null end as REVENUE_TYPE,
         psp.account_name, --jl
         jl.net_amount as net_amount_original,  
         CASE 

@@ -1,3 +1,5 @@
+
+--select tem.* from (
 select
     dm.deal_id,
     dm.month,
@@ -11,12 +13,17 @@ select
     dm.stage_name,
     dm.organization_name as customer_name,
     dm.status,
-    cms.region,
-    cms.country
+    dd.region,
+    dd.country,
+    cms.CUSTOMER_REPORT_NAME
 from {{ ref("dim_deals_mrr") }} dm
 left join
     {{ source("xero_sp", "customer_metadata_sheet_1") }} cms
-    on lower(cms.customer_xero_) = lower(dm.organization_name)
+    on lower(cms.CUSTOMER_PIPEDRIVE_) = lower(dm.organization_name)
+left join 
+ ( select id,organization_name,region,country from {{ ref("dim_deals") }} ) dd
+   on lower(dd.id) = lower(dm.deal_id)
+
 where
     deal_id in (
         select distinct deal_id
@@ -37,3 +44,6 @@ where
                 'Onboarding Session'
             )
     )
+--) as tem 
+-- left join SWOOP_DATABASE.SWOOP_SHAREPOINT.CUSTOMER_METADATA_SHEET_1 as cms1
+-- on tem.customer_name=cms1.CUSTOMER_PIPEDRIVE_
