@@ -1,6 +1,7 @@
 
 {% macro xero_financials_common(dict_data,sp) %}
 
+
 {{ log(sp, info=True) }}
 with  
 {% for cte_name,cte_category in dict_data.items() %}
